@@ -25,6 +25,38 @@
 	<artifactId>micro-debug-gui</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<name>MicroDebug GUI</name>
+	<url>https://github.com/croesch/micro-debug-gui</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>GPL</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>croesch</id>
+			<name>Christian Rösch</name>
+			<email>christianroesch::at::gmx.net</email>
+			<roles>
+				<role>Project Lead</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>git@github.com:croesch/micro-debug-gui.git</url>
+		<connection>scm:git:git@github.com:croesch/micro-debug-gui.git</connection>
+		<developerConnection>scm:git:git@github.com:croesch/micro-debug-gui.git</developerConnection>
+	</scm>
 
 	<build>
 		<resources>
@@ -34,6 +66,11 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.2</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
