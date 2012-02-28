@@ -24,7 +24,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
+import com.github.croesch.micro_debug.i18n.Text;
 
 /**
  * Provides test cases for {@link MicroDebug}.
@@ -34,25 +36,30 @@ import com.github.croesch.micro_debug.gui.settings.InternalSettings;
  */
 public class MicroDebugTest extends DefaultTestCase {
 
+  private final String GREETING = GuiText.GREETING + getLineSeparator() + GuiText.BORDER + getLineSeparator();
+
   @Test
   public void testVersion() {
     printlnMethodName();
+    final String versionInformation = Text.VERSION + getLineSeparator()
+                                      + GuiText.VERSION.text(InternalSettings.VERSION) + getLineSeparator();
+
     MicroDebug.main(new String[] { "-v" });
-    assertThat(out.toString()).isEqualTo(InternalSettings.VERSION.getValue() + getLineSeparator());
+    assertThat(out.toString()).isEqualTo(this.GREETING + versionInformation);
     out.reset();
 
     MicroDebug.main(new String[] { "--version" });
-    assertThat(out.toString()).isEqualTo(InternalSettings.VERSION.getValue() + getLineSeparator());
+    assertThat(out.toString()).isEqualTo(this.GREETING + versionInformation);
   }
 
   @Test
   public void testHelp() throws IOException {
     printlnMethodName();
     MicroDebug.main(new String[] { "-h" });
-    assertThat(out.toString()).isEqualTo(getHelpFileText());
+    assertThat(out.toString()).isEqualTo(this.GREETING + getHelpFileText());
     out.reset();
 
     MicroDebug.main(new String[] { "--help" });
-    assertThat(out.toString()).isEqualTo(getHelpFileText());
+    assertThat(out.toString()).isEqualTo(this.GREETING + getHelpFileText());
   }
 }

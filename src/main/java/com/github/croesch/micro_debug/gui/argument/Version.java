@@ -20,7 +20,9 @@ package com.github.croesch.micro_debug.gui.argument;
 
 import com.github.croesch.micro_debug.argument.AArgument;
 import com.github.croesch.micro_debug.commons.Printer;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
+import com.github.croesch.micro_debug.i18n.Text;
 
 /**
  * argument to view the version of the debugger
@@ -67,7 +69,8 @@ public final class Version extends AArgument {
 
   @Override
   public boolean execute(final String ... params) {
-    Printer.println(InternalSettings.VERSION);
+    Printer.println(Text.VERSION);
+    Printer.println(GuiText.VERSION.text(InternalSettings.VERSION));
     return false;
   }
 }

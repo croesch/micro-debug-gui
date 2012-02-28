@@ -25,7 +25,9 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.argument.AArgument;
 import com.github.croesch.micro_debug.gui.DefaultTestCase;
 import com.github.croesch.micro_debug.gui.MicroDebug;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
+import com.github.croesch.micro_debug.i18n.Text;
 
 /**
  * Provides test cases for {@link Version}.
@@ -39,7 +41,8 @@ public class VersionTest extends DefaultTestCase {
   public final void testExecuteVersion() {
     printlnMethodName();
     assertThat(Version.getInstance().execute()).isFalse();
-    assertThat(out.toString()).isEqualTo(InternalSettings.VERSION + getLineSeparator());
+    assertThat(out.toString()).isEqualTo(Text.VERSION + getLineSeparator()
+                                                 + GuiText.VERSION.text(InternalSettings.VERSION) + getLineSeparator());
   }
 
   @Test
