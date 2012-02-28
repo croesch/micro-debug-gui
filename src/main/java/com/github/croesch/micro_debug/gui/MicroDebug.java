@@ -18,9 +18,14 @@
  */
 package com.github.croesch.micro_debug.gui;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+
+import com.github.croesch.micro_debug.argument.AArgument;
+import com.github.croesch.micro_debug.gui.argument.Help;
+import com.github.croesch.micro_debug.gui.argument.Version;
 
 /**
  * TODO Comment here ...
@@ -49,9 +54,23 @@ public final class MicroDebug {
    * @param args the program arguments
    */
   public static void main(final String[] args) {
+    createListOfPossibleArguments();
+
     // handle the arguments
     //    final boolean startApplication = 
-    executeTheArguments(Argument.createArgumentList(args));
+    executeTheArguments(AArgument.createArgumentList(args));
+  }
+
+  /**
+   * Creates the list of all known arguments.
+   * 
+   * @since Date: Feb 28, 2012
+   */
+  public static void createListOfPossibleArguments() {
+    final List<AArgument> arguments = AArgument.values();
+    arguments.clear();
+    arguments.add(Help.getInstance());
+    arguments.add(Version.getInstance());
   }
 
   /**
@@ -61,11 +80,11 @@ public final class MicroDebug {
    * @param map the map that contains the {@link Argument}s and the {@link String[]} as parameter for the argument.
    * @return <code>true</code> if the application can be started, <code>false</code> otherwise
    */
-  private static boolean executeTheArguments(final Map<Argument, String[]> map) {
+  private static boolean executeTheArguments(final Map<AArgument, String[]> map) {
     boolean startApplication = true;
 
-    for (final Entry<Argument, String[]> argumentEntry : map.entrySet()) {
-      final Argument arg = argumentEntry.getKey();
+    for (final Entry<AArgument, String[]> argumentEntry : map.entrySet()) {
+      final AArgument arg = argumentEntry.getKey();
       final String[] params = argumentEntry.getValue();
 
       LOGGER.fine("Executing argument: " + arg);
