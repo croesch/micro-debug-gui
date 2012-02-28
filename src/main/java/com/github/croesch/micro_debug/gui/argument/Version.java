@@ -69,7 +69,7 @@ public final class Version extends AArgument {
 
   @Override
   public boolean execute(final String ... params) {
-    Printer.println(Text.VERSION);
+    Printer.println(Text.VERSION.text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION));
     Printer.println(GuiText.VERSION.text(InternalSettings.VERSION));
     return false;
   }

@@ -41,8 +41,11 @@ public class VersionTest extends DefaultTestCase {
   public final void testExecuteVersion() {
     printlnMethodName();
     assertThat(Version.getInstance().execute()).isFalse();
-    assertThat(out.toString()).isEqualTo(Text.VERSION + getLineSeparator()
-                                                 + GuiText.VERSION.text(InternalSettings.VERSION) + getLineSeparator());
+    assertThat(out.toString()).isEqualTo(Text.VERSION
+                                           .text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
+                                                 + getLineSeparator()
+                                                 + GuiText.VERSION.text(InternalSettings.VERSION)
+                                                 + getLineSeparator());
   }
 
   @Test

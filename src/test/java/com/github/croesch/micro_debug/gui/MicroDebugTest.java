@@ -41,7 +41,9 @@ public class MicroDebugTest extends DefaultTestCase {
   @Test
   public void testVersion() {
     printlnMethodName();
-    final String versionInformation = Text.VERSION + getLineSeparator()
+    final String versionInformation = Text.VERSION
+      .text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
+                                      + getLineSeparator()
                                       + GuiText.VERSION.text(InternalSettings.VERSION) + getLineSeparator();
 
     MicroDebug.main(new String[] { "-v" });
