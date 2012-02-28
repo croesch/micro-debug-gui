@@ -99,7 +99,7 @@ public class DefaultTestCase {
 
   protected synchronized final String getHelpFileText() throws IOException {
     if (helpFileText == null) {
-      helpFileText = readFile("help.txt").toString();
+      helpFileText = readFile("help-gui.txt").toString();
     }
     return helpFileText;
   }

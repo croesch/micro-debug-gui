@@ -18,8 +18,9 @@
  */
 package com.github.croesch.micro_debug.gui;
 
-import com.github.croesch.micro_debug.commons.Printer;
-import com.github.croesch.micro_debug.gui.settings.InternalSettings;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 /**
  * TODO Comment here ...
@@ -28,6 +29,9 @@ import com.github.croesch.micro_debug.gui.settings.InternalSettings;
  * @since Date: Feb 25, 2012
  */
 public final class MicroDebug {
+
+  /** the {@link Logger} for this class */
+  private static final Logger LOGGER = Logger.getLogger(MicroDebug.class.getName());
 
   /**
    * Hidden constructor of utility class.
@@ -45,7 +49,30 @@ public final class MicroDebug {
    * @param args the program arguments
    */
   public static void main(final String[] args) {
-    Printer.println(InternalSettings.VERSION);
+    // handle the arguments
+    //    final boolean startApplication = 
+    executeTheArguments(Argument.createArgumentList(args));
+  }
+
+  /**
+   * Executes all {@link Argument}s in the given {@link Map} with the parameters stored in the map.
+   * 
+   * @since Date: Dec 3, 2011
+   * @param map the map that contains the {@link Argument}s and the {@link String[]} as parameter for the argument.
+   * @return <code>true</code> if the application can be started, <code>false</code> otherwise
+   */
+  private static boolean executeTheArguments(final Map<Argument, String[]> map) {
+    boolean startApplication = true;
+
+    for (final Entry<Argument, String[]> argumentEntry : map.entrySet()) {
+      final Argument arg = argumentEntry.getKey();
+      final String[] params = argumentEntry.getValue();
+
+      LOGGER.fine("Executing argument: " + arg);
+      startApplication &= arg.execute(params);
+    }
+
+    return startApplication;
   }
 
 }

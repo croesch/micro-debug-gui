@@ -20,12 +20,14 @@ package com.github.croesch.micro_debug.gui;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
 /**
- * TODO Comment here ...
+ * Provides test cases for {@link MicroDebug}.
  * 
  * @author croesch
  * @since Date: Feb 25, 2012
@@ -34,7 +36,23 @@ public class MicroDebugTest extends DefaultTestCase {
 
   @Test
   public void testVersion() {
+    printlnMethodName();
     MicroDebug.main(new String[] { "-v" });
     assertThat(out.toString()).isEqualTo(InternalSettings.VERSION.getValue() + getLineSeparator());
+    out.reset();
+
+    MicroDebug.main(new String[] { "--version" });
+    assertThat(out.toString()).isEqualTo(InternalSettings.VERSION.getValue() + getLineSeparator());
+  }
+
+  @Test
+  public void testHelp() throws IOException {
+    printlnMethodName();
+    MicroDebug.main(new String[] { "-h" });
+    assertThat(out.toString()).isEqualTo(getHelpFileText());
+    out.reset();
+
+    MicroDebug.main(new String[] { "--help" });
+    assertThat(out.toString()).isEqualTo(getHelpFileText());
   }
 }
