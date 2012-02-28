@@ -24,8 +24,10 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import com.github.croesch.micro_debug.argument.AArgument;
+import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.gui.argument.Help;
 import com.github.croesch.micro_debug.gui.argument.Version;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
  * TODO Comment here ...
@@ -54,6 +56,8 @@ public final class MicroDebug {
    * @param args the program arguments
    */
   public static void main(final String[] args) {
+    Printer.println(GuiText.GREETING);
+    Printer.println(GuiText.BORDER);
     createListOfPossibleArguments();
 
     // handle the arguments
