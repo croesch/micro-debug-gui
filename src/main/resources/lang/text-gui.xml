@@ -24,9 +24,20 @@
 <properties>
 
 	<entry key="version">${project.name}: Version {0}</entry>
-	
 	<entry key="border">----------------------------------------</entry>
-	
-	<entry key="greeting">MicroDebug - Copyright (C) 2011-2012 Christian Rösch</entry>
+	<entry key="greeting">${project.name} - Copyright (C) 2011-2012 Christian
+		Rösch (christianroesch@gmx.net)</entry>
+
+	<entry key="gui-about">About</entry>
+	<entry key="gui-about-license">&lt;html&gt;&lt;b&gt;License information&lt;/b&gt;</entry>
+	<entry key="gui-about-description">&lt;html&gt;
+		${project.name} is a debugger with a GUI for the Mic-1
+		processor invented by &lt;i&gt;Andrew S. Tannenbaum&lt;/i&gt;,
+		Structured Computer Organization, Fourth Edition (Prentice-Hall, 1998)
+		and described by &lt;i&gt;Prof. Dr. Karl Stroetmann&lt;/i&gt;. You can
+		debug the assembler code and the micro assembler code, too.&lt;p&gt;
+		This debugger has been developed for a seminar paper.&lt;p&gt;
+		Please see: &lt;a href="http://git.io/croesch-md-gui"&gt;http://git.io/croesch-md-gui&lt;/a&gt;
+	</entry>
 
 </properties>
