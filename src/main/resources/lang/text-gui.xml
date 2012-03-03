@@ -23,15 +23,15 @@
 
 <properties>
 
-	<entry key="version">${project.name}: Version {0}</entry>
+	<entry key="version">{0}: Version {1}</entry>
 	<entry key="border">----------------------------------------</entry>
-	<entry key="greeting">${project.name} - Copyright (C) 2011-2012 Christian
+	<entry key="greeting">{0} - Copyright (C) 2011-2012 Christian
 		Rösch (christianroesch@gmx.net)</entry>
 
-	<entry key="gui-about">About</entry>
+	<entry key="gui-about-title">About</entry>
 	<entry key="gui-about-license">&lt;html&gt;&lt;b&gt;License information&lt;/b&gt;</entry>
 	<entry key="gui-about-description">&lt;html&gt;
-		${project.name} is a debugger with a GUI for the Mic-1
+		{0} is a debugger with a GUI for the Mic-1
 		processor invented by &lt;i&gt;Andrew S. Tannenbaum&lt;/i&gt;,
 		Structured Computer Organization, Fourth Edition (Prentice-Hall, 1998)
 		and described by &lt;i&gt;Prof. Dr. Karl Stroetmann&lt;/i&gt;. You can

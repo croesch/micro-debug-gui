@@ -44,7 +44,8 @@ public class VersionTest extends DefaultTestCase {
     assertThat(out.toString()).isEqualTo(Text.VERSION
                                            .text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
                                                  + getLineSeparator()
-                                                 + GuiText.VERSION.text(InternalSettings.VERSION)
+                                                 + GuiText.VERSION
+                                                   .text(InternalSettings.NAME, InternalSettings.VERSION)
                                                  + getLineSeparator());
   }
 

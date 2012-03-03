@@ -36,7 +36,8 @@ import com.github.croesch.micro_debug.i18n.Text;
  */
 public class MicroDebugTest extends DefaultTestCase {
 
-  private final String GREETING = GuiText.GREETING + getLineSeparator() + GuiText.BORDER + getLineSeparator();
+  private final String GREETING = GuiText.GREETING.text(InternalSettings.NAME) + getLineSeparator() + GuiText.BORDER
+                                  + getLineSeparator();
 
   @Test
   public void testVersion() {
@@ -44,7 +45,8 @@ public class MicroDebugTest extends DefaultTestCase {
     final String versionInformation = Text.VERSION
       .text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
                                       + getLineSeparator()
-                                      + GuiText.VERSION.text(InternalSettings.VERSION) + getLineSeparator();
+                                      + GuiText.VERSION.text(InternalSettings.NAME, InternalSettings.VERSION)
+                                      + getLineSeparator();
 
     MicroDebug.main(new String[] { "-v" });
     assertThat(out.toString()).isEqualTo(this.GREETING + versionInformation);

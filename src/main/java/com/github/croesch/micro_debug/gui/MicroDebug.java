@@ -28,6 +28,7 @@ import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.gui.argument.Help;
 import com.github.croesch.micro_debug.gui.argument.Version;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
 /**
  * TODO Comment here ...
@@ -56,7 +57,7 @@ public final class MicroDebug {
    * @param args the program arguments
    */
   public static void main(final String[] args) {
-    Printer.println(GuiText.GREETING);
+    Printer.println(GuiText.GREETING.text(InternalSettings.NAME));
     Printer.println(GuiText.BORDER);
     createListOfPossibleArguments();
 

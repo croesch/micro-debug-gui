@@ -29,7 +29,9 @@ import com.github.croesch.micro_debug.properties.PropertiesProvider;
 public enum InternalSettings {
 
   /** the version of the gui of the debugger */
-  VERSION;
+  VERSION,
+  /** the name of the gui of the debugger */
+  NAME;
 
   /** the value set up in the properties file */
   private final String value;
