@@ -27,12 +27,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
@@ -98,34 +98,30 @@ public class AboutFrame extends JFrame {
     return text;
   }
 
-  private JLabel generateAboutArea() throws IOException {
+  private MDLabel generateAboutArea() throws IOException {
     final String text = "<html><h1>" + InternalSettings.NAME + "</h1>\n<b>" + InternalSettings.VERSION + "</b>";
-    final JLabel aboutLabel = new JLabel(text);
-    aboutLabel.setName("name-and-version");
+    final MDLabel aboutLabel = new MDLabel("name-and-version", text);
     return aboutLabel;
   }
 
-  private JLabel generateCopyrightArea() throws IOException {
+  private MDLabel generateCopyrightArea() throws IOException {
     final String text = getFileText(COPYRIGHT_FILE);
-    final JLabel copyLabel = new JLabel(text);
-    copyLabel.setName("copyright-text");
+    final MDLabel copyLabel = new MDLabel("copyright-text", text);
     return copyLabel;
   }
 
-  private JLabel generateDescriptionArea() throws IOException {
-    final JLabel descriptionLabel = new JLabel(GuiText.GUI_ABOUT_DESCRIPTION.text(InternalSettings.NAME));
-    descriptionLabel.setName("description");
+  private MDLabel generateDescriptionArea() throws IOException {
+    final MDLabel descriptionLabel = new MDLabel("description",
+                                                 GuiText.GUI_ABOUT_DESCRIPTION.text(InternalSettings.NAME));
     return descriptionLabel;
   }
 
   private JComponent generateLicenseArea() throws IOException {
     final String text = getFileText(LICENSE_FILE);
-    final JLabel textArea = new JLabel(text);
-    textArea.setName("license-text");
+    final MDLabel textArea = new MDLabel("license-text", text);
 
     final JPanel licenseArea = new JPanel(new MigLayout("fill,wrap", "[fill]", "[][]"));
-    final JLabel licenseTitle = new JLabel(GuiText.GUI_ABOUT_LICENSE.text());
-    licenseTitle.setName("license-title");
+    final MDLabel licenseTitle = new MDLabel("license-title", GuiText.GUI_ABOUT_LICENSE);
     licenseArea.add(licenseTitle);
     licenseArea.add(textArea);
 
