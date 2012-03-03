@@ -33,6 +33,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
+import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
@@ -42,7 +43,7 @@ import com.github.croesch.micro_debug.gui.settings.InternalSettings;
  * @author croesch
  * @since Date: Mar 2, 2012
  */
-public class AboutFrame extends JFrame {
+public class AboutFrame extends SizedFrame {
 
   /** the {@link Logger} for this class */
   private static final Logger LOGGER = Logger.getLogger(AboutFrame.class.getName());
@@ -63,7 +64,7 @@ public class AboutFrame extends JFrame {
   private static final long serialVersionUID = -602544618675042722L;
 
   public AboutFrame() throws IOException {
-    super(GuiText.GUI_ABOUT_TITLE.text());
+    super(GuiText.GUI_ABOUT_TITLE, new Dimension(ABOUT_WIDTH, ABOUT_HEIGHT));
 
     final String space = "20lp";
     setLayout(new MigLayout("wrap, fill", "[fill]", "[][]" + space + "[]" + space + "[grow][]"));
@@ -72,14 +73,6 @@ public class AboutFrame extends JFrame {
     add(generateDescriptionArea());
     add(generateLicenseArea());
     add(generateCopyrightArea(), "skip 1");
-
-    final Dimension preferredSize = new Dimension(ABOUT_WIDTH, ABOUT_HEIGHT);
-    setPreferredSize(preferredSize);
-    setSize(preferredSize);
-    setMaximumSize(preferredSize);
-    setMinimumSize(preferredSize);
-
-    setResizable(false);
   }
 
   private String getFileText(final String file) throws IOException {
