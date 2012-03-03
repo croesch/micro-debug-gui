@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.about;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,39 +29,41 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
 /**
- * TODO Comment here ...
+ * A frame that visualises information about micro-debug.
  * 
  * @author croesch
  * @since Date: Mar 2, 2012
  */
 public class AboutFrame extends JFrame {
 
-  private static final int ABOUT_HEIGHT = 647;
-
-  private static final int ABOUT_WIDTH = 400;
-
   /** the {@link Logger} for this class */
   private static final Logger LOGGER = Logger.getLogger(AboutFrame.class.getName());
 
+  /** the path to the file containing the license information */
   private static final String LICENSE_FILE = "gui/about/license.txt";
 
+  /** the path to the file containing the copyright information */
   private static final String COPYRIGHT_FILE = "gui/about/copyright.txt";
 
-  private static final String ABOUT_FILE = "gui/about/about.txt";
+  /** the height of this frame */
+  private static final int ABOUT_HEIGHT = 647;
+
+  /** the width of this frame */
+  private static final int ABOUT_WIDTH = 400;
 
   /** generated serial version UID */
   private static final long serialVersionUID = -602544618675042722L;
 
   public AboutFrame() throws IOException {
-    super(GuiText.GUI_ABOUT.text());
+    super(GuiText.GUI_ABOUT_TITLE.text());
 
     final String space = "20lp";
     setLayout(new MigLayout("wrap, fill", "[fill]", "[][]" + space + "[]" + space + "[grow][]"));
@@ -70,7 +73,12 @@ public class AboutFrame extends JFrame {
     add(generateLicenseArea());
     add(generateCopyrightArea(), "skip 1");
 
-    setSize(ABOUT_WIDTH, ABOUT_HEIGHT);
+    final Dimension preferredSize = new Dimension(ABOUT_WIDTH, ABOUT_HEIGHT);
+    setPreferredSize(preferredSize);
+    setSize(preferredSize);
+    setMaximumSize(preferredSize);
+    setMinimumSize(preferredSize);
+
     setResizable(false);
   }
 
@@ -91,25 +99,34 @@ public class AboutFrame extends JFrame {
   }
 
   private JLabel generateAboutArea() throws IOException {
-    final String text = getFileText(ABOUT_FILE);
-    return new JLabel(text);
+    final String text = "<html><h1>" + InternalSettings.NAME + "</h1>\n<b>" + InternalSettings.VERSION + "</b>";
+    final JLabel aboutLabel = new JLabel(text);
+    aboutLabel.setName("name-and-version");
+    return aboutLabel;
   }
 
   private JLabel generateCopyrightArea() throws IOException {
     final String text = getFileText(COPYRIGHT_FILE);
-    return new JLabel(text);
+    final JLabel copyLabel = new JLabel(text);
+    copyLabel.setName("copyright-text");
+    return copyLabel;
   }
 
   private JLabel generateDescriptionArea() throws IOException {
-    return new JLabel(GuiText.GUI_ABOUT_DESCRIPTION.text());
+    final JLabel descriptionLabel = new JLabel(GuiText.GUI_ABOUT_DESCRIPTION.text(InternalSettings.NAME));
+    descriptionLabel.setName("description");
+    return descriptionLabel;
   }
 
   private JComponent generateLicenseArea() throws IOException {
     final String text = getFileText(LICENSE_FILE);
     final JLabel textArea = new JLabel(text);
+    textArea.setName("license-text");
 
     final JPanel licenseArea = new JPanel(new MigLayout("fill,wrap", "[fill]", "[][]"));
-    licenseArea.add(new JLabel(GuiText.GUI_ABOUT_LICENSE.text()));
+    final JLabel licenseTitle = new JLabel(GuiText.GUI_ABOUT_LICENSE.text());
+    licenseTitle.setName("license-title");
+    licenseArea.add(licenseTitle);
     licenseArea.add(textArea);
 
     return licenseArea;
@@ -117,7 +134,6 @@ public class AboutFrame extends JFrame {
 
   public static void main(final String[] args) throws IOException, ClassNotFoundException, InstantiationException,
                                               IllegalAccessException, UnsupportedLookAndFeelException {
-    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     final AboutFrame a = new AboutFrame();
     a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     a.repaint();

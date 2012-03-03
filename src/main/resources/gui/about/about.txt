@@ -1,3 +1,0 @@
-<html>
-<h2>${project.name}</h2>
-<b>${project.version}</b>
