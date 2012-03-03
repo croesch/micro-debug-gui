@@ -52,11 +52,7 @@ public class AboutFrameTest extends DefaultGUITestCase {
     final AboutFrame frame = GuiActionRunner.execute(new GuiQuery<AboutFrame>() {
       @Override
       protected AboutFrame executeInEDT() {
-        try {
-          return new AboutFrame();
-        } catch (final IOException e) {
-          return null;
-        }
+        return new AboutFrame();
       }
     });
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

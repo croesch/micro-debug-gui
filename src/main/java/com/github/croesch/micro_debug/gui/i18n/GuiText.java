@@ -35,7 +35,12 @@ public enum GuiText {
   /** the text that is printed when the program is started, before any error message */
   GREETING,
 
-  GUI_ABOUT_TITLE, GUI_ABOUT_LICENSE, GUI_ABOUT_DESCRIPTION;
+  /** the title of the about information */
+  GUI_ABOUT_TITLE,
+  /** the title of license information in about file */
+  GUI_ABOUT_LICENSE,
+  /** the description of the debugger - as shown in the about section */
+  GUI_ABOUT_DESCRIPTION;
 
   /** the value of this instance */
   private final String string;
