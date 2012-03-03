@@ -18,8 +18,6 @@
  */
 package com.github.croesch.micro_debug.gui.components.about;
 
-import static com.github.croesch.micro_debug.gui.settings.InternalSettings.NAME;
-
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,17 +111,17 @@ public class AboutFrame extends SizedFrame {
    * @throws IOException if the stream cannot be read properly.
    */
   private String readFile(final InputStream resourceAsStream) throws IOException {
-    String text = "";
+    final StringBuilder text = new StringBuilder();
     final Reader r = new InputStreamReader(resourceAsStream);
     int c;
     while ((c = r.read()) != -1) {
       if (c == '\n') {
-        text += Utils.getLineSeparator();
+        text.append(Utils.getLineSeparator());
       } else {
-        text += (char) c;
+        text.append((char) c);
       }
     }
-    return text;
+    return text.toString();
   }
 
   /**
@@ -149,9 +147,8 @@ public class AboutFrame extends SizedFrame {
    * @return the component that visualises the name and version information.
    */
   private MDLabel generateAboutArea() {
-    final String text = "<html><h1>" + NAME + "</h1>\n<b>" + InternalSettings.VERSION + "</b>";
-    final MDLabel aboutLabel = new MDLabel("name-and-version", text);
-    return aboutLabel;
+    final String text = "<html><h1>" + InternalSettings.NAME + "</h1>\n<b>" + InternalSettings.VERSION + "</b>";
+    return new MDLabel("name-and-version", text);
   }
 
   /**
@@ -162,8 +159,7 @@ public class AboutFrame extends SizedFrame {
    */
   private MDLabel generateCopyrightArea() {
     final String text = getFileContent(COPYRIGHT_FILE);
-    final MDLabel copyLabel = new MDLabel("copyright-text", text);
-    return copyLabel;
+    return new MDLabel("copyright-text", text);
   }
 
   /**
@@ -173,8 +169,7 @@ public class AboutFrame extends SizedFrame {
    * @return the component that visualises the programs description.
    */
   private MDLabel generateDescriptionArea() {
-    final MDLabel descriptionLabel = new MDLabel("description", GuiText.GUI_ABOUT_DESCRIPTION.text(NAME));
-    return descriptionLabel;
+    return new MDLabel("description", GuiText.GUI_ABOUT_DESCRIPTION.text(InternalSettings.NAME));
   }
 
   /**
