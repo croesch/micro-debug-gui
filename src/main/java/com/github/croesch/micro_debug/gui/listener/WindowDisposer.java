@@ -40,6 +40,9 @@ public final class WindowDisposer implements ActionListener {
    * @param w the {@link Window} to dispose when the action is performed
    */
   public WindowDisposer(final Window w) {
+    if (w == null) {
+      throw new IllegalArgumentException();
+    }
     this.window = w;
   }
 

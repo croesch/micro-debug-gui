@@ -56,6 +56,9 @@ public final class Mic1CreatingAction extends AbstractAction {
                             final IBinaryFilePathProvider filePathProvider,
                             final GuiText text) {
     super(text.text());
+    if (creator == null || filePathProvider == null) {
+      throw new IllegalArgumentException();
+    }
     this.processorCreator = creator;
     this.binFilePathProvider = filePathProvider;
   }
