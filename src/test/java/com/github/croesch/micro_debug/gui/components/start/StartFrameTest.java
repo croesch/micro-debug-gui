@@ -26,9 +26,11 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.fest.swing.core.MouseButton;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
@@ -59,6 +61,19 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.show();
   }
 
+  private void createStartFrame(final String micAsmPath, final String asmPath) {
+    this.startFrame.close();
+    final StartFrame frame = GuiActionRunner.execute(new GuiQuery<StartFrame>() {
+      @Override
+      protected StartFrame executeInEDT() {
+        return new StartFrame(micAsmPath, asmPath);
+      }
+    });
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    this.startFrame = new FrameFixture(robot(), frame);
+    this.startFrame.show();
+  }
+
   @Override
   protected void onTearDown() {
     this.startFrame.close();
@@ -82,8 +97,14 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testTextFields() {
     printlnMethodName();
-    this.startFrame.textBox("micro-assembler-file-path").requireEmpty();
-    this.startFrame.textBox("macro-assembler-file-path").requireEmpty();
+    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+  }
+
+  private void assertEnabledAndEmpty(final JTextComponentFixture textBox) {
+    textBox.requireEmpty();
+    textBox.requireEditable();
+    textBox.requireEnabled();
   }
 
   @Test
@@ -92,5 +113,55 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.button("micro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("macro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("okay").requireText(GuiText.GUI_START_OKAY.text());
+  }
+
+  @Test
+  public void testStartFrameStringString() {
+    printlnMethodName();
+    createStartFrame(null, null);
+    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+
+    createStartFrame(" \t\n   \t  ", "");
+    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+
+    createStartFrame(" path to nirvana ", "");
+    assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+
+    createStartFrame(null, " path to nirvana ");
+    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
+    assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "path to nirvana");
+
+    createStartFrame(" path to nirvana ", "something");
+    assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
+    assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "something");
+  }
+
+  private void assertNotEditableAndContainsText(final JTextComponentFixture textBox, final String text) {
+    textBox.requireText(text);
+    textBox.requireDisabled();
+    textBox.requireNotEditable();
+
+    robot().click(textBox.component());
+    textBox.requireDisabled();
+    textBox.requireNotEditable();
+
+    robot().click(textBox.component(), MouseButton.RIGHT_BUTTON, 3);
+    textBox.requireDisabled();
+    textBox.requireNotEditable();
+
+    robot().click(textBox.component(), MouseButton.RIGHT_BUTTON, 2);
+    textBox.requireDisabled();
+    textBox.requireNotEditable();
+
+    robot().click(textBox.component(), MouseButton.LEFT_BUTTON, 2);
+    textBox.requireEnabled();
+    textBox.requireEditable();
+
+    robot().click(textBox.component(), MouseButton.LEFT_BUTTON, 2);
+    textBox.requireEnabled();
+    textBox.requireEditable();
   }
 }

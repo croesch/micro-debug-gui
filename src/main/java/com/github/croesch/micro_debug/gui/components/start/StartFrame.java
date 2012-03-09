@@ -20,12 +20,16 @@ package com.github.croesch.micro_debug.gui.components.start;
 
 import java.awt.Dimension;
 
+import javax.swing.JFrame;
+
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
+import com.github.croesch.micro_debug.gui.components.listener.DoubleClickActivatingListener;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -47,6 +51,12 @@ final class StartFrame extends SizedFrame {
   /** the width of this frame */
   private static final int FRAME_WIDTH = 485;
 
+  /** the text field that contains the path to the binary assembler file */
+  private final MDTextField macroPathField = new MDTextField("macro-assembler-file-path");
+
+  /** the text field that contains the path to the binary micro assembler file */
+  private final MDTextField microPathField = new MDTextField("micro-assembler-file-path");
+
   /**
    * Constructs a frame to select the binary files for creating a {@link Mic1}.
    * 
@@ -62,6 +72,37 @@ final class StartFrame extends SizedFrame {
     addMicroAssemblerSection();
     addAssemblerSection();
     addButtons();
+  }
+
+  /**
+   * Constructs a frame to select the binary files for creating a {@link Mic1}. The given paths will be set to the
+   * specific text field.
+   * 
+   * @since Date: Mar 9, 2012
+   * @param microAssemblerPath preset value for the path of the binary micro assembler file, may be <code>null</code>
+   * @param assemblerPath preset value for the path of the binary assembler file, may be <code>null</code>
+   */
+  public StartFrame(final String microAssemblerPath, final String assemblerPath) {
+    this();
+    setTextToTextFieldAndEnableIt(this.microPathField, microAssemblerPath);
+    setTextToTextFieldAndEnableIt(this.macroPathField, assemblerPath);
+  }
+
+  /**
+   * Sets the given text to the given {@link MDTextField} and disables the text field. If the text to set is
+   * <code>null</code> or empty, nothing will be done.
+   * 
+   * @since Date: Mar 9, 2012
+   * @param field the text field to set the given text to
+   * @param text the text to set to the text field, may be <code>null</code>
+   * @see Utils#isNullOrEmpty(String)
+   */
+  private static void setTextToTextFieldAndEnableIt(final MDTextField field, final String text) {
+    if (!Utils.isNullOrEmpty(text)) {
+      field.setText(text.trim());
+      field.setEnabled(false);
+      field.setEditable(false);
+    }
   }
 
   /**
@@ -81,11 +122,12 @@ final class StartFrame extends SizedFrame {
    */
   private void addAssemblerSection() {
     final MDLabel label = new MDLabel("macro-assembler-file", GuiText.GUI_START_MACRO);
-    final MDTextField textField = new MDTextField("macro-assembler-file-path");
     final MDButton btn = new MDButton("macro-assembler-file-browse", GuiText.GUI_COMMAND_BROWSE);
 
+    this.macroPathField.addMouseListener(new DoubleClickActivatingListener());
+
     add(label, "wrap");
-    add(textField);
+    add(this.macroPathField);
     add(btn);
   }
 
@@ -96,11 +138,12 @@ final class StartFrame extends SizedFrame {
    */
   private void addMicroAssemblerSection() {
     final MDLabel label = new MDLabel("micro-assembler-file", GuiText.GUI_START_MICRO);
-    final MDTextField textField = new MDTextField("micro-assembler-file-path");
     final MDButton btn = new MDButton("micro-assembler-file-browse", GuiText.GUI_COMMAND_BROWSE);
 
+    this.microPathField.addMouseListener(new DoubleClickActivatingListener());
+
     add(label, "skip 2, wrap");
-    add(textField);
+    add(this.microPathField);
     add(btn);
   }
 
@@ -111,7 +154,8 @@ final class StartFrame extends SizedFrame {
    * @param args not needed
    */
   public static void main(final String[] args) {
-    final StartFrame frame = new StartFrame();
+    final StartFrame frame = new StartFrame("asd", "asdasd");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
   }
 }
