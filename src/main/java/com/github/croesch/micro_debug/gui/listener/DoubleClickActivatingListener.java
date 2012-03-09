@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.listener;
+package com.github.croesch.micro_debug.gui.listener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

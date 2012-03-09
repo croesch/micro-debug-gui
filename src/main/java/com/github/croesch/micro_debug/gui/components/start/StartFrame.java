@@ -29,8 +29,8 @@ import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
-import com.github.croesch.micro_debug.gui.components.listener.DoubleClickActivatingListener;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.listener.DoubleClickActivatingListener;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
