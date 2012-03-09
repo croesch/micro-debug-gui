@@ -27,6 +27,8 @@
 	<entry key="border">----------------------------------------</entry>
 	<entry key="greeting">{0} - Copyright (C) 2011-2012 Christian
 		Rösch (christianroesch@gmx.net)</entry>
+		
+	<entry key="gui-command-browse">Browse...</entry>
 
 	<entry key="gui-about-title">About</entry>
 	<entry key="gui-about-license">&lt;html&gt;&lt;b&gt;License information&lt;/b&gt;</entry>
@@ -39,5 +41,10 @@
 		This debugger has been developed for a seminar paper.&lt;p&gt;
 		Please see: &lt;a href="http://git.io/croesch-md-gui"&gt;http://git.io/croesch-md-gui&lt;/a&gt;
 	</entry>
+	
+	<entry key="gui-start-title">{0} - Choose binary files</entry>
+	<entry key="gui-start-okay">Start</entry>
+	<entry key="gui-start-micro">micro assembler file</entry>
+	<entry key="gui-start-macro">macro assembler file</entry>
 
 </properties>

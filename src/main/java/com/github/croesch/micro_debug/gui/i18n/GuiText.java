@@ -35,12 +35,24 @@ public enum GuiText {
   /** the text that is printed when the program is started, before any error message */
   GREETING,
 
+  /** the text for the command to browse something */
+  GUI_COMMAND_BROWSE,
+
   /** the title of the about information */
   GUI_ABOUT_TITLE,
   /** the title of license information in about file */
   GUI_ABOUT_LICENSE,
   /** the description of the debugger - as shown in the about section */
-  GUI_ABOUT_DESCRIPTION;
+  GUI_ABOUT_DESCRIPTION,
+
+  /** the title of the start frame */
+  GUI_START_TITLE,
+  /** the text to represent the action to start the debugger */
+  GUI_START_OKAY,
+  /** the text to identify the components for macro assembler binary code */
+  GUI_START_MACRO,
+  /** the text to identify the components for micro assembler binary code */
+  GUI_START_MICRO;
 
   /** the value of this instance */
   private final String string;
