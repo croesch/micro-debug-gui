@@ -21,7 +21,6 @@ package com.github.croesch.micro_debug.gui.components.start;
 import java.awt.Dimension;
 
 import javax.swing.Action;
-import javax.swing.JFrame;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -63,7 +62,7 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   private final MDTextField microPathField = new MDTextField("micro-assembler-file-path");
 
   /** the object that is able to create the {@link com.github.croesch.micro_debug.mic1.Mic1} */
-  private final IMic1Creator mic1Creator;
+  private final transient IMic1Creator mic1Creator;
 
   /**
    * Constructs a frame to select the binary files for creating a {@link com.github.croesch.micro_debug.mic1.Mic1}.
@@ -162,24 +161,6 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     add(label, "skip 2, wrap");
     add(this.microPathField);
     add(btn);
-  }
-
-  /**
-   * For testing purpose
-   * 
-   * @since Date: Mar 9, 2012
-   * @param args not needed
-   */
-  public static void main(final String[] args) {
-    final StartFrame frame = new StartFrame("asd", "asdasd", new IMic1Creator() {
-
-      public void create(final String microFilePath, final String macroFilePath) {
-        // TODO Auto-generated method stub
-
-      }
-    });
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
   }
 
   /**

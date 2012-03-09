@@ -38,7 +38,7 @@ public final class Mic1CreatingAction extends AbstractAction {
   private static final long serialVersionUID = -5379485412067390144L;
 
   /** the creator of the processor that should receive the file paths */
-  private final IMic1Creator processorCreator;
+  private final transient IMic1Creator processorCreator;
 
   /** the provider of the file paths */
   private final IBinaryFilePathProvider binFilePathProvider;
