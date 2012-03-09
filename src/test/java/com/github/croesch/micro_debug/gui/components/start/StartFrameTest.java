@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.start;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ import org.fest.swing.core.MouseButton;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JFileChooserFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.Test;
 
@@ -241,5 +243,71 @@ public class StartFrameTest extends DefaultGUITestCase {
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.isWritten()).isTrue();
     this.startFrame.requireNotVisible();
+  }
+
+  @Test
+  public void testBrowse_Micro() {
+    printlnMethodName();
+    this.startFrame.button("micro-assembler-file-browse").click();
+    JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
+    fileChooser.cancel();
+    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+
+    this.startFrame.button("micro-assembler-file-browse").click();
+    fileChooser = new JFileChooserFixture(robot());
+    fileChooser.selectFile(new File("anything.mic1"));
+    fileChooser.approve();
+    this.startFrame.textBox("micro-assembler-file-path")
+      .requireText(System.getProperty("user.home") + "/anything.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+
+    this.startFrame.button("macro-assembler-file-browse").click();
+    fileChooser = new JFileChooserFixture(robot());
+    fileChooser.selectFile(new File("some.ijvm"));
+    fileChooser.approve();
+    this.startFrame.textBox("micro-assembler-file-path")
+      .requireText(System.getProperty("user.home") + "/anything.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+
+    this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
+    this.startFrame.textBox("macro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
+
+    this.startFrame.button("micro-assembler-file-browse").click();
+    fileChooser = new JFileChooserFixture(robot());
+    fileChooser.selectFile(new File("some.mic1"));
+    fileChooser.approve();
+    this.startFrame.textBox("micro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+
+    this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
+    this.startFrame.textBox("macro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
+
+    createStartFrame("/path/one", "/path/two");
+    this.startFrame.textBox("micro-assembler-file-path").requireText("/path/one");
+    this.startFrame.textBox("micro-assembler-file-path").requireNotEditable();
+    this.startFrame.textBox("micro-assembler-file-path").requireDisabled();
+    this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
+    this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
+    this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
+
+    this.startFrame.button("micro-assembler-file-browse").click();
+    fileChooser = new JFileChooserFixture(robot());
+    fileChooser.selectFile(new File("some.mic1"));
+    fileChooser.approve();
+    this.startFrame.textBox("micro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
+    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+
+    this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
+    this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
+    this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
   }
 }

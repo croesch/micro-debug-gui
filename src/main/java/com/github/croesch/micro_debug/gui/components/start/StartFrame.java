@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.actions.BrowsePathForTextFieldAction;
 import com.github.croesch.micro_debug.gui.actions.Mic1CreatingAction;
 import com.github.croesch.micro_debug.gui.actions.api.IBinaryFilePathProvider;
 import com.github.croesch.micro_debug.gui.actions.api.IMic1Creator;
@@ -135,7 +136,8 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    */
   private void addAssemblerSection() {
     final MDLabel label = new MDLabel("macro-assembler-file", GuiText.GUI_START_MACRO);
-    final MDButton btn = new MDButton("macro-assembler-file-browse", GuiText.GUI_COMMAND_BROWSE);
+    final MDButton btn = new MDButton("macro-assembler-file-browse",
+                                      new BrowsePathForTextFieldAction(this.macroPathField, this));
 
     this.macroPathField.addMouseListener(new DoubleClickActivatingListener());
 
@@ -151,7 +153,8 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    */
   private void addMicroAssemblerSection() {
     final MDLabel label = new MDLabel("micro-assembler-file", GuiText.GUI_START_MICRO);
-    final MDButton btn = new MDButton("micro-assembler-file-browse", GuiText.GUI_COMMAND_BROWSE);
+    final MDButton btn = new MDButton("micro-assembler-file-browse",
+                                      new BrowsePathForTextFieldAction(this.microPathField, this));
 
     this.microPathField.addMouseListener(new DoubleClickActivatingListener());
 
@@ -167,7 +170,13 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    * @param args not needed
    */
   public static void main(final String[] args) {
-    final StartFrame frame = new StartFrame("asd", "asdasd", null);
+    final StartFrame frame = new StartFrame("asd", "asdasd", new IMic1Creator() {
+
+      public void create(final String microFilePath, final String macroFilePath) {
+        // TODO Auto-generated method stub
+
+      }
+    });
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
   }
