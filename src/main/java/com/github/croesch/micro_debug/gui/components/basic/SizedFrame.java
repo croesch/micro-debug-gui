@@ -43,7 +43,18 @@ public abstract class SizedFrame extends JFrame {
    * @param size the size of the frame
    */
   public SizedFrame(final GuiText title, final Dimension size) {
-    super(title.text());
+    this(title.text(), size);
+  }
+
+  /**
+   * Constructs a frame with the given title and the given size. The size will be set and the frame won't be resizable.
+   * 
+   * @since Date: Mar 9, 2012
+   * @param title the title of the frame.
+   * @param size the size of the frame
+   */
+  public SizedFrame(final String title, final Dimension size) {
+    super(title);
     setPreferredSize(size);
     setSize(size);
     setMaximumSize(size);
