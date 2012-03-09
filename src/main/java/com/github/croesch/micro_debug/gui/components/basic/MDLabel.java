@@ -20,6 +20,8 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import javax.swing.JLabel;
 
+import com.github.croesch.micro_debug.commons.Utils;
+
 /**
  * An extension of {@link JLabel} that contains some default behavior that not each client should have to implement.
  * 
@@ -40,23 +42,7 @@ public class MDLabel extends JLabel {
    * @see #setName(String)
    */
   public MDLabel(final String name, final Object text) {
-    super(toString(text));
+    super(Utils.toString(text));
     setName(name);
-  }
-
-  /**
-   * Returns the {@link #toString()} representation of the given object or an empty {@link String} if the object is
-   * <code>null</code>.
-   * 
-   * @since Date: Mar 3, 2012
-   * @param obj the object
-   * @return the {@link String} representation of the object or an empty {@link String} if the {@link Object} is
-   *         <code>null</code>.
-   */
-  private static String toString(final Object obj) {
-    if (obj == null) {
-      return "";
-    }
-    return obj.toString();
   }
 }
