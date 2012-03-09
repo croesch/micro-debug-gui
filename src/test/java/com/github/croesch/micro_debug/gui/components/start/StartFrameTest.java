@@ -47,36 +47,54 @@ public class StartFrameTest extends DefaultGUITestCase {
 
   private FrameFixture startFrame;
 
+  private final TestMic1Creator mic1Creator = new TestMic1Creator();
+
   @Override
   protected void setUpTestCase() throws IOException, ClassNotFoundException, InstantiationException,
                                 IllegalAccessException, UnsupportedLookAndFeelException {
+    cleanUpObjects();
     final StartFrame frame = GuiActionRunner.execute(new GuiQuery<StartFrame>() {
       @Override
       protected StartFrame executeInEDT() {
-        return new StartFrame();
+        return new StartFrame(StartFrameTest.this.mic1Creator);
       }
     });
+    setStartFrameAndShow(frame);
+  }
+
+  private void setStartFrameAndShow(final StartFrame frame) {
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     this.startFrame = new FrameFixture(robot(), frame);
     this.startFrame.show();
+    this.startFrame.requireVisible();
+    assertThat(this.mic1Creator.isWritten()).isFalse();
   }
 
   private void createStartFrame(final String micAsmPath, final String asmPath) {
-    this.startFrame.close();
+    cleanUpObjects();
     final StartFrame frame = GuiActionRunner.execute(new GuiQuery<StartFrame>() {
       @Override
       protected StartFrame executeInEDT() {
-        return new StartFrame(micAsmPath, asmPath);
+        return new StartFrame(micAsmPath, asmPath, StartFrameTest.this.mic1Creator);
       }
     });
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    this.startFrame = new FrameFixture(robot(), frame);
-    this.startFrame.show();
+    setStartFrameAndShow(frame);
+  }
+
+  private void cleanUpObjects() {
+    this.mic1Creator.reset();
+    closeStartFrame();
   }
 
   @Override
   protected void onTearDown() {
-    this.startFrame.close();
+    closeStartFrame();
+  }
+
+  private void closeStartFrame() {
+    if (this.startFrame != null && this.startFrame.component().isShowing() && this.startFrame.component().isVisible()) {
+      this.startFrame.close();
+    }
   }
 
   @Test
@@ -156,12 +174,72 @@ public class StartFrameTest extends DefaultGUITestCase {
     textBox.requireDisabled();
     textBox.requireNotEditable();
 
-    robot().click(textBox.component(), MouseButton.LEFT_BUTTON, 2);
+    robot().doubleClick(textBox.component());
     textBox.requireEnabled();
     textBox.requireEditable();
 
-    robot().click(textBox.component(), MouseButton.LEFT_BUTTON, 2);
+    robot().doubleClick(textBox.component());
     textBox.requireEnabled();
     textBox.requireEditable();
+  }
+
+  @Test
+  public void testOkayButton() throws Exception {
+    printlnMethodName();
+    assertThat(this.mic1Creator.isWritten()).isFalse();
+    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button("okay").click();
+    assertThat(this.mic1Creator.getMicroPath()).isEmpty();
+    assertThat(this.mic1Creator.getMacroPath()).isEmpty();
+    assertThat(this.mic1Creator.isWritten()).isTrue();
+    this.startFrame.requireNotVisible();
+
+    setUpTestCase();
+
+    this.startFrame.textBox("micro-assembler-file-path").enterText("/macro/path.txt");
+    this.startFrame.textBox("micro-assembler-file-path").deleteText();
+    this.startFrame.textBox("micro-assembler-file-path").enterText("/micro/path.txt");
+    this.startFrame.textBox("macro-assembler-file-path").enterText("/macro/path.txt");
+    assertThat(this.mic1Creator.isWritten()).isFalse();
+    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button("okay").click();
+    assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/micro/path.txt");
+    assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/macro/path.txt");
+    assertThat(this.mic1Creator.isWritten()).isTrue();
+    this.startFrame.requireNotVisible();
+
+    createStartFrame(null, null);
+
+    assertThat(this.mic1Creator.isWritten()).isFalse();
+    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button("okay").click();
+    assertThat(this.mic1Creator.getMicroPath()).isEmpty();
+    assertThat(this.mic1Creator.getMacroPath()).isEmpty();
+    assertThat(this.mic1Creator.isWritten()).isTrue();
+    this.startFrame.requireNotVisible();
+
+    createStartFrame("/some/path/to/there.txt", "/some/path/to/here.txt");
+
+    assertThat(this.mic1Creator.isWritten()).isFalse();
+    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button("okay").click();
+    assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
+    assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/here.txt");
+    assertThat(this.mic1Creator.isWritten()).isTrue();
+    this.startFrame.requireNotVisible();
+
+    createStartFrame("/some/path/to/there.txt", "/some/path/to/here.txt");
+
+    robot().doubleClick(this.startFrame.textBox("macro-assembler-file-path").component());
+    this.startFrame.textBox("macro-assembler-file-path").deleteText();
+    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.textBox("macro-assembler-file-path").enterText("/some/path/to/there.txt");
+    assertThat(this.mic1Creator.isWritten()).isFalse();
+    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button("okay").click();
+    assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
+    assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/there.txt");
+    assertThat(this.mic1Creator.isWritten()).isTrue();
+    this.startFrame.requireNotVisible();
   }
 }

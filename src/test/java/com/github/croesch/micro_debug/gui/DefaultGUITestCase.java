@@ -56,6 +56,8 @@ public class DefaultGUITestCase extends DefaultTestCase {
    */
   protected final void setUpRobot() {
     this.robot = BasicRobot.robotWithNewAwtHierarchy();
+    this.robot.settings().delayBetweenEvents(50);
+    this.robot.settings().eventPostingDelay(50);
   }
 
   /**

@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 
 import com.github.croesch.micro_debug.commons.Utils;
@@ -43,6 +44,19 @@ public class MDButton extends JButton {
    */
   public MDButton(final String name, final Object text) {
     super(Utils.toString(text));
+    setName(name);
+  }
+
+  /**
+   * Constructs the button with the given name and the given action.
+   * 
+   * @since Date: Mar 9, 2012
+   * @param name the name of the component to set via {@link #setName(String)}
+   * @param action the {@link Action} for this button
+   * @see #setName(String)
+   */
+  public MDButton(final String name, final Action action) {
+    super(action);
     setName(name);
   }
 }

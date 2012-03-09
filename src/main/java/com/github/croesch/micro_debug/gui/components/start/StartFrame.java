@@ -20,27 +20,31 @@ package com.github.croesch.micro_debug.gui.components.start;
 
 import java.awt.Dimension;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.actions.Mic1CreatingAction;
+import com.github.croesch.micro_debug.gui.actions.api.IBinaryFilePathProvider;
+import com.github.croesch.micro_debug.gui.actions.api.IMic1Creator;
 import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.listener.DoubleClickActivatingListener;
+import com.github.croesch.micro_debug.gui.listener.WindowDisposer;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
-import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Frame to select binary files to create a {@link Mic1} instance.
+ * Frame to select binary files to create a {@link com.github.croesch.micro_debug.mic1.Mic1} instance.
  * 
  * @author croesch
  * @since Date: Mar 9, 2012
  */
-final class StartFrame extends SizedFrame {
+final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -2795433471888532957L;
@@ -57,13 +61,19 @@ final class StartFrame extends SizedFrame {
   /** the text field that contains the path to the binary micro assembler file */
   private final MDTextField microPathField = new MDTextField("micro-assembler-file-path");
 
+  /** the object that is able to create the {@link com.github.croesch.micro_debug.mic1.Mic1} */
+  private final IMic1Creator mic1Creator;
+
   /**
-   * Constructs a frame to select the binary files for creating a {@link Mic1}.
+   * Constructs a frame to select the binary files for creating a {@link com.github.croesch.micro_debug.mic1.Mic1}.
    * 
    * @since Date: Mar 9, 2012
+   * @param creator the {@link IMic1Creator} that should receive the file paths entered via this frame.
    */
-  public StartFrame() {
+  public StartFrame(final IMic1Creator creator) {
     super(GuiText.GUI_START_TITLE.text(InternalSettings.NAME), new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+
+    this.mic1Creator = creator;
 
     final String space = "20lp";
     getContentPane().setLayout(new MigLayout("wrap 2, fill", "[grow,fill][fill]", "[grow][][]" + space + "[][]" + space
@@ -75,15 +85,16 @@ final class StartFrame extends SizedFrame {
   }
 
   /**
-   * Constructs a frame to select the binary files for creating a {@link Mic1}. The given paths will be set to the
-   * specific text field.
+   * Constructs a frame to select the binary files for creating a {@link com.github.croesch.micro_debug.mic1.Mic1}. The
+   * given paths will be set to the specific text field.
    * 
    * @since Date: Mar 9, 2012
    * @param microAssemblerPath preset value for the path of the binary micro assembler file, may be <code>null</code>
    * @param assemblerPath preset value for the path of the binary assembler file, may be <code>null</code>
+   * @param creator the {@link IMic1Creator} that should receive the file paths entered via this frame.
    */
-  public StartFrame(final String microAssemblerPath, final String assemblerPath) {
-    this();
+  public StartFrame(final String microAssemblerPath, final String assemblerPath, final IMic1Creator creator) {
+    this(creator);
     setTextToTextFieldAndEnableIt(this.microPathField, microAssemblerPath);
     setTextToTextFieldAndEnableIt(this.macroPathField, assemblerPath);
   }
@@ -111,7 +122,9 @@ final class StartFrame extends SizedFrame {
    * @since Date: Mar 9, 2012
    */
   private void addButtons() {
-    final MDButton btn = new MDButton("okay", GuiText.GUI_START_OKAY);
+    final Action okayAction = new Mic1CreatingAction(this.mic1Creator, this, GuiText.GUI_START_OKAY);
+    final MDButton btn = new MDButton("okay", okayAction);
+    btn.addActionListener(new WindowDisposer(this));
     add(btn, "skip 3");
   }
 
@@ -154,8 +167,28 @@ final class StartFrame extends SizedFrame {
    * @param args not needed
    */
   public static void main(final String[] args) {
-    final StartFrame frame = new StartFrame("asd", "asdasd");
+    final StartFrame frame = new StartFrame("asd", "asdasd", null);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
+  }
+
+  /**
+   * Returns the file path to the binary macro assembler file.
+   * 
+   * @since Date: Mar 9, 2012
+   * @return the file path to the binary macro assembler file.
+   */
+  public String getMacroAssemblerFilePath() {
+    return this.macroPathField.getText();
+  }
+
+  /**
+   * Returns the file path to the binary micro assembler file.
+   * 
+   * @since Date: Mar 9, 2012
+   * @return the file path to the binary micro assembler file.
+   */
+  public String getMicroAssemblerFilePath() {
+    return this.microPathField.getText();
   }
 }
