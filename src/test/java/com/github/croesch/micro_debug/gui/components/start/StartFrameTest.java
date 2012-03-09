@@ -133,6 +133,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.button("micro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("macro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("okay").requireText(GuiText.GUI_START_OKAY.text());
+    this.startFrame.button("okay").requireDisabled();
   }
 
   @Test
@@ -141,22 +142,27 @@ public class StartFrameTest extends DefaultGUITestCase {
     createStartFrame(null, null);
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.button("okay").requireDisabled();
 
     createStartFrame(" \t\n   \t  ", "");
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.button("okay").requireDisabled();
 
     createStartFrame(" path to nirvana ", "");
     assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.button("okay").requireDisabled();
 
     createStartFrame(null, " path to nirvana ");
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "path to nirvana");
+    this.startFrame.button("okay").requireDisabled();
 
     createStartFrame(" path to nirvana ", "something");
     assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
     assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "something");
+    this.startFrame.button("okay").requireEnabled();
   }
 
   private void assertNotEditableAndContainsText(final JTextComponentFixture textBox, final String text) {
@@ -188,18 +194,9 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testOkayButton() throws Exception {
     printlnMethodName();
-    assertThat(this.mic1Creator.isWritten()).isFalse();
-    this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
-    assertThat(this.mic1Creator.getMicroPath()).isEmpty();
-    assertThat(this.mic1Creator.getMacroPath()).isEmpty();
-    assertThat(this.mic1Creator.isWritten()).isTrue();
-    this.startFrame.requireNotVisible();
-
-    setUpTestCase();
-
     this.startFrame.textBox("micro-assembler-file-path").enterText("/macro/path.txt");
     this.startFrame.textBox("micro-assembler-file-path").deleteText();
+    this.startFrame.button("okay").requireDisabled();
     this.startFrame.textBox("micro-assembler-file-path").enterText("/micro/path.txt");
     this.startFrame.textBox("macro-assembler-file-path").enterText("/macro/path.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
@@ -207,16 +204,6 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.button("okay").click();
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/micro/path.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/macro/path.txt");
-    assertThat(this.mic1Creator.isWritten()).isTrue();
-    this.startFrame.requireNotVisible();
-
-    createStartFrame(null, null);
-
-    assertThat(this.mic1Creator.isWritten()).isFalse();
-    this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
-    assertThat(this.mic1Creator.getMicroPath()).isEmpty();
-    assertThat(this.mic1Creator.getMacroPath()).isEmpty();
     assertThat(this.mic1Creator.isWritten()).isTrue();
     this.startFrame.requireNotVisible();
 
@@ -234,6 +221,7 @@ public class StartFrameTest extends DefaultGUITestCase {
 
     robot().doubleClick(this.startFrame.textBox("macro-assembler-file-path").component());
     this.startFrame.textBox("macro-assembler-file-path").deleteText();
+    this.startFrame.button("okay").requireDisabled();
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
     this.startFrame.textBox("macro-assembler-file-path").enterText("/some/path/to/there.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
@@ -253,6 +241,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     fileChooser.cancel();
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.button("okay").requireDisabled();
 
     this.startFrame.button("micro-assembler-file-browse").click();
     fileChooser = new JFileChooserFixture(robot());
@@ -262,8 +251,8 @@ public class StartFrameTest extends DefaultGUITestCase {
       .requireText(System.getProperty("user.home") + "/anything.mic1");
     this.startFrame.textBox("micro-assembler-file-path").requireEditable();
     this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
-
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    this.startFrame.button("okay").requireDisabled();
 
     this.startFrame.button("macro-assembler-file-browse").click();
     fileChooser = new JFileChooserFixture(robot());
@@ -277,6 +266,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
     this.startFrame.textBox("macro-assembler-file-path").requireEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
+    this.startFrame.button("okay").requireEnabled();
 
     this.startFrame.button("micro-assembler-file-browse").click();
     fileChooser = new JFileChooserFixture(robot());
@@ -289,6 +279,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
     this.startFrame.textBox("macro-assembler-file-path").requireEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
+    this.startFrame.button("okay").requireEnabled();
 
     createStartFrame("/path/one", "/path/two");
     this.startFrame.textBox("micro-assembler-file-path").requireText("/path/one");
@@ -297,6 +288,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
     this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
+    this.startFrame.button("okay").requireEnabled();
 
     this.startFrame.button("micro-assembler-file-browse").click();
     fileChooser = new JFileChooserFixture(robot());
@@ -309,5 +301,6 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
     this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
+    this.startFrame.button("okay").requireEnabled();
   }
 }

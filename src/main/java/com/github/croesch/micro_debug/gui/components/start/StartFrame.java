@@ -125,6 +125,7 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   private void addButtons() {
     final Action okayAction = new Mic1CreatingAction(this.mic1Creator, this, GuiText.GUI_START_OKAY);
     final MDButton btn = new MDButton("okay", okayAction);
+    new TextFieldsDocumentListener(this.microPathField, this.macroPathField, okayAction);
     btn.addActionListener(new WindowDisposer(this));
     add(btn, "skip 3");
   }
