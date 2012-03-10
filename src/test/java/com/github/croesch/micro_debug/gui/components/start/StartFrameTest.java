@@ -104,6 +104,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     printlnMethodName();
     this.startFrame.requireSize(new Dimension(485, 300));
     assertThat(this.startFrame.component().isResizable()).isFalse();
+    assertThat(this.startFrame.component().getName()).isEqualTo("start-frame");
     assertThat(this.startFrame.component().getTitle()).isEqualTo(GuiText.GUI_START_TITLE.text(InternalSettings.NAME));
   }
 

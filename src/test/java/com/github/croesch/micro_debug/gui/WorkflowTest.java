@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.start;
+package com.github.croesch.micro_debug.gui;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -24,73 +24,45 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiTask;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.FileFormatException;
-import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.MainFrame;
+import com.github.croesch.micro_debug.gui.components.start.Mic1Starter;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Provides test cases for {@link Mic1Starter}.
+ * Provides some integration tests, real possible workflows.
  * 
  * @author croesch
- * @since Date: Mar 10, 2012
+ * @since Date: Mar 11, 2012
  */
-public class Mic1StarterTest extends DefaultGUITestCase {
+public class WorkflowTest extends DefaultGUITestCase {
 
   @Test
-  public void testCreate() throws FileFormatException, FileNotFoundException {
+  public void testWorkflow() throws FileFormatException, FileNotFoundException, InterruptedException {
     printlnMethodName();
-    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
-    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
 
-    GuiActionRunner.execute(new GuiTask() {
-      @Override
-      protected void executeInEDT() throws Throwable {
-        new Mic1Starter().create(micFile, macFile);
-      }
-    });
-
-    final FrameFixture frame = WindowFinder.findFrame(MainFrame.class).using(robot());
-    frame.requireVisible();
-    final Mic1 expected = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
-    assertThat(frame.targetCastedTo(MainFrame.class).getProcessor()).isEqualTo(expected);
-    frame.close();
-  }
-
-  @Test
-  public void testStart() throws FileFormatException, FileNotFoundException {
-    printlnMethodName();
     final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
 
     new Mic1Starter().start();
 
-    FrameFixture frame = WindowFinder.findFrame(StartFrame.class).using(robot());
+    FrameFixture frame = WindowFinder.findFrame("start-frame").using(robot());
     frame.requireVisible();
     frame.button("okay").requireDisabled();
 
-    frame.textBox("micro-assembler-file-path").enterText("abcdef");
-    frame.button("okay").requireDisabled();
-    frame.button("macro-assembler-file-browse").click();
+    frame.textBox("micro-assembler-file-path").enterText("this will hopefully replaced :-)");
+    frame.button("micro-assembler-file-browse").click();
     final JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
-    fileChooser.selectFile(new File("some.ijvm"));
+    fileChooser.selectFile(new File(micFile));
     fileChooser.approve();
-
-    frame.button("okay").click();
-
-    frame = WindowFinder.findFrame(StartFrame.class).using(robot());
-    frame.requireVisible();
-    frame.button("okay").requireDisabled();
-
-    frame.textBox("micro-assembler-file-path").enterText(micFile);
+    frame.textBox("micro-assembler-file-path").requireText(micFile);
     frame.textBox("macro-assembler-file-path").enterText(macFile);
+    frame.textBox("macro-assembler-file-path").requireText(macFile);
 
     frame.button("okay").click();
 
