@@ -18,6 +18,9 @@
  */
 package com.github.croesch.micro_debug.gui.components.start;
 
+import static org.fest.assertions.Assertions.assertThat;
+
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -29,6 +32,7 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.error.FileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.MainFrame;
+import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
  * Provides test cases for {@link Mic1Starter}.
@@ -53,10 +57,8 @@ public class Mic1StarterTest extends DefaultGUITestCase {
 
     final FrameFixture frame = WindowFinder.findFrame(MainFrame.class).using(robot());
     frame.requireVisible();
-    // TODO
-    //    final Mic1 expected = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
-    //    assertThat(frame.targetCastedTo(MainFrame.class).getProcessor()).isEqualTo(expected);
+    final Mic1 expected = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+    assertThat(frame.targetCastedTo(MainFrame.class).getProcessor()).isEqualTo(expected);
     frame.close();
   }
-
 }
