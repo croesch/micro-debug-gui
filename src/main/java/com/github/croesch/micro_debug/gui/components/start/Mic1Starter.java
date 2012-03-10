@@ -18,6 +18,8 @@
  */
 package com.github.croesch.micro_debug.gui.components.start;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
@@ -25,6 +27,8 @@ import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.actions.api.IMic1Creator;
+import com.github.croesch.micro_debug.gui.components.MainFrame;
+import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
  * Helper for starting the application. Opens the {@link StartFrame} until it returns valid data and creates the
@@ -44,8 +48,41 @@ public final class Mic1Starter implements IMic1Creator {
    * @param macroFilePath the file path to the binary macro assembler file.
    */
   public void create(final String microFilePath, final String macroFilePath) {
-    // TODO Auto-generated method stub
+    try {
+      createMainFrame(microFilePath, macroFilePath);
+    } catch (final IOException e) {
+      Utils.logThrownThrowable(e);
+      // TODO pass strings to frame
+      final JFrame frame = new StartFrame(this);
+      showFrame(frame);
+    }
+  }
 
+  /**
+   * Creates the {@link Mic1} and with that the {@link MainFrame} that is the main part of the application.
+   * 
+   * @since Date: Mar 10, 2012
+   * @param microFilePath the file path to the binary micro assembler file.
+   * @param macroFilePath the file path to the binary macro assembler file.
+   * @throws IOException if something went wrong reading the files.
+   */
+  private void createMainFrame(final String microFilePath, final String macroFilePath) throws IOException {
+    final FileInputStream micFis = new FileInputStream(microFilePath);
+    final FileInputStream macFis = new FileInputStream(macroFilePath);
+
+    final JFrame frame = new MainFrame(new Mic1(micFis, macFis));
+    showFrame(frame);
+  }
+
+  /**
+   * Sets the given frame visible with default close operation {@link javax.swing.WindowConstants#DISPOSE_ON_CLOSE}
+   * 
+   * @since Date: Mar 10, 2012
+   * @param frame the frame to show
+   */
+  private void showFrame(final JFrame frame) {
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    frame.setVisible(true);
   }
 
   /**
@@ -58,8 +95,7 @@ public final class Mic1Starter implements IMic1Creator {
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
           final JFrame frame = new StartFrame(Mic1Starter.this);
-          frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-          frame.setVisible(true);
+          showFrame(frame);
         }
       });
     } catch (final InterruptedException e) {
