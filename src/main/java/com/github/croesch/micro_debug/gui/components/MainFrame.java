@@ -38,7 +38,7 @@ public final class MainFrame extends SizedFrame {
   private static final long serialVersionUID = 888748757383386602L;
 
   /** the processor to debug */
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs the main frame of the application to debug the given processor.
