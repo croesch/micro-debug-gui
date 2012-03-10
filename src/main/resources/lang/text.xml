@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Copyright (C) 2011-2012 Christian Roesch -->
+
+<!-- This file is part of micro-debug-gui. -->
+
+<!-- micro-debug-gui is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+
+<!-- micro-debug-gui is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
+<!-- GNU General Public License for more details. -->
+
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with micro-debug-gui. If not, see <http://www.gnu.org/licenses/>. -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- You need to restart the application to see an effect of your changes. -->
+
+<properties>
+
+	<entry key="version">${project.name}: Version {0}</entry>
+	
+	<entry key="border">----------------------------------------</entry>
+	
+	<entry key="greeting">MicroDebug - Copyright (C) 2011-2012 Christian Rösch AND 1999 Prentice-Hall, Inc.</entry>
+	<entry key="welcome">Welcome! Please type 'help' for a list of valid commands</entry>
+
+	<entry key="input-debugger">micro-debug> </entry>
+	<entry key="input-mic1">mic1> </entry>
+
+	<entry key="ticks">Processor executed {0} ticks.</entry>
+	
+	<entry key="register-value">Register {0}: {1}</entry>
+	<entry key="local-variable-value">Local variable {0}: {1}</entry>
+	<entry key="executed-code">Executed: {0}</entry>
+
+	<entry key="memory-content">Value of memory at {0} = {1}</entry>
+	<entry key="stack-content">Stack value #{0} [{1}]: {2}</entry>
+	<entry key="stack-empty">Stack doesn't contain any elements, nothing to display.</entry>
+
+	<entry key="macro-code-line">{0}: [{1}] {2} {3}</entry>
+	<entry key="micro-code-line">{0}: {1}</entry>
+	
+	<entry key="breakpoint-register">Breakpoint #{0}: when Register {1} == {2}</entry>
+	<entry key="breakpoint-macro">Breakpoint #{0}: at macro code line {1}</entry>
+	<entry key="breakpoint-micro">Breakpoint #{0}: at micro code line {1}</entry>
+
+	<entry key="unknown-ijvm-instruction">---</entry>
+
+	<entry key="error">ERROR: {0}</entry>
+
+	<entry key="invalid-mem-addr">'{0}' is not a valid memory address</entry>
+	<entry key="invalid-number">'{0}' is not a valid number</entry>
+	<entry key="invalid-register">'{0}' is not a valid register</entry>
+
+	<entry key="unknown-argument">Unknown argument: {0}</entry>
+	<entry key="unknown-instruction">Unknown instruction: {0}</entry>
+	<entry key="argument-with-wrong-param-number">Argument with wrong number of parameters: {0}</entry>
+
+	<entry key="wrong-param-number">Wrong number of parameters, expected {0} but got {1}</entry>
+
+	<entry key="wrong-format-mic1">wrong format of .mic1-file, did you assemble it? See log for details.</entry>
+	<entry key="wrong-format-ijvm">wrong format of .ijvm-file, did you assemble it? See log for details.</entry>
+
+	<entry key="file-not-found">file not found {0}</entry>
+
+	<entry key="missing-ijvm-file">argument for .ijvm-file is missing</entry>
+	<entry key="missing-mic1-file">argument for .mic1-file is missing</entry>
+	<entry key="try-help">Try '--help' for more information.</entry>
+
+</properties>
