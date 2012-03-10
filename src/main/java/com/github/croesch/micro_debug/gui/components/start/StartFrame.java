@@ -72,6 +72,7 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    */
   public StartFrame(final IMic1Creator creator) {
     super(GuiText.GUI_START_TITLE.text(InternalSettings.NAME), new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+    setName("start-frame");
 
     this.mic1Creator = creator;
 

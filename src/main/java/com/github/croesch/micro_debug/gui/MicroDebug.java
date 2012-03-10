@@ -27,6 +27,7 @@ import com.github.croesch.micro_debug.argument.AArgument;
 import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.gui.argument.Help;
 import com.github.croesch.micro_debug.gui.argument.Version;
+import com.github.croesch.micro_debug.gui.components.start.Mic1Starter;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
@@ -62,8 +63,10 @@ public final class MicroDebug {
     createListOfPossibleArguments();
 
     // handle the arguments
-    //    final boolean startApplication = 
-    executeTheArguments(AArgument.createArgumentList(args));
+    final boolean startApplication = executeTheArguments(AArgument.createArgumentList(args));
+    if (startApplication) {
+      new Mic1Starter().start();
+    }
   }
 
   /**

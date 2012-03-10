@@ -22,6 +22,9 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 
+import org.fest.swing.exception.WaitTimedOutError;
+import org.fest.swing.finder.WindowFinder;
+import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
@@ -34,7 +37,7 @@ import com.github.croesch.micro_debug.i18n.Text;
  * @author croesch
  * @since Date: Feb 25, 2012
  */
-public class MicroDebugTest extends DefaultTestCase {
+public class MicroDebugTest extends DefaultGUITestCase {
 
   private final String GREETING = GuiText.GREETING.text(InternalSettings.NAME) + getLineSeparator() + GuiText.BORDER
                                   + getLineSeparator();
@@ -65,5 +68,38 @@ public class MicroDebugTest extends DefaultTestCase {
 
     MicroDebug.main(new String[] { "--help" });
     assertThat(out.toString()).isEqualTo(this.GREETING + getHelpFileText());
+  }
+
+  @Test
+  public void testStart() {
+    printlnMethodName();
+
+    MicroDebug.main(new String[] {});
+    FrameFixture frame = WindowFinder.findFrame("start-frame").using(robot());
+    frame.requireVisible();
+    frame.close();
+
+    MicroDebug.main(new String[] {});
+    frame = WindowFinder.findFrame("start-frame").using(robot());
+    frame.requireVisible();
+    frame.close();
+  }
+
+  @Test(expected = WaitTimedOutError.class)
+  public void testVersionDoesntStart() {
+    MicroDebug.main(new String[] { "-v" });
+    WindowFinder.findFrame("start-frame").withTimeout(1000).using(robot());
+  }
+
+  @Test(expected = WaitTimedOutError.class)
+  public void testHelpDoesntStart() {
+    MicroDebug.main(new String[] { "-h" });
+    WindowFinder.findFrame("start-frame").withTimeout(1000).using(robot());
+  }
+
+  @Test(expected = WaitTimedOutError.class)
+  public void testUnknownDoesntStart() {
+    MicroDebug.main(new String[] { "-u" });
+    WindowFinder.findFrame("start-frame").withTimeout(1000).using(robot());
   }
 }

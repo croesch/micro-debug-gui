@@ -25,8 +25,7 @@
 
 	<entry key="version">{0}: Version {1}</entry>
 	<entry key="border">----------------------------------------</entry>
-	<entry key="greeting">{0} - Copyright (C) 2011-2012 Christian
-		Rösch (christianroesch@gmx.net)</entry>
+	<entry key="greeting">{0} - Copyright (C) 2011-2012 Christian Rösch (christianroesch@gmx.net)</entry>
 		
 	<entry key="gui-command-browse">Browse...</entry>
 
