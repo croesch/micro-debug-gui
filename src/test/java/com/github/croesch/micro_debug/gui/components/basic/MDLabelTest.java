@@ -20,8 +20,11 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JLabelFixture;
 import org.junit.Test;
 
@@ -62,5 +65,35 @@ public class MDLabelTest extends DefaultGUITestCase {
     labelFixture = new JLabelFixture(robot(), getLabel("", null));
     labelFixture.requireText("");
     assertThat(labelFixture.component().getName()).isEmpty();
+  }
+
+  @Test
+  public void testInvert() {
+    printlnMethodName();
+    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", "text"));
+    final Color normalColor = labelFixture.background().target();
+    final Color invertedColor = Color.white;
+    labelFixture.background().requireEqualTo(normalColor);
+
+    invertColor(labelFixture);
+    labelFixture.background().requireEqualTo(invertedColor);
+
+    invertColor(labelFixture);
+    labelFixture.background().requireEqualTo(normalColor);
+
+    invertColor(labelFixture);
+    labelFixture.background().requireEqualTo(invertedColor);
+
+    invertColor(labelFixture);
+    labelFixture.background().requireEqualTo(normalColor);
+  }
+
+  private void invertColor(final JLabelFixture labelFixture) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        labelFixture.targetCastedTo(MDLabel.class).invert();
+      }
+    });
   }
 }
