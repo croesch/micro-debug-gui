@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.basic;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import com.github.croesch.micro_debug.commons.Utils;
 
@@ -36,11 +37,10 @@ public class MDLabel extends JLabel {
   private static final long serialVersionUID = -3518553239851224436L;
 
   /**
-   * TODO move color definition to configuration<br>
    * Initially the background color for inverted labels, when inverted once this contains the background color,
    * currently not visible. For instance, if the label is currently inverted this contains the normal background color.
    */
-  private Color otherColor = Color.WHITE;
+  private Color otherColor = UIManager.getColor("Label.background").darker();
 
   /**
    * Constructs the label with the given name and the given text.

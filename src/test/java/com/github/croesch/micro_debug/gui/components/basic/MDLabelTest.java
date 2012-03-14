@@ -22,6 +22,8 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Color;
 
+import javax.swing.UIManager;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -72,7 +74,7 @@ public class MDLabelTest extends DefaultGUITestCase {
     printlnMethodName();
     final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", "text"));
     final Color normalColor = labelFixture.background().target();
-    final Color invertedColor = Color.white;
+    final Color invertedColor = UIManager.getColor("Label.background").darker();
     labelFixture.background().requireEqualTo(normalColor);
 
     invertColor(labelFixture);
