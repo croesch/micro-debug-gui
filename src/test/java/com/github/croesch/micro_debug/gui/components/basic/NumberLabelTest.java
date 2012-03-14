@@ -46,6 +46,68 @@ public class NumberLabelTest extends DefaultGUITestCase {
   }
 
   @Test
+  public void testLabel_NumericalVisualisations() {
+    printlnMethodName();
+    JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", "{0}"));
+    labelFixture.requireText("0");
+
+    setDecimal(labelFixture);
+    labelFixture.requireText("0");
+
+    setHexadecimal(labelFixture);
+    labelFixture.requireText("0x0");
+
+    setBinary(labelFixture);
+    labelFixture.requireText("0000 0000 0000 0000 0000 0000 0000 0000");
+
+    setNumber(labelFixture, 24);
+    labelFixture.requireText("0000 0000 0000 0000 0000 0000 0001 1000");
+
+    setDecimal(labelFixture);
+    labelFixture.requireText("24");
+
+    setHexadecimal(labelFixture);
+    labelFixture.requireText("0x18");
+
+    setNumber(labelFixture, Integer.MIN_VALUE);
+    labelFixture.requireText("0x80000000");
+
+    setBinary(labelFixture);
+    labelFixture.requireText("1000 0000 0000 0000 0000 0000 0000 0000");
+
+    setDecimal(labelFixture);
+    labelFixture.requireText(String.valueOf(Integer.MIN_VALUE));
+
+    setNumber(labelFixture, Integer.MAX_VALUE);
+    labelFixture.requireText(String.valueOf(Integer.MAX_VALUE));
+
+    setHexadecimal(labelFixture);
+    labelFixture.requireText("0x7FFFFFFF");
+
+    setBinary(labelFixture);
+    labelFixture.requireText("0111 1111 1111 1111 1111 1111 1111 1111");
+
+    setNumber(labelFixture, -1);
+    labelFixture.requireText("1111 1111 1111 1111 1111 1111 1111 1111");
+
+    setDecimal(labelFixture);
+    labelFixture.requireText("-1");
+
+    setHexadecimal(labelFixture);
+    labelFixture.requireText("0xFFFFFFFF");
+
+    labelFixture = new JLabelFixture(robot(), getLabel("label", "-->{0}<--"));
+    setNumber(labelFixture, 34);
+    labelFixture.requireText("-->34<--");
+
+    setHexadecimal(labelFixture);
+    labelFixture.requireText("-->0x22<--");
+
+    setBinary(labelFixture);
+    labelFixture.requireText("-->0000 0000 0000 0000 0000 0000 0010 0010<--");
+  }
+
+  @Test
   public void testLabel() {
     printlnMethodName();
     JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", "{0}"));
@@ -159,6 +221,33 @@ public class NumberLabelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         labelFixture.targetCastedTo(NumberLabel.class).setNumber(num);
+      }
+    });
+  }
+
+  private void setDecimal(final JLabelFixture labelFixture) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        labelFixture.targetCastedTo(NumberLabel.class).viewDecimal();
+      }
+    });
+  }
+
+  private void setHexadecimal(final JLabelFixture labelFixture) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        labelFixture.targetCastedTo(NumberLabel.class).viewHexadecimal();
+      }
+    });
+  }
+
+  private void setBinary(final JLabelFixture labelFixture) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        labelFixture.targetCastedTo(NumberLabel.class).viewBinary();
       }
     });
   }
