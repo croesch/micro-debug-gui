@@ -24,10 +24,10 @@ import java.io.PrintStream;
 
 import javax.swing.SwingUtilities;
 
-import com.github.croesch.micro_debug.commons.Printer;
+import com.github.croesch.micro_debug.mic1.io.Output;
 
 /**
- * Text area that can be used to view the output of the {@link Printer}.
+ * Text area that can be used to view the output of the {@link Output}.
  * 
  * @author croesch
  * @since Date: Mar 14, 2012
@@ -41,7 +41,7 @@ public class OutputTextArea extends MDTextArea {
   private final transient PrintStream stream;
 
   /**
-   * Constructs a new text area, without activating it. To see the output of the {@link Printer} see {@link #activate()}
+   * Constructs a new text area, without activating it. To see the output of the {@link Output} see {@link #activate()}
    * .
    * 
    * @since Date: Mar 14, 2012
@@ -65,12 +65,12 @@ public class OutputTextArea extends MDTextArea {
   }
 
   /**
-   * Informs the {@link Printer} to print its output onto this text area.
+   * Informs the {@link Output} to print its output onto this text area.
    * 
    * @since Date: Mar 14, 2012
    */
   public final void activate() {
-    Printer.setPrintStream(this.stream);
+    Output.setOut(this.stream);
   }
 
   /**

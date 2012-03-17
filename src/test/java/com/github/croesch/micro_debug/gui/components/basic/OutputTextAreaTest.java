@@ -30,8 +30,8 @@ import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.Test;
 
-import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.mic1.io.Output;
 
 /**
  * Provides some test cases for {@link OutputTextArea}.
@@ -58,31 +58,41 @@ public class OutputTextAreaTest extends DefaultGUITestCase {
     taFixture.requireEmpty();
     assertThat(taFixture.component().getName()).isEqualTo("ta");
 
-    Printer.println("not printed line ...");
+    for (final byte b : "not printed line ...\n".getBytes()) {
+      Output.print(b);
+    }
     taFixture.requireEmpty();
-    assertThat(out.toString()).isEqualTo("not printed line ..." + getLineSeparator());
-    out.reset();
+    assertThat(micOut.toString()).isEqualTo("not printed line ...\n");
+    micOut.reset();
 
     activate(taFixture);
 
-    Printer.println("printed line ...");
-    taFixture.requireText("printed line ..." + getLineSeparator());
-    assertThat(out.toString()).isEmpty();
+    for (final byte b : "printed line ...\n".getBytes()) {
+      Output.print(b);
+    }
+    taFixture.requireText("printed line ...\n");
+    assertThat(micOut.toString()).isEmpty();
 
     reset(taFixture);
     taFixture.requireEmpty();
 
     SwingUtilities.invokeAndWait(new Runnable() {
       public void run() {
-        Printer.println("printed another line ...");
+        for (final byte b : "printed another line ...\n".getBytes()) {
+          Output.print(b);
+        }
       }
     });
-    taFixture.requireText("printed another line ..." + getLineSeparator());
-    assertThat(out.toString()).isEmpty();
+    taFixture.requireText("printed another line ...\n");
+    assertThat(micOut.toString()).isEmpty();
 
-    Printer.println("printed line ...");
-    taFixture.requireText("printed another line ..." + getLineSeparator() + "printed line ..." + getLineSeparator());
-    assertThat(out.toString()).isEmpty();
+    for (final byte b : "printed line ...".getBytes()) {
+      Output.print(b);
+    }
+    taFixture.requireText("printed another line ...\n");
+    Output.flush();
+    taFixture.requireText("printed another line ...\nprinted line ...");
+    assertThat(micOut.toString()).isEmpty();
   }
 
   private void activate(final JTextComponentFixture taFixture) {
