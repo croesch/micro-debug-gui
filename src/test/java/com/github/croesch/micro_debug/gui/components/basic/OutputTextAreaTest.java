@@ -67,10 +67,10 @@ public class OutputTextAreaTest extends DefaultGUITestCase {
 
     activate(taFixture);
 
-    for (final byte b : "printed line ...\n".getBytes()) {
+    for (final byte b : "printed line ...".getBytes()) {
       Output.print(b);
     }
-    taFixture.requireText("printed line ...\n");
+    taFixture.requireText("printed line ...");
     assertThat(micOut.toString()).isEmpty();
 
     reset(taFixture);
@@ -89,7 +89,7 @@ public class OutputTextAreaTest extends DefaultGUITestCase {
     for (final byte b : "printed line ...".getBytes()) {
       Output.print(b);
     }
-    taFixture.requireText("printed another line ...\n");
+    taFixture.requireText("printed another line ...\nprinted line ...");
     Output.flush();
     taFixture.requireText("printed another line ...\nprinted line ...");
     assertThat(micOut.toString()).isEmpty();

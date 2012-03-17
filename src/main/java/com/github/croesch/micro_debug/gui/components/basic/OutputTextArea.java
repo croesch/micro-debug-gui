@@ -18,12 +18,6 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-
-import javax.swing.SwingUtilities;
-
 import com.github.croesch.micro_debug.mic1.io.Output;
 
 /**
@@ -32,13 +26,10 @@ import com.github.croesch.micro_debug.mic1.io.Output;
  * @author croesch
  * @since Date: Mar 14, 2012
  */
-public class OutputTextArea extends MDTextArea {
+public class OutputTextArea extends AStreamTextArea {
 
   /** generated serial version UID */
-  private static final long serialVersionUID = -1970161406114775052L;
-
-  /** the {@link PrintStream} that is able to append text to this text area */
-  private final transient PrintStream stream;
+  private static final long serialVersionUID = -7528655002913929267L;
 
   /**
    * Constructs a new text area, without activating it. To see the output of the {@link Output} see {@link #activate()}
@@ -50,35 +41,11 @@ public class OutputTextArea extends MDTextArea {
    */
   public OutputTextArea(final String name) {
     super(name);
-    setEditable(false);
-
-    this.stream = new PrintStream(new OutputStream() {
-      @Override
-      public void write(final int b) throws IOException {
-        SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            OutputTextArea.this.append(String.valueOf((char) b));
-          }
-        });
-      }
-    });
   }
 
-  /**
-   * Informs the {@link Output} to print its output onto this text area.
-   * 
-   * @since Date: Mar 14, 2012
-   */
+  @Override
   public final void activate() {
-    Output.setOut(this.stream);
-  }
-
-  /**
-   * Deletes the text of this text area.
-   * 
-   * @since Date: Mar 14, 2012
-   */
-  public final void reset() {
-    setText(null);
+    Output.setBuffered(false);
+    Output.setOut(getStream());
   }
 }
