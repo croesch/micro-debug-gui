@@ -89,7 +89,24 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     frame.requireVisible();
     frame.button("okay").requireDisabled();
 
+    frame.textBox("micro-assembler-file-path").requireEmpty();
+    frame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
+    frame.textBox("macro-assembler-file-path").requireDisabled();
+    frame.textBox("macro-assembler-file-path").requireNotEditable();
+
     frame.textBox("micro-assembler-file-path").enterText(micFile);
+
+    frame.button("okay").click();
+
+    frame = WindowFinder.findFrame(StartFrame.class).using(robot());
+    frame.requireVisible();
+    frame.button("okay").requireDisabled();
+
+    frame.textBox("micro-assembler-file-path").requireText(micFile);
+    frame.textBox("micro-assembler-file-path").requireDisabled();
+    frame.textBox("micro-assembler-file-path").requireNotEditable();
+    frame.textBox("macro-assembler-file-path").requireEmpty();
+
     frame.textBox("macro-assembler-file-path").enterText(macFile);
 
     frame.button("okay").click();

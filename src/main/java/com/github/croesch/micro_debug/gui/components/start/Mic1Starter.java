@@ -19,13 +19,15 @@
 package com.github.croesch.micro_debug.gui.components.start;
 
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.error.MacroFileFormatException;
+import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.actions.api.IMic1Creator;
 import com.github.croesch.micro_debug.gui.components.MainFrame;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -50,10 +52,13 @@ public final class Mic1Starter implements IMic1Creator {
   public void create(final String microFilePath, final String macroFilePath) {
     try {
       createMainFrame(microFilePath, macroFilePath);
-    } catch (final IOException e) {
+    } catch (final MicroFileFormatException e) {
       Utils.logThrownThrowable(e);
-      // TODO pass strings to frame
-      final JFrame frame = new StartFrame(this);
+      final JFrame frame = new StartFrame(null, macroFilePath, this);
+      showFrame(frame);
+    } catch (final MacroFileFormatException e) {
+      Utils.logThrownThrowable(e);
+      final JFrame frame = new StartFrame(microFilePath, null, this);
       showFrame(frame);
     }
   }
@@ -64,11 +69,24 @@ public final class Mic1Starter implements IMic1Creator {
    * @since Date: Mar 10, 2012
    * @param microFilePath the file path to the binary micro assembler file.
    * @param macroFilePath the file path to the binary macro assembler file.
-   * @throws IOException if something went wrong reading the files.
+   * @throws MicroFileFormatException if something went wrong reading the micro file.
+   * @throws MacroFileFormatException if something went wrong reading the macro file.
    */
-  private void createMainFrame(final String microFilePath, final String macroFilePath) throws IOException {
-    final FileInputStream micFis = new FileInputStream(microFilePath);
-    final FileInputStream macFis = new FileInputStream(macroFilePath);
+  private void createMainFrame(final String microFilePath, final String macroFilePath) throws MicroFileFormatException,
+                                                                                      MacroFileFormatException {
+    FileInputStream micFis;
+    try {
+      micFis = new FileInputStream(microFilePath);
+    } catch (final FileNotFoundException e) {
+      throw new MicroFileFormatException(e.getMessage(), e);
+    }
+
+    FileInputStream macFis;
+    try {
+      macFis = new FileInputStream(macroFilePath);
+    } catch (final FileNotFoundException e) {
+      throw new MacroFileFormatException(e.getMessage(), e);
+    }
 
     final JFrame frame = new MainFrame(new Mic1(micFis, macFis));
     showFrame(frame);
