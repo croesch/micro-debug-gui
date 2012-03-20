@@ -266,15 +266,15 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private String getTextAsserted(final int lines) {
     final StringBuilder sb = new StringBuilder("<html>");
-    for (int line = 1; line <= lines; ++line) {
+    for (int line = 0; line < lines; ++line) {
       sb.append(Utils.toHexString(line)).append("<br>");
     }
     return sb.toString();
   }
 
   private String getTextAsserted(final int lines, final int highlighted) {
-    final String toReplaceSuffix = Utils.toHexString(highlighted) + "<br>";
-    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted)
+    final String toReplaceSuffix = Utils.toHexString(highlighted - 1) + "<br>";
+    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted - 1)
                                      + "</font><br>";
     switch (highlighted) {
       case 1:
@@ -288,7 +288,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
-        labelFixture.targetCastedTo(LineNumberLabel.class).highlight(line);
+        labelFixture.targetCastedTo(LineNumberLabel.class).highlight(line - 1);
       }
     });
   }

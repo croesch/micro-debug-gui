@@ -89,7 +89,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   private void update() {
     final StringBuilder sb = new StringBuilder("<html>");
 
-    for (int line = 1; line <= getLineCount(); ++line) {
+    for (int line = 0; line < getLineCount(); ++line) {
       if (line == this.highlightedLine) {
         // insert color information for highlighted line
         sb.append("<font bgcolor='").append(this.highColor).append("'>");
