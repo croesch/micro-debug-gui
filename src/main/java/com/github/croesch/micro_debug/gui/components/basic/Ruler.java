@@ -18,121 +18,187 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 
-import net.miginfocom.swing.MigLayout;
+import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 
 /**
- * TODO Comment here ...
+ * This is a ruler that is able to view some information (such as breakpoints) for a given text component.
  * 
  * @author croesch
  * @since Date: Mar 20, 2012
  */
 public class Ruler extends JPanel {
 
+  /** generated serial version UID */
+  private static final long serialVersionUID = 237974555720522800L;
+
+  /** the width of the ruler */
+  private static final int WIDTH = 10;
+
+  /** the size of a single marker in the ruler */
+  private static final int MARKER_SIZE = 6;
+
+  /** the space the marker is away from the border of the ruler */
+  private static final int SPACE = (WIDTH - MARKER_SIZE) / 2;
+
+  /** the size of the shadow of the marker */
+  private static final int SMALL_MARKER_SIZE = 2;
+
+  /** the text component this ruler shows information for */
   private final JTextComponent textComponent;
 
-  public Ruler(final JTextComponent tc) {
+  /** the manager for breakpoints */
+  private final ILineBreakPointManager lineBreakPointManager;
+
+  /**
+   * Constructs the ruler for the given text component that uses the given breakpoint manager to handle breakpoints.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param tc the text component to fetch information from, such as line numbers, line height, etc.
+   * @param bpm the manager for breakpoints that stores them and provides information, if a line contains a breakpoint
+   */
+  public Ruler(final JTextComponent tc, final ILineBreakPointManager bpm) {
     this.textComponent = tc;
+    this.lineBreakPointManager = bpm;
 
-    this.textComponent.getDocument().addDocumentListener(new DocumentListener() {
-
-      public void removeUpdate(final DocumentEvent e) {
-        repaint();
+    addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(final MouseEvent evt) {
+        if (isEventValid(evt)) {
+          final int line = getLineOfOffset(Ruler.this.textComponent.viewToModel(new Point(0, evt.getY())));
+          toggleBreakpoint(line);
+        }
       }
 
-      public void insertUpdate(final DocumentEvent e) {
-        repaint();
-      }
-
-      public void changedUpdate(final DocumentEvent e) {
-        repaint();
+      private boolean isEventValid(final MouseEvent evt) {
+        return evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() % 2 == 0;
       }
     });
+
+    this.textComponent.getDocument().addDocumentListener(new ComponentRepaintListener(this));
   }
 
   /**
-   * Returns the current line numbers of this text component. Based on {@link javax.swing.JTextArea#getLineCount()}.
+   * Returns the line from the given offset. Implementation is based on
+   * {@link javax.swing.JTextArea#getLineOfOffset(int)}.
    * 
-   * @since Date: Mar 20, 2012
-   * @return the number of lines the underlying text component currently has
+   * @since Date: Mar 21, 2012
+   * @param offset the offset to determine the line from
+   * @return the line that contains the given offset.
+   */
+  private int getLineOfOffset(final int offset) {
+    final Element map = this.textComponent.getDocument().getDefaultRootElement();
+    return map.getElementIndex(offset);
+  }
+
+  /**
+   * Returns the start offset of the second line. Implementation based on
+   * {@link javax.swing.JTextArea#getLineStartOffset(int)}.
+   * 
+   * @since Date: Mar 21, 2012
+   * @return the offset of the second line's first character.
+   */
+  private int getLineStartOffsetOfSecondLine() {
+    final Element map = this.textComponent.getDocument().getDefaultRootElement();
+    final Element lineElem = map.getElement(1);
+    return lineElem.getStartOffset();
+  }
+
+  /**
+   * Returns the number of lines of the text component. Implementation based on
+   * {@link javax.swing.JTextArea#getLineCount()}.
+   * 
+   * @since Date: Mar 21, 2012
+   * @return the number of lines the text component contains
    */
   private int getLineCount() {
-    return this.textComponent.getDocument().getDefaultRootElement().getElementCount();
+    final Element map = this.textComponent.getDocument().getDefaultRootElement();
+    return map.getElementCount();
+  }
+
+  /**
+   * Sets the preferred height for the ruler.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param ph the new preferred height for the ruler.
+   */
+  public final void setPreferredHeight(final int ph) {
+    setPreferredSize(new Dimension(WIDTH, ph));
   }
 
   @Override
-  public void paint(final Graphics g) {
+  public final void paint(final Graphics g) {
     super.paint(g);
     setPreferredHeight(this.textComponent.getHeight());
 
-    final int circleSize = 6;
-    final int space = 2;
-    final int smallCircleSize = (int) (circleSize * 0.4);
+    final int lineHeight = getLineHeight();
 
-    int lineHeight;
-    if (getLineCount() > 1) {
-      try {
-        final Rectangle r1 = this.textComponent.modelToView(0);
-        final Rectangle r2 = this.textComponent.modelToView(this.textComponent.getDocument().getDefaultRootElement()
-          .getElement(1).getStartOffset());
-        lineHeight = r2.y - r1.y;
-      } catch (final BadLocationException blex) {
-        lineHeight = this.textComponent.getFont().getSize() + 2;
+    for (int line = 0; line < getLineCount(); line += 1) {
+      if (this.lineBreakPointManager.isBreakpoint(line)) {
+        g.setColor(getForeground());
+        g.fillOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, MARKER_SIZE);
+        g.setColor(getForeground().brighter());
+        g.fillOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, SMALL_MARKER_SIZE);
+        g.setColor(getBackground().brighter());
+        g.drawOval(SPACE - 1, line * lineHeight + (lineHeight - MARKER_SIZE) / 2 - 1, MARKER_SIZE + 2, MARKER_SIZE + 2);
+        g.setColor(getForeground().darker());
+        g.drawOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, MARKER_SIZE);
       }
-    } else {
-      lineHeight = this.textComponent.getFont().getSize() + 2;
     }
-
-    for (int i = -1; i < getLineCount(); i += 1) {
-      g.setColor(getForeground());
-      g.fillOval(space, i * lineHeight + (lineHeight - circleSize) / 2, circleSize, circleSize);
-      g.setColor(getForeground().brighter());
-      g.fillOval(space, i * lineHeight + (lineHeight - circleSize) / 2, circleSize, smallCircleSize);
-      g.setColor(getBackground().brighter());
-      g.drawOval(space - 1, i * lineHeight + (lineHeight - circleSize) / 2 - 1, circleSize + 2, circleSize + 2);
-      g.setColor(getForeground().darker());
-      g.drawOval(space, i * lineHeight + (lineHeight - circleSize) / 2, circleSize, circleSize);
-    }
-  }
-
-  public void setPreferredHeight(final int ph) {
-    setPreferredSize(new Dimension(10, ph));
   }
 
   /**
-   * TODO Comment here ...
+   * Returns the line height of the text component.
    * 
-   * @since Date: Mar 20, 2012
-   * @param args
+   * @since Date: Mar 21, 2012
+   * @return the height of a single line in the text component.
    */
-  public static void main(final String[] args) {
-    final JFrame f = new JFrame();
-    final JScrollPane sp = new JScrollPane();
-    final JTextArea ta = new JTextArea();
-    ta.setText("1\n2\n3\n4\n5\n6\n....");
-    final Ruler r = new Ruler(ta);
-    r.setForeground(new Color(115, 169, 204));
+  private int getLineHeight() {
+    if (getLineCount() > 1) {
+      try {
+        final Rectangle lineOne = this.textComponent.modelToView(0);
+        final Rectangle lineTwo = this.textComponent.modelToView(getLineStartOffsetOfSecondLine());
+        return lineTwo.y - lineOne.y;
+      } catch (final BadLocationException blex) {
+        Utils.logThrownThrowable(blex);
+      }
+    }
+    return this.textComponent.getFont().getSize() + 2;
+  }
 
-    sp.setViewportView(ta);
-    sp.setRowHeaderView(r);
-    f.setLayout(new MigLayout("fill", "[grow, fill]", "[grow,fill]"));
-    f.add(sp);
-    f.setSize(400, 400);
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setVisible(true);
-    f.repaint();
+  /**
+   * Toggles the breakpoint for the given line: Switches it <code>on</code>, if it was <code>off</code>; switches it
+   * <code>off</code>, if it was <code>on</code>.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param line the number of the line to toggle the breakpoint
+   */
+  final void toggleBreakpoint(final int line) {
+    this.lineBreakPointManager.toggleBreakpoint(line);
+    repaint();
+  }
+
+  /**
+   * Returns whether there is currently a breakpoint set for the given line.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param line the number of the line that should be checked for a breakpoint.
+   * @return <code>true</code> whether there is currently a breakpoint in the given line,<br>
+   *         <code>false</code> otherwise.
+   */
+  final boolean isBreakpoint(final int line) {
+    return this.lineBreakPointManager.isBreakpoint(line);
   }
 }
