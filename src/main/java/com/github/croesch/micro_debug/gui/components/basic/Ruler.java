@@ -60,7 +60,7 @@ public class Ruler extends JPanel {
   private final JTextComponent textComponent;
 
   /** the manager for breakpoints */
-  private final ILineBreakPointManager lineBreakPointManager;
+  private final transient ILineBreakPointManager lineBreakPointManager;
 
   /**
    * Constructs the ruler for the given text component that uses the given breakpoint manager to handle breakpoints.
