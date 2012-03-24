@@ -25,6 +25,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
  * Vertical row view that shows line numbers for a given text component.
@@ -49,17 +50,23 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   /** the text component this component shows the line numbers for */
   private final JTextComponent textArea;
 
+  /** the abstraction layer that maps real line numbers to line numbers for the user */
+  private final LineNumberMapper lineNumberMapper;
+
   /**
    * Constructs this ruler that shows line numbers for the given component. Will update itself, when the underlying
    * document of the given text component changes.
    * 
    * @since Date: Mar 20, 2012
    * @param ta the text component to show line numbers for, must not be <code>null</code>.
+   * @param mapper instance of a mapper for line numbers that maps real internal line numbers to the representation for
+   *        the user
    */
-  public LineNumberLabel(final JTextComponent ta) {
+  public LineNumberLabel(final JTextComponent ta, final LineNumberMapper mapper) {
     super(ta.getName() + "-line-numbers", null);
     setVerticalAlignment(SwingConstants.TOP);
 
+    this.lineNumberMapper = mapper;
     this.highColor = "#"
                      + Integer.toHexString(UIManager.getColor("Label.background").darker().getRGB()
                                            & HTML_COLOR_CODE_MASK);
@@ -95,7 +102,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
         sb.append("<font bgcolor='").append(this.highColor).append("'>");
       }
 
-      sb.append(Utils.toHexString(line));
+      sb.append(Utils.toHexString(this.lineNumberMapper.getLineForNumber(line)));
 
       if (line == this.highlightedLine) {
         // end color information for highlighted line

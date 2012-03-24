@@ -44,6 +44,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
  * Provides test cases for {@link LineNumberLabel}.
@@ -54,13 +55,21 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private static final String HIGHLIGHT = Integer
-    .toHexString(UIManager.getColor("Label.background").darker().getRGB() & 0xFFFFFF);
+
+  .toHexString(UIManager.getColor("Label.background").darker().getRGB() & 0xFFFFFF);
+
+  private LineNumberMapper lineMapper;
+
+  @Override
+  protected void setUpTestCase() throws Exception {
+    this.lineMapper = new LineNumberMapper();
+  }
 
   private LineNumberLabel getLabel(final JTextComponent ta) {
     return GuiActionRunner.execute(new GuiQuery<LineNumberLabel>() {
       @Override
       protected LineNumberLabel executeInEDT() {
-        return new LineNumberLabel(ta);
+        return new LineNumberLabel(ta, LineNumberLabelTest.this.lineMapper);
       }
     });
   }
@@ -102,6 +111,19 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   @Test
   public void testLabel() {
     printlnMethodName();
+    testTheLabel();
+  }
+
+  @Test
+  public void testLabelLineNumbers() {
+    printlnMethodName();
+
+    this.lineMapper.setNewLines(2, 4, 6, 8, 10, 12, 24, 36);
+
+    testTheLabel();
+  }
+
+  private void testTheLabel() {
     JTextArea ta = getTA("ta", "Dies ist ein Text ...");
     JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta));
     labelFixture.requireText(getTextAsserted(1));
@@ -149,6 +171,18 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   @Test
   public void testLabelEnterTextInTA() {
     printlnMethodName();
+    testEnterTestInTheTA();
+  }
+
+  @Test
+  public void testLabelEnterTextInTA_WithLineNumbers() {
+    printlnMethodName();
+    this.lineMapper.setNewLines(2, 4, 6, 8, 10, 12, 24, 36);
+
+    testEnterTestInTheTA();
+  }
+
+  private void testEnterTestInTheTA() {
     final JTextComponentFixture ta = new JTextComponentFixture(robot(), getTA("ta", ""));
     final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(JTextArea.class)));
 
@@ -265,9 +299,13 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   }
 
   private String getTextAsserted(final int lines) {
+    return getTextAsserted(lines, this.lineMapper);
+  }
+
+  private String getTextAsserted(final int lines, final LineNumberMapper mapper) {
     final StringBuilder sb = new StringBuilder("<html>");
     for (int line = 0; line < lines; ++line) {
-      sb.append(Utils.toHexString(line)).append("<br>");
+      sb.append(Utils.toHexString(mapper.getLineForNumber(line))).append("<br>");
     }
     return sb.toString();
   }
