@@ -39,10 +39,10 @@ import java.util.Map;
 public class LineNumberMapper {
 
   /** Stores for each real line number the users representation of the line number - <em>the line</em> */
-  private final HashMap<Integer, Integer> linesMap = new HashMap<Integer, Integer>();
+  private final Map<Integer, Integer> linesMap = new HashMap<Integer, Integer>();
 
   /** for each <em>line</em> this map stores the entry of the real line - <em>the number</em> */
-  private final HashMap<Integer, Integer> numbersMap = new HashMap<Integer, Integer>();
+  private final Map<Integer, Integer> numbersMap = new HashMap<Integer, Integer>();
 
   /**
    * Set the new scheme of line numbers. The given lines are the representation for the user in the given order. Each

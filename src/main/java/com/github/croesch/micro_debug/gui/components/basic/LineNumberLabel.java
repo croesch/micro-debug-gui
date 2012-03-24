@@ -51,7 +51,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   private final JTextComponent textArea;
 
   /** the abstraction layer that maps real line numbers to line numbers for the user */
-  private final LineNumberMapper lineNumberMapper;
+  private final transient LineNumberMapper lineNumberMapper;
 
   /**
    * Constructs this ruler that shows line numbers for the given component. Will update itself, when the underlying

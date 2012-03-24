@@ -64,7 +64,7 @@ public class Ruler extends JPanel {
   private final transient ILineBreakPointManager lineBreakPointManager;
 
   /** the abstraction layer that maps real line numbers to line numbers for the user */
-  private final LineNumberMapper lineNumberMapper;
+  private final transient LineNumberMapper lineNumberMapper;
 
   /**
    * Constructs the ruler for the given text component that uses the given breakpoint manager to handle breakpoints.
