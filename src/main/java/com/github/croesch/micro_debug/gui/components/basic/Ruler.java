@@ -32,6 +32,7 @@ import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
+import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
  * This is a ruler that is able to view some information (such as breakpoints) for a given text component.
@@ -62,23 +63,29 @@ public class Ruler extends JPanel {
   /** the manager for breakpoints */
   private final transient ILineBreakPointManager lineBreakPointManager;
 
+  /** the abstraction layer that maps real line numbers to line numbers for the user */
+  private final LineNumberMapper lineNumberMapper;
+
   /**
    * Constructs the ruler for the given text component that uses the given breakpoint manager to handle breakpoints.
    * 
    * @since Date: Mar 21, 2012
    * @param tc the text component to fetch information from, such as line numbers, line height, etc.
    * @param bpm the manager for breakpoints that stores them and provides information, if a line contains a breakpoint
+   * @param mapper instance of a mapper for line numbers that maps real internal line numbers to the representation for
+   *        the user
    */
-  public Ruler(final JTextComponent tc, final ILineBreakPointManager bpm) {
+  public Ruler(final JTextComponent tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
     this.textComponent = tc;
     this.lineBreakPointManager = bpm;
+    this.lineNumberMapper = mapper;
 
     addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(final MouseEvent evt) {
         if (isEventValid(evt)) {
           final int line = getLineOfOffset(Ruler.this.textComponent.viewToModel(new Point(0, evt.getY())));
-          toggleBreakpoint(line);
+          toggleBreakpoint(Ruler.this.lineNumberMapper.getLineForNumber(line));
         }
       }
 
@@ -146,7 +153,7 @@ public class Ruler extends JPanel {
     final int lineHeight = getLineHeight();
 
     for (int line = 0; line < getLineCount(); line += 1) {
-      if (this.lineBreakPointManager.isBreakpoint(line)) {
+      if (this.lineBreakPointManager.isBreakpoint(this.lineNumberMapper.getLineForNumber(line))) {
         g.setColor(getForeground());
         g.fillOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, MARKER_SIZE);
         g.setColor(getForeground().brighter());

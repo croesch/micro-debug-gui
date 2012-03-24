@@ -41,6 +41,7 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 import com.github.croesch.micro_debug.gui.debug.LineBreakPointHandler;
+import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
  * Provides test cases for {@link Ruler}.
@@ -49,6 +50,13 @@ import com.github.croesch.micro_debug.gui.debug.LineBreakPointHandler;
  * @since Date: Mar 21, 2012
  */
 public class RulerTest extends DefaultGUITestCase {
+
+  private LineNumberMapper lineMapper;
+
+  @Override
+  protected void setUpTestCase() throws Exception {
+    this.lineMapper = new LineNumberMapper();
+  }
 
   private FrameFixture showFrame(final Ruler r, final JTextComponent ta) {
     final FrameFixture frameFixture = new FrameFixture(robot(), GuiActionRunner.execute(new GuiQuery<JFrame>() {
@@ -78,7 +86,7 @@ public class RulerTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<Ruler>() {
       @Override
       protected Ruler executeInEDT() {
-        return new Ruler(area, bpm);
+        return new Ruler(area, bpm, RulerTest.this.lineMapper);
       }
     });
   }
@@ -164,6 +172,97 @@ public class RulerTest extends DefaultGUITestCase {
 
     robot().click(r, new Point(6, getYOfLine(ta, 11)), MouseButton.LEFT_BUTTON, 2);
     assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(0, 1, 3, 6));
+  }
+
+  @Test
+  public void testTogglingBreakpoints_WithLineNumbersChanged() throws BadLocationException, InterruptedException {
+    printlnMethodName();
+
+    this.lineMapper.setNewLines(1, 3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 20, 21, 50);
+
+    final LineBreakPointHandler bpm = new LineBreakPointHandler();
+    final JTextArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
+    final Ruler r = getRuler(ta, bpm);
+
+    showFrame(r, ta);
+
+    final int line = 3;
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(3)));
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), null);
+
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.RIGHT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), null);
+
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.LEFT_BUTTON, 1);
+    assertBreakpoints(bpm, r, ta.getLineCount(), null);
+
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.MIDDLE_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), null);
+
+    robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.LEFT_BUTTON, 4);
+    assertBreakpoints(bpm, r, ta.getLineCount(), null);
+
+    robot().click(r, new Point(2, getYOfLine(ta, 4)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(4)));
+
+    robot().click(r, new Point(6, getYOfLine(ta, 5)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(8, 10));
+
+    robot().click(r, new Point(8, getYOfLine(ta, 6)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(8, 10, this.lineMapper.getLineForNumber(6)));
+
+    robot().click(r, new Point(6, 2 + getYOfLine(ta, 4)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(10, 11));
+
+    robot().click(r, new Point(6, 4 + getYOfLine(ta, 5)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(11));
+
+    robot().click(r, new Point(6, 6 + getYOfLine(ta, 1)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(3, 11));
+
+    robot().click(r, new Point(6, 8 + getYOfLine(ta, 3)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6)));
+
+    // click last line
+    robot().click(r, new Point(6, getYOfLine(ta, 11)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6),
+                                                               this.lineMapper.getLineForNumber(11)));
+
+    robot().click(r, new Point(6, getYOfLine(ta, 0)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(0),
+                                                               this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6),
+                                                               this.lineMapper.getLineForNumber(11)));
+
+    // click below last line is same as last line 
+    robot().click(r, new Point(6, getYOfLine(ta, 11)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(0),
+                                                               this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6)));
+
+    bpm.toggleBreakpoint(18);
+
+    robot().click(r, new Point(6, getYOfLine(ta, 11)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(0),
+                                                               this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6)));
+
+    bpm.toggleBreakpoint(this.lineMapper.getLineForNumber(11));
+
+    robot().click(r, new Point(6, getYOfLine(ta, 11)), MouseButton.LEFT_BUTTON, 2);
+    assertBreakpoints(bpm, r, ta.getLineCount(), Arrays.asList(this.lineMapper.getLineForNumber(0),
+                                                               this.lineMapper.getLineForNumber(1),
+                                                               this.lineMapper.getLineForNumber(3),
+                                                               this.lineMapper.getLineForNumber(6)));
   }
 
   private int getYOfLine(final JTextArea ta, final int line) throws BadLocationException {
