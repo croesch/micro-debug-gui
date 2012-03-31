@@ -58,31 +58,17 @@ public abstract class ACodeFormatter implements DocumentListener {
    */
   protected abstract void format(final StyledDocument doc);
 
-  /**
-   * Gives notification that there was an insert into the document. The range given by the DocumentEvent bounds the
-   * freshly inserted region.
-   * 
-   * @param e the document event
-   */
+  /** {@inheritDoc} */
   public final void insertUpdate(final DocumentEvent e) {
     performUpdate(e.getDocument());
   }
 
-  /**
-   * Gives notification that a portion of the document has been removed. The range is given in terms of what the view
-   * last saw (that is, before updating sticky positions).
-   * 
-   * @param e the document event
-   */
+  /** {@inheritDoc} */
   public final void removeUpdate(final DocumentEvent e) {
     performUpdate(e.getDocument());
   }
 
-  /**
-   * Gives notification that an attribute or set of attributes changed.
-   * 
-   * @param e the document event
-   */
+  /** {@inheritDoc} */
   public void changedUpdate(final DocumentEvent e) {
     /*
      * This method is called on attribute changes, so it wouldn't be a good idea to change the attributes within an

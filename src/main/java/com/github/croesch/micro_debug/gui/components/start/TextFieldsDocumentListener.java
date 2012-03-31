@@ -61,32 +61,17 @@ class TextFieldsDocumentListener implements DocumentListener {
     update();
   }
 
-  /**
-   * Insert event happened.
-   * 
-   * @since Date: Mar 10, 2012
-   * @param e event that happened.
-   */
+  /** {@inheritDoc} */
   public void insertUpdate(final DocumentEvent e) {
     update();
   }
 
-  /**
-   * Remove event happened.
-   * 
-   * @since Date: Mar 10, 2012
-   * @param e event that happened.
-   */
+  /** {@inheritDoc} */
   public void removeUpdate(final DocumentEvent e) {
     update();
   }
 
-  /**
-   * Change event happened.
-   * 
-   * @since Date: Mar 10, 2012
-   * @param e event that happened.
-   */
+  /** {@inheritDoc} */
   public void changedUpdate(final DocumentEvent e) {
     update();
   }

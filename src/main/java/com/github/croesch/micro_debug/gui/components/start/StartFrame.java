@@ -164,22 +164,12 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     add(btn);
   }
 
-  /**
-   * Returns the file path to the binary macro assembler file.
-   * 
-   * @since Date: Mar 9, 2012
-   * @return the file path to the binary macro assembler file.
-   */
+  /** {@inheritDoc} */
   public String getMacroAssemblerFilePath() {
     return this.macroPathField.getText();
   }
 
-  /**
-   * Returns the file path to the binary micro assembler file.
-   * 
-   * @since Date: Mar 9, 2012
-   * @return the file path to the binary micro assembler file.
-   */
+  /** {@inheritDoc} */
   public String getMicroAssemblerFilePath() {
     return this.microPathField.getText();
   }

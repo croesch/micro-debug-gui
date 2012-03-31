@@ -37,15 +37,7 @@ import com.github.croesch.micro_debug.commons.Utils;
  */
 public final class LineHighlighter implements HighlightPainter {
 
-  /**
-   * Renders the highlight.
-   * 
-   * @param g the graphics context
-   * @param p0 the starting offset in the model >= 0
-   * @param p1 the ending offset in the model >= p0
-   * @param bounds the bounding box for the highlight
-   * @param c the editor
-   */
+  /** {@inheritDoc} */
   public void paint(final Graphics g, final int p0, final int p1, final Shape bounds, final JTextComponent c) {
     try {
       // check if the offset to highlight is in the range of the document
