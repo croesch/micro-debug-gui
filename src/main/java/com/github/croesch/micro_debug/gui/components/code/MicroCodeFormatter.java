@@ -52,7 +52,7 @@ public final class MicroCodeFormatter extends ACodeFormatter {
   private static final List<Character> SEP_OPS = Arrays.asList('+', '-', '=', '>', '<');
 
   /** the token that are identified as separators */
-  private static final List<Character> SEPS = Arrays.asList(';', '(', ')', ' ', '\t', '\n');
+  private static final List<Character> SEPS = Arrays.asList(';', '(', ')', ' ', '\t', '\n', '\r');
 
   /** the attributes to format register tokens */
   private final MutableAttributeSet registerFormat = new SimpleAttributeSet();
