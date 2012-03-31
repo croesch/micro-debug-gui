@@ -54,7 +54,7 @@ public class MicroCodeAreaTest extends DefaultGUITestCase {
       protected JFrame executeInEDT() {
         final JFrame frame = new JFrame();
         frame.setLayout(new MigLayout("fill"));
-        frame.add(new JScrollPane(new MicroCodeArea()), "grow");
+        frame.add(new JScrollPane(new MicroCodeArea(null)), "grow");
         return frame;
       }
     }));

@@ -42,7 +42,7 @@ public class ACodeAreaTest extends DefaultGUITestCase {
       @Override
       protected JFrame executeInEDT() {
         final JFrame frame = new JFrame();
-        frame.add(new ACodeArea(null) {
+        frame.add(new ACodeArea(null, null) {
           /** default */
           private static final long serialVersionUID = 1L;
         });

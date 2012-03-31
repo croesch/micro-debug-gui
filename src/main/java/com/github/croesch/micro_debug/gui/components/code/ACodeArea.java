@@ -20,8 +20,9 @@ package com.github.croesch.micro_debug.gui.components.code;
 
 import java.awt.Font;
 
-import javax.swing.JTextPane;
 import javax.swing.text.DefaultStyledDocument;
+
+import com.github.croesch.micro_debug.gui.components.basic.MDTextPane;
 
 /**
  * A code area to visualize a piece of code.
@@ -29,7 +30,7 @@ import javax.swing.text.DefaultStyledDocument;
  * @author croesch
  * @since Date: Mar 30, 2012
  */
-public abstract class ACodeArea extends JTextPane {
+public abstract class ACodeArea extends MDTextPane {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 2012704080901679378L;
@@ -38,12 +39,23 @@ public abstract class ACodeArea extends JTextPane {
    * Constructs the code area with a styled document and adds the given formatter to format the text of the area.
    * 
    * @since Date: Mar 30, 2012
+   * @param name the name for the text component to set
    * @param formatter the component responsible for formatting the text of the code area.
    */
-  public ACodeArea(final ACodeFormatter formatter) {
-    super(new DefaultStyledDocument());
+  public ACodeArea(final String name, final ACodeFormatter formatter) {
+    super(name, new DefaultStyledDocument());
     getDocument().addDocumentListener(formatter);
     setEditable(false);
     setFont(new Font("Monospaced", getFont().getStyle(), getFont().getSize()));
+  }
+
+  /**
+   * Returns the current line numbers of this text component. Based on {@link javax.swing.JTextArea#getLineCount()}.
+   * 
+   * @since Date: Mar 20, 2012
+   * @return the number of lines this text component has
+   */
+  public final int getLineCount() {
+    return getDocument().getDefaultRootElement().getElementCount();
   }
 }

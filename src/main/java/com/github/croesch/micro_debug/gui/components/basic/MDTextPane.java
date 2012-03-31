@@ -16,26 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.code;
+package com.github.croesch.micro_debug.gui.components.basic;
+
+import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
 
 /**
- * A code area especially to visualize micro code.
+ * An extension of {@link JTextPane} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Mar 31, 2012
  */
-public class MicroCodeArea extends ACodeArea {
+public class MDTextPane extends JTextPane {
 
   /** generated serial version UID */
-  private static final long serialVersionUID = -1650696400400321708L;
+  private static final long serialVersionUID = -1439369119660645723L;
 
   /**
-   * Constructs a code area that can visualize micro code with highlighted syntax.
+   * Constructs the text pane and sets the given name.
    * 
    * @since Date: Mar 31, 2012
-   * @param name the name for the text component to set
+   * @param name the name of the component to set.
    */
-  public MicroCodeArea(final String name) {
-    super(name, new MicroCodeFormatter());
+  public MDTextPane(final String name) {
+    super();
+    setName(name);
+  }
+
+  /**
+   * Constructs the text pane and sets the given name.
+   * 
+   * @since Date: Mar 31, 2012
+   * @param name the name of the component to set.
+   * @param doc the document model
+   */
+  public MDTextPane(final String name, final StyledDocument doc) {
+    super(doc);
+    setName(name);
   }
 }
