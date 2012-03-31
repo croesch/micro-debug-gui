@@ -44,6 +44,11 @@ public abstract class ACodeArea extends MDTextPane {
    */
   public ACodeArea(final String name, final ACodeFormatter formatter) {
     super(name, new DefaultStyledDocument());
+
+    /* remove top and bottom margins, for better experience with Ruler and LineNumberLabel */
+    getMargin().top = 0;
+    getMargin().bottom = 0;
+
     getDocument().addDocumentListener(formatter);
     setEditable(false);
     setFont(new Font("Monospaced", getFont().getStyle(), getFont().getSize()));
