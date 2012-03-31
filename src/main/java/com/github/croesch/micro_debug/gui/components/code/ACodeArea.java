@@ -18,6 +18,8 @@
  */
 package com.github.croesch.micro_debug.gui.components.code;
 
+import java.awt.Font;
+
 import javax.swing.JTextPane;
 import javax.swing.text.DefaultStyledDocument;
 
@@ -42,5 +44,6 @@ public abstract class ACodeArea extends JTextPane {
     super(new DefaultStyledDocument());
     getDocument().addDocumentListener(formatter);
     setEditable(false);
+    setFont(new Font("Monospaced", getFont().getStyle(), getFont().getSize()));
   }
 }
