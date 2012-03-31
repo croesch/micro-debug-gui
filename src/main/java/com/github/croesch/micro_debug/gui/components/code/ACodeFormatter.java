@@ -30,7 +30,7 @@ import javax.swing.text.StyledDocument;
  * @author croesch
  * @since Date: Mar 30, 2012
  */
-public abstract class ACodeFormatter implements DocumentListener {
+abstract class ACodeFormatter implements DocumentListener {
 
   /**
    * Performs the update of the text style on changes of the text to format.

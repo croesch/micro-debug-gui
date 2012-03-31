@@ -37,7 +37,7 @@ import com.github.croesch.micro_debug.mic1.register.Register;
  * @author croesch
  * @since Date: Mar 30, 2012
  */
-public final class MicroCodeFormatter extends ACodeFormatter {
+final class MicroCodeFormatter extends ACodeFormatter {
 
   /** the token that are identified as control lines */
   private static final List<String> LINES = Arrays.asList("Z", "N", "rd", "wr", "fetch");
