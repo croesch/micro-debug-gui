@@ -24,12 +24,9 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.UIManager;
-import javax.swing.text.JTextComponent;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -44,7 +41,6 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
-import com.github.croesch.micro_debug.gui.components.basic.MDTextArea;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
@@ -66,7 +62,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     this.lineMapper = new LineNumberMapper();
   }
 
-  private LineNumberLabel getLabel(final JTextComponent ta) {
+  private LineNumberLabel getLabel(final ACodeArea ta) {
     return GuiActionRunner.execute(new GuiQuery<LineNumberLabel>() {
       @Override
       protected LineNumberLabel executeInEDT() {
@@ -75,23 +71,18 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     });
   }
 
-  private MDTextArea getTA(final String name, final String text) {
-    return GuiActionRunner.execute(new GuiQuery<MDTextArea>() {
+  private ACodeArea getTA(final String name, final String text) {
+    return GuiActionRunner.execute(new GuiQuery<ACodeArea>() {
       @Override
-      protected MDTextArea executeInEDT() {
-        return new MDTextArea(name, text);
-      }
-    });
-  }
+      protected ACodeArea executeInEDT() {
+        final ACodeArea aCodeArea = new ACodeArea(name, null) {
 
-  private JEditorPane getEP(final String name, final String text) {
-    return GuiActionRunner.execute(new GuiQuery<JEditorPane>() {
-      @Override
-      protected JEditorPane executeInEDT() {
-        final JEditorPane pane = new JEditorPane();
-        pane.setName(name);
-        pane.setText(text);
-        return pane;
+          /** default */
+          private static final long serialVersionUID = 1L;
+        };
+        aCodeArea.setText(text);
+        aCodeArea.setEditable(true);
+        return aCodeArea;
       }
     });
   }
@@ -125,7 +116,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   }
 
   private void testTheLabel() {
-    JTextArea ta = getTA("ta", "Dies ist ein Text ...");
+    ACodeArea ta = getTA("ta", "Dies ist ein Text ...");
     JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta));
     labelFixture.requireText(getTextAsserted(1));
     assertThat(labelFixture.component().getName()).isEqualTo("ta-line-numbers");
@@ -160,11 +151,6 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     labelFixture.requireText(getTextAsserted(1));
     assertThat(labelFixture.component().getName()).isEqualTo("-line-numbers");
 
-    final JEditorPane pane = getEP("ta", getLineSeparator() + "..\n\r\nvierte Zeile\n");
-    labelFixture = new JLabelFixture(robot(), getLabel(pane));
-    labelFixture.requireText(getTextAsserted(5));
-    assertThat(labelFixture.component().getName()).isEqualTo("ta-line-numbers");
-
     // nothing happens
     labelFixture.targetCastedTo(LineNumberLabel.class).changedUpdate(null);
   }
@@ -185,7 +171,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private void testEnterTestInTheTA() {
     final JTextComponentFixture ta = new JTextComponentFixture(robot(), getTA("ta", ""));
-    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(JTextArea.class)));
+    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(ACodeArea.class)));
 
     final FrameFixture frame = new FrameFixture(robot(), getFrame(ta.component(), labelFixture.component()));
     frame.show(new Dimension(500, 500));
@@ -230,7 +216,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   public void testHighlight() {
     printlnMethodName();
     final JTextComponentFixture ta = new JTextComponentFixture(robot(), getTA("light", "Dies ist ein Text ..."));
-    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(JTextArea.class)));
+    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(ACodeArea.class)));
 
     final FrameFixture frame = new FrameFixture(robot(), getFrame(ta.component(), labelFixture.component()));
     frame.show(new Dimension(500, 500));
@@ -276,7 +262,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   public void testHighlightPerformance() {
     printlnMethodName();
     final JTextComponentFixture ta = new JTextComponentFixture(robot(), getTA("light", "Dies ist ein Text ..."));
-    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(JTextArea.class)));
+    final JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel(ta.targetCastedTo(ACodeArea.class)));
 
     final FrameFixture frame = new FrameFixture(robot(), getFrame(ta.component(), labelFixture.component()));
     frame.show(new Dimension(500, 500));

@@ -22,7 +22,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
@@ -49,7 +48,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   private int highlightedLine = -1;
 
   /** the text component this component shows the line numbers for */
-  private final JTextComponent textArea;
+  private final ACodeArea textArea;
 
   /** the abstraction layer that maps real line numbers to line numbers for the user */
   private final transient LineNumberMapper lineNumberMapper;
@@ -63,7 +62,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
    * @param mapper instance of a mapper for line numbers that maps real internal line numbers to the representation for
    *        the user
    */
-  public LineNumberLabel(final JTextComponent ta, final LineNumberMapper mapper) {
+  public LineNumberLabel(final ACodeArea ta, final LineNumberMapper mapper) {
     super(ta.getName() + "-line-numbers", null);
     setVerticalAlignment(SwingConstants.TOP);
 
@@ -78,16 +77,6 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   }
 
   /**
-   * Returns the current line numbers of this text component. Based on {@link javax.swing.JTextArea#getLineCount()}.
-   * 
-   * @since Date: Mar 20, 2012
-   * @return the number of lines the underlying text component currently has
-   */
-  private int getLineCount() {
-    return this.textArea.getDocument().getDefaultRootElement().getElementCount();
-  }
-
-  /**
    * Updates the line numbers.<br>
    * <i>Caution:</i> Do use carefully! Will rebuild the line numbers completely, which is not performant - especially
    * for high line count.
@@ -97,7 +86,7 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   private void update() {
     final StringBuilder sb = new StringBuilder("<html>");
 
-    for (int line = 0; line < getLineCount(); ++line) {
+    for (int line = 0; line < this.textArea.getLineCount(); ++line) {
       if (line == this.highlightedLine) {
         // insert color information for highlighted line
         sb.append("<font bgcolor='").append(this.highColor).append("'>");
