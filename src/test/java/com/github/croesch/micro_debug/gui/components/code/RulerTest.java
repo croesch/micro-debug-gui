@@ -69,6 +69,7 @@ public class RulerTest extends DefaultGUITestCase {
       }
     }));
     frameFixture.show(new Dimension(500, 500));
+    robot().waitForIdle();
     return frameFixture;
   }
 

@@ -68,6 +68,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     this.startFrame = new FrameFixture(robot(), frame);
     this.startFrame.show();
+    robot().waitForIdle();
     this.startFrame.requireVisible();
     assertThat(this.mic1Creator.isWritten()).isFalse();
   }
