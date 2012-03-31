@@ -29,7 +29,7 @@ import javax.swing.event.DocumentListener;
  * @author croesch
  * @since Date: Mar 21, 2012
  */
-final class ComponentRepaintListener implements DocumentListener {
+public final class ComponentRepaintListener implements DocumentListener {
 
   /** the component to repaint on events */
   private final Component component;

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.basic;
+package com.github.croesch.micro_debug.gui.components.code;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -32,6 +32,7 @@ import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
+import com.github.croesch.micro_debug.gui.components.basic.ComponentRepaintListener;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.basic;
+package com.github.croesch.micro_debug.gui.components.code;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -25,6 +25,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**

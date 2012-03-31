@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components.basic;
+package com.github.croesch.micro_debug.gui.components.code;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -44,6 +44,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.basic.MDTextArea;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
