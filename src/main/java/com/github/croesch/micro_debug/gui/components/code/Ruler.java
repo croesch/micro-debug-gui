@@ -21,16 +21,11 @@ package com.github.croesch.micro_debug.gui.components.code;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.JTextComponent;
 
-import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 import com.github.croesch.micro_debug.gui.components.basic.ComponentRepaintListener;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
@@ -59,7 +54,7 @@ public class Ruler extends JPanel {
   private static final int SMALL_MARKER_SIZE = 2;
 
   /** the text component this ruler shows information for */
-  private final JTextComponent textComponent;
+  private final ACodeArea textComponent;
 
   /** the manager for breakpoints */
   private final transient ILineBreakPointManager lineBreakPointManager;
@@ -76,7 +71,7 @@ public class Ruler extends JPanel {
    * @param mapper instance of a mapper for line numbers that maps real internal line numbers to the representation for
    *        the user
    */
-  public Ruler(final JTextComponent tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+  public Ruler(final ACodeArea tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
     this.textComponent = tc;
     this.lineBreakPointManager = bpm;
     this.lineNumberMapper = mapper;
@@ -85,7 +80,8 @@ public class Ruler extends JPanel {
       @Override
       public void mouseClicked(final MouseEvent evt) {
         if (isEventValid(evt)) {
-          final int line = getLineOfOffset(Ruler.this.textComponent.viewToModel(new Point(0, evt.getY())));
+          final int offset = Ruler.this.textComponent.viewToModel(new Point(0, evt.getY()));
+          final int line = Ruler.this.textComponent.getLineOfOffset(offset);
           toggleBreakpoint(Ruler.this.lineNumberMapper.getLineForNumber(line));
         }
       }
@@ -96,44 +92,6 @@ public class Ruler extends JPanel {
     });
 
     this.textComponent.getDocument().addDocumentListener(new ComponentRepaintListener(this));
-  }
-
-  /**
-   * Returns the line from the given offset. Implementation is based on
-   * {@link javax.swing.JTextArea#getLineOfOffset(int)}.
-   * 
-   * @since Date: Mar 21, 2012
-   * @param offset the offset to determine the line from
-   * @return the line that contains the given offset.
-   */
-  private int getLineOfOffset(final int offset) {
-    final Element map = this.textComponent.getDocument().getDefaultRootElement();
-    return map.getElementIndex(offset);
-  }
-
-  /**
-   * Returns the start offset of the second line. Implementation based on
-   * {@link javax.swing.JTextArea#getLineStartOffset(int)}.
-   * 
-   * @since Date: Mar 21, 2012
-   * @return the offset of the second line's first character.
-   */
-  private int getLineStartOffsetOfSecondLine() {
-    final Element map = this.textComponent.getDocument().getDefaultRootElement();
-    final Element lineElem = map.getElement(1);
-    return lineElem.getStartOffset();
-  }
-
-  /**
-   * Returns the number of lines of the text component. Implementation based on
-   * {@link javax.swing.JTextArea#getLineCount()}.
-   * 
-   * @since Date: Mar 21, 2012
-   * @return the number of lines the text component contains
-   */
-  private int getLineCount() {
-    final Element map = this.textComponent.getDocument().getDefaultRootElement();
-    return map.getElementCount();
   }
 
   /**
@@ -151,9 +109,9 @@ public class Ruler extends JPanel {
     super.paint(g);
     setPreferredHeight(this.textComponent.getHeight());
 
-    final int lineHeight = getLineHeight();
+    final int lineHeight = this.textComponent.getLineHeight();
 
-    for (int line = 0; line < getLineCount(); line += 1) {
+    for (int line = 0; line < this.textComponent.getLineCount(); line += 1) {
       if (this.lineBreakPointManager.isBreakpoint(this.lineNumberMapper.getLineForNumber(line))) {
         g.setColor(getForeground());
         g.fillOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, MARKER_SIZE);
@@ -165,25 +123,6 @@ public class Ruler extends JPanel {
         g.drawOval(SPACE, line * lineHeight + (lineHeight - MARKER_SIZE) / 2, MARKER_SIZE, MARKER_SIZE);
       }
     }
-  }
-
-  /**
-   * Returns the line height of the text component.
-   * 
-   * @since Date: Mar 21, 2012
-   * @return the height of a single line in the text component.
-   */
-  private int getLineHeight() {
-    if (getLineCount() > 1) {
-      try {
-        final Rectangle lineOne = this.textComponent.modelToView(0);
-        final Rectangle lineTwo = this.textComponent.modelToView(getLineStartOffsetOfSecondLine());
-        return lineTwo.y - lineOne.y;
-      } catch (final BadLocationException blex) {
-        Utils.logThrownThrowable(blex);
-      }
-    }
-    return this.textComponent.getFont().getSize() + 2;
   }
 
   /**

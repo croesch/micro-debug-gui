@@ -48,14 +48,4 @@ public abstract class ACodeArea extends MDTextPane {
     setEditable(false);
     setFont(new Font("Monospaced", getFont().getStyle(), getFont().getSize()));
   }
-
-  /**
-   * Returns the current line numbers of this text component. Based on {@link javax.swing.JTextArea#getLineCount()}.
-   * 
-   * @since Date: Mar 20, 2012
-   * @return the number of lines this text component has
-   */
-  public final int getLineCount() {
-    return getDocument().getDefaultRootElement().getElementCount();
-  }
 }

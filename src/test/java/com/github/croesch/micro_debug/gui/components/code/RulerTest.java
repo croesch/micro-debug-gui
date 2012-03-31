@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
@@ -40,7 +39,6 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
-import com.github.croesch.micro_debug.gui.components.basic.MDTextArea;
 import com.github.croesch.micro_debug.gui.debug.LineBreakPointHandler;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
@@ -74,16 +72,22 @@ public class RulerTest extends DefaultGUITestCase {
     return frameFixture;
   }
 
-  private MDTextArea getTA(final String name, final Object text) {
-    return GuiActionRunner.execute(new GuiQuery<MDTextArea>() {
+  private ACodeArea getTA(final String name, final Object text) {
+    return GuiActionRunner.execute(new GuiQuery<ACodeArea>() {
       @Override
-      protected MDTextArea executeInEDT() {
-        return new MDTextArea(name, text);
+      protected ACodeArea executeInEDT() {
+        final ACodeArea aCodeArea = new ACodeArea(name, null) {
+
+          /** default */
+          private static final long serialVersionUID = 1L;
+        };
+        aCodeArea.setText(text.toString());
+        return aCodeArea;
       }
     });
   }
 
-  private Ruler getRuler(final JTextArea area, final ILineBreakPointManager bpm) {
+  private Ruler getRuler(final ACodeArea area, final ILineBreakPointManager bpm) {
     return GuiActionRunner.execute(new GuiQuery<Ruler>() {
       @Override
       protected Ruler executeInEDT() {
@@ -97,7 +101,7 @@ public class RulerTest extends DefaultGUITestCase {
     printlnMethodName();
 
     final LineBreakPointHandler bpm = new LineBreakPointHandler();
-    final JTextArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
+    final ACodeArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
     final Ruler r = getRuler(ta, bpm);
 
     for (int line = 1; line <= ta.getLineCount(); ++line) {
@@ -114,7 +118,7 @@ public class RulerTest extends DefaultGUITestCase {
     printlnMethodName();
 
     final LineBreakPointHandler bpm = new LineBreakPointHandler();
-    final JTextArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
+    final ACodeArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
     final Ruler r = getRuler(ta, bpm);
 
     showFrame(r, ta);
@@ -182,7 +186,7 @@ public class RulerTest extends DefaultGUITestCase {
     this.lineMapper.setNewLines(1, 3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 20, 21, 50);
 
     final LineBreakPointHandler bpm = new LineBreakPointHandler();
-    final JTextArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
+    final ACodeArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
     final Ruler r = getRuler(ta, bpm);
 
     showFrame(r, ta);
@@ -266,7 +270,7 @@ public class RulerTest extends DefaultGUITestCase {
                                                                this.lineMapper.getLineForNumber(6)));
   }
 
-  private int getYOfLine(final JTextArea ta, final int line) throws BadLocationException {
+  private int getYOfLine(final ACodeArea ta, final int line) throws BadLocationException {
     return ta.modelToView(ta.getLineStartOffset(line)).y;
   }
 

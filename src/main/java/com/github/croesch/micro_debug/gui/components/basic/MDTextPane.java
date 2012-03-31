@@ -18,8 +18,14 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
+import java.awt.Rectangle;
+
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.StyledDocument;
+
+import com.github.croesch.micro_debug.commons.Utils;
 
 /**
  * An extension of {@link JTextPane} that contains some default behavior that not each client should have to implement.
@@ -53,5 +59,69 @@ public class MDTextPane extends JTextPane {
   public MDTextPane(final String name, final StyledDocument doc) {
     super(doc);
     setName(name);
+  }
+
+  /**
+   * Returns the line from the given offset. Implementation is based on
+   * {@link javax.swing.JTextArea#getLineOfOffset(int)}.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param offset the offset to determine the line from
+   * @return the line that contains the given offset,<br>
+   *         or <code>-1</code> if the given offset was invalid.
+   */
+  public final int getLineOfOffset(final int offset) {
+    if (offset < 0 || offset > getDocument().getLength()) {
+      return -1;
+    } else {
+      return getDocument().getDefaultRootElement().getElementIndex(offset);
+    }
+  }
+
+  /**
+   * Returns the current line numbers of this text component. Based on {@link javax.swing.JTextArea#getLineCount()}.
+   * 
+   * @since Date: Mar 20, 2012
+   * @return the number of lines this text component has
+   */
+  public final int getLineCount() {
+    return getDocument().getDefaultRootElement().getElementCount();
+  }
+
+  /**
+   * Returns the line height of the text component.
+   * 
+   * @since Date: Mar 21, 2012
+   * @return the height of a single line in the text component.
+   */
+  public final int getLineHeight() {
+    if (getLineCount() > 1) {
+      try {
+        final Rectangle lineOne = modelToView(0);
+        final Rectangle lineTwo = modelToView(getLineStartOffset(1));
+        return lineTwo.y - lineOne.y;
+      } catch (final BadLocationException blex) {
+        Utils.logThrownThrowable(blex);
+      }
+    }
+    return getFont().getSize() + 2;
+  }
+
+  /**
+   * Determines the offset of the start of the given line. Implementation based on
+   * {@link javax.swing.JTextArea#getLineStartOffset(int)}.
+   * 
+   * @since Date: Mar 21, 2012
+   * @param line the line number to translate
+   * @return the offset >= 0,<br>
+   *         or <code>-1</code> if the given line was invalid.
+   */
+  public final int getLineStartOffset(final int line) {
+    if (line < 0 || line >= getLineCount()) {
+      return -1;
+    } else {
+      final Element lineElem = getDocument().getDefaultRootElement().getElement(line);
+      return lineElem.getStartOffset();
+    }
   }
 }
