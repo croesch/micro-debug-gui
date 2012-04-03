@@ -18,9 +18,12 @@
  */
 package com.github.croesch.micro_debug.gui.components.code;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.text.Highlighter.Highlight;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
@@ -59,5 +62,49 @@ public class ACodeAreaTest extends DefaultGUITestCase {
     frame.textBox().requireNotEditable();
     frame.textBox().setText("...");
     frame.textBox().requireText("...");
+  }
+
+  @Test
+  public void testHighlight() throws InterruptedException {
+    final FrameFixture frame = showFrameWithArea();
+    frame.textBox().requireNotEditable();
+    frame.textBox().setText("...\nzweite Zeile\n\n4");
+    highlightLine(frame, 0);
+    assertLineHighlighted(frame, 0);
+
+    highlightLine(frame, 1);
+    assertLineHighlighted(frame, 1);
+
+    highlightLine(frame, 2);
+    assertLineHighlighted(frame, 2);
+
+    highlightLine(frame, 3);
+    assertLineHighlighted(frame, 3);
+
+    highlightLine(frame, 4);
+    assertNoLineHighlighted(frame);
+
+    highlightLine(frame, 3);
+    assertLineHighlighted(frame, 3);
+
+    highlightLine(frame, -1);
+    assertNoLineHighlighted(frame);
+  }
+
+  private void assertLineHighlighted(final FrameFixture frame, final int line) {
+    final Highlight[] highlights = frame.textBox().targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
+    assertThat(highlights).hasSize(1);
+    assertThat(highlights[0].getStartOffset()).isEqualTo(frame.textBox().targetCastedTo(ACodeArea.class)
+                                                           .getLineStartOffset(line));
+    assertThat(highlights[0].getPainter()).isInstanceOf(LineHighlighter.class);
+  }
+
+  private void assertNoLineHighlighted(final FrameFixture frame) {
+    final Highlight[] highlights = frame.textBox().targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
+    assertThat(highlights).isEmpty();
+  }
+
+  private void highlightLine(final FrameFixture frame, final int line) {
+    frame.textBox().targetCastedTo(ACodeArea.class).highlight(line);
   }
 }
