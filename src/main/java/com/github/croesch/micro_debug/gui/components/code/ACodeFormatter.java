@@ -18,11 +18,19 @@
  */
 package com.github.croesch.micro_debug.gui.components.code;
 
+import java.awt.Color;
+
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import com.github.croesch.micro_debug.commons.Utils;
 
 /**
  * Formats the text of the document that is being listened on each change of the underlying text.
@@ -31,6 +39,29 @@ import javax.swing.text.StyledDocument;
  * @since Date: Mar 30, 2012
  */
 abstract class ACodeFormatter implements DocumentListener {
+
+  /** the attributes to format all text that isn't identified to be something special */
+  private final MutableAttributeSet invalidFormat = new SimpleAttributeSet();
+
+  /**
+   * Constructs a code formatter.
+   * 
+   * @since Date: Apr 6, 2012
+   */
+  ACodeFormatter() {
+    StyleConstants.setBold(this.invalidFormat, false);
+    StyleConstants.setForeground(this.invalidFormat, Color.RED);
+  }
+
+  /**
+   * Returns the {@link MutableAttributeSet} to format invalid tokens with.
+   * 
+   * @since Date: Apr 6, 2012
+   * @return the {@link MutableAttributeSet} to format invalid tokens with
+   */
+  public final MutableAttributeSet getInvalidFormat() {
+    return this.invalidFormat;
+  }
 
   /**
    * Performs the update of the text style on changes of the text to format.
@@ -56,7 +87,84 @@ abstract class ACodeFormatter implements DocumentListener {
    * @since Date: Mar 30, 2012
    * @param doc the document containing the text to format.
    */
-  protected abstract void format(final StyledDocument doc);
+  private void format(final StyledDocument doc) {
+
+    final String text = getText(doc);
+
+    if (text != null) {
+
+      int begin = 0;
+      int end = 0;
+
+      // iterate over the whole text, shifting the to indexes
+      while (end < text.length()) {
+
+        // search for the next separating character (or the EOF)
+        while (end < text.length() && !isSeparator(text.charAt(end))) {
+          ++end;
+        }
+
+        final String token = text.substring(begin, end);
+
+        formatToken(doc, begin, token);
+
+        if (end < text.length()) {
+          formatSeparator(doc, end, text.charAt(end));
+        }
+
+        // shift the indexes to the position after the separating character already formatted
+        begin = ++end;
+      }
+
+    }
+  }
+
+  /**
+   * Returns whether the given character is a separator.
+   * 
+   * @since Date: Apr 6, 2012
+   * @param c the character to check
+   * @return <code>true</code> if the given character is a separator,<br>
+   *         <code>false</code> otherwise
+   */
+  protected abstract boolean isSeparator(char c);
+
+  /**
+   * Performs to add formatting information to the given document about the given separator at the given index.
+   * 
+   * @since Date: Mar 31, 2012
+   * @param doc the document that holds the given separator at the given position
+   * @param index the index, where the separator is placed in the document
+   * @param sep the separating character itself.
+   */
+  protected abstract void formatSeparator(final StyledDocument doc, final int index, final char sep);
+
+  /**
+   * Formats the given token that starts at the given index in the given document.
+   * 
+   * @since Date: Mar 31, 2012
+   * @param doc the document that holds the token and should receive style information about the token.
+   * @param index the index, where the token starts in the document.
+   * @param token the token itself
+   */
+  protected abstract void formatToken(final StyledDocument doc, final int index, final String token);
+
+  /**
+   * Returns the text of the given document. Theoretically this could return <code>null</code> if the document throws a
+   * {@link BadLocationException}, but this should never happen!
+   * 
+   * @since Date: Mar 31, 2012
+   * @param doc the document to read the text from.
+   * @return the whole text of the document.
+   */
+  private String getText(final StyledDocument doc) {
+    try {
+      return doc.getText(0, doc.getLength());
+    } catch (final BadLocationException e) {
+      Utils.logThrownThrowable(e);
+    }
+    return null;
+  }
 
   /** {@inheritDoc} */
   public final void insertUpdate(final DocumentEvent e) {

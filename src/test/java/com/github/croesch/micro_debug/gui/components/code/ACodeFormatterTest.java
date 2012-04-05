@@ -73,9 +73,19 @@ public class ACodeFormatterTest extends DefaultGUITestCase {
       }
     });
     ta.getDocument().addDocumentListener(new ACodeFormatter() {
+      @Override
+      protected boolean isSeparator(final char charAt) {
+        ++ACodeFormatterTest.this.invoked;
+        return false;
+      }
 
       @Override
-      protected void format(final StyledDocument doc) {
+      protected void formatSeparator(final StyledDocument doc, final int index, final char sep) {
+        ++ACodeFormatterTest.this.invoked;
+      }
+
+      @Override
+      protected void formatToken(final StyledDocument doc, final int index, final String token) {
         ++ACodeFormatterTest.this.invoked;
       }
     });
@@ -94,9 +104,19 @@ public class ACodeFormatterTest extends DefaultGUITestCase {
       }
     });
     ta.getDocument().addDocumentListener(new ACodeFormatter() {
+      @Override
+      protected boolean isSeparator(final char charAt) {
+        ++ACodeFormatterTest.this.invoked;
+        return false;
+      }
 
       @Override
-      protected void format(final StyledDocument doc) {
+      protected void formatSeparator(final StyledDocument doc, final int index, final char sep) {
+        ++ACodeFormatterTest.this.invoked;
+      }
+
+      @Override
+      protected void formatToken(final StyledDocument doc, final int index, final String token) {
         ++ACodeFormatterTest.this.invoked;
       }
     });
@@ -104,9 +124,10 @@ public class ACodeFormatterTest extends DefaultGUITestCase {
 
     assertThat(this.invoked).isZero();
     final JTextComponentFixture tf = new JTextComponentFixture(robot(), ta).enterText("12345");
-    assertThat(this.invoked).isEqualTo(5);
+    assertThat(this.invoked).isEqualTo(20);
 
+    // empty text will not be formatted
     tf.deleteText();
-    assertThat(this.invoked).isEqualTo(6);
+    assertThat(this.invoked).isEqualTo(20);
   }
 }

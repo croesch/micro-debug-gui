@@ -22,13 +22,11 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.text.BadLocationException;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.mic1.register.Register;
 
 /**
@@ -72,9 +70,6 @@ final class MicroCodeFormatter extends ACodeFormatter {
   /** the attributes to format numbers */
   private final MutableAttributeSet numberFormat = new SimpleAttributeSet();
 
-  /** the attributes to format all text that isn't identified to be something special */
-  private final MutableAttributeSet normalFormat = new SimpleAttributeSet();
-
   /**
    * Constructs a formatter for micro code.
    * 
@@ -104,70 +99,10 @@ final class MicroCodeFormatter extends ACodeFormatter {
 
     StyleConstants.setBold(this.separatorsFormat, false);
     StyleConstants.setForeground(this.separatorsFormat, Color.GRAY);
-
-    StyleConstants.setBold(this.normalFormat, false);
-    StyleConstants.setForeground(this.normalFormat, Color.RED);
   }
 
   @Override
-  protected void format(final StyledDocument doc) {
-
-    final String text = getText(doc);
-
-    if (text != null) {
-
-      int begin = 0;
-      int end = 0;
-
-      // iterate over the whole text, shifting the to indexes
-      while (end < text.length()) {
-
-        // search for the next separating character (or the EOF)
-        while (end < text.length() && !SEPS.contains(text.charAt(end)) && !SEP_OPS.contains(text.charAt(end))) {
-          ++end;
-        }
-
-        final String token = text.substring(begin, end);
-
-        formatToken(doc, begin, token);
-
-        if (end < text.length()) {
-          formatSeparator(doc, end, text.charAt(end));
-        }
-
-        // shift the indexes to the position after the separating character already formatted
-        begin = ++end;
-      }
-
-    }
-  }
-
-  /**
-   * Returns the text of the given document. Theoretically this could return <code>null</code> if the document throws a
-   * {@link BadLocationException}, but this should never happen!
-   * 
-   * @since Date: Mar 31, 2012
-   * @param doc the document to read the text from.
-   * @return the whole text of the document.
-   */
-  private String getText(final StyledDocument doc) {
-    try {
-      return doc.getText(0, doc.getLength());
-    } catch (final BadLocationException e) {
-      Utils.logThrownThrowable(e);
-    }
-    return null;
-  }
-
-  /**
-   * Performs to add formatting information to the given document about the given separator at the given index.
-   * 
-   * @since Date: Mar 31, 2012
-   * @param doc the document that holds the given separator at the given position
-   * @param index the index, where the separator is placed in the document
-   * @param sep the separating character itself.
-   */
-  private void formatSeparator(final StyledDocument doc, final int index, final char sep) {
+  protected void formatSeparator(final StyledDocument doc, final int index, final char sep) {
     if (SEP_OPS.contains(Character.valueOf(sep))) {
       // we have just an operator that works as a separator
       doc.setCharacterAttributes(index, 1, this.operatorsFormat, true);
@@ -177,15 +112,8 @@ final class MicroCodeFormatter extends ACodeFormatter {
     }
   }
 
-  /**
-   * Formats the given token that starts at the given index in the given document.
-   * 
-   * @since Date: Mar 31, 2012
-   * @param doc the document that holds the token and should receive style information about the token.
-   * @param index the index, where the token starts in the document.
-   * @param token the token itself
-   */
-  private void formatToken(final StyledDocument doc, final int index, final String token) {
+  @Override
+  protected void formatToken(final StyledDocument doc, final int index, final String token) {
     // the attributes defining how to format this token
     MutableAttributeSet format;
 
@@ -200,7 +128,7 @@ final class MicroCodeFormatter extends ACodeFormatter {
     } else if (token.matches("([0-9]+)|(0x[0-9A-F]+)")) {
       format = this.numberFormat;
     } else {
-      format = this.normalFormat;
+      format = getInvalidFormat();
     }
 
     // inform the document about how to format the given token
@@ -222,5 +150,10 @@ final class MicroCodeFormatter extends ACodeFormatter {
       }
     }
     return false;
+  }
+
+  @Override
+  protected boolean isSeparator(final char c) {
+    return SEPS.contains(c) || SEP_OPS.contains(c);
   }
 }
