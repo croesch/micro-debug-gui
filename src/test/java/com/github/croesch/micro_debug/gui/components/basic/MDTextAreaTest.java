@@ -35,7 +35,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class MDTextAreaTest extends DefaultGUITestCase {
 
-  private MDTextArea getTA(final String name, final Object text) {
+  public static MDTextArea getTA(final String name, final Object text) {
     return GuiActionRunner.execute(new GuiQuery<MDTextArea>() {
       @Override
       protected MDTextArea executeInEDT() {
@@ -44,7 +44,7 @@ public class MDTextAreaTest extends DefaultGUITestCase {
     });
   }
 
-  private MDTextArea getTA(final String name) {
+  public static MDTextArea getTA(final String name) {
     return GuiActionRunner.execute(new GuiQuery<MDTextArea>() {
       @Override
       protected MDTextArea executeInEDT() {

@@ -35,7 +35,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class MDTextFieldTest extends DefaultGUITestCase {
 
-  private MDTextField getTF(final String name, final Object text) {
+  public static MDTextField getTF(final String name, final Object text) {
     return GuiActionRunner.execute(new GuiQuery<MDTextField>() {
       @Override
       protected MDTextField executeInEDT() {
@@ -44,7 +44,7 @@ public class MDTextFieldTest extends DefaultGUITestCase {
     });
   }
 
-  private MDTextField getTF(final String name) {
+  public static MDTextField getTF(final String name) {
     return GuiActionRunner.execute(new GuiQuery<MDTextField>() {
       @Override
       protected MDTextField executeInEDT() {

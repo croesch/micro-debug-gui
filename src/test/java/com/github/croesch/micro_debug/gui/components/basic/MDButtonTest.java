@@ -35,7 +35,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class MDButtonTest extends DefaultGUITestCase {
 
-  private MDButton getButton(final String name, final Object text) {
+  public static MDButton getButton(final String name, final Object text) {
     return GuiActionRunner.execute(new GuiQuery<MDButton>() {
       @Override
       protected MDButton executeInEDT() {

@@ -36,7 +36,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class NumberLabelTest extends DefaultGUITestCase {
 
-  private NumberLabel getLabel(final String name, final Object mask) {
+  public static NumberLabel getLabel(final String name, final Object mask) {
     return GuiActionRunner.execute(new GuiQuery<NumberLabel>() {
       @Override
       protected NumberLabel executeInEDT() {

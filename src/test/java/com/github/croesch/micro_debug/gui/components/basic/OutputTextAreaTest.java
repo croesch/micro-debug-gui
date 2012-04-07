@@ -41,7 +41,7 @@ import com.github.croesch.micro_debug.mic1.io.Output;
  */
 public class OutputTextAreaTest extends DefaultGUITestCase {
 
-  private OutputTextArea getTA(final String name) {
+  public static OutputTextArea getTA(final String name) {
     return GuiActionRunner.execute(new GuiQuery<OutputTextArea>() {
       @Override
       protected OutputTextArea executeInEDT() {

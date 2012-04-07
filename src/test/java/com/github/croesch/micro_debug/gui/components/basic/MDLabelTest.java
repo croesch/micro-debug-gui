@@ -40,7 +40,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class MDLabelTest extends DefaultGUITestCase {
 
-  private MDLabel getLabel(final String name, final Object text) {
+  public static MDLabel getLabel(final String name, final Object text) {
     return GuiActionRunner.execute(new GuiQuery<MDLabel>() {
       @Override
       protected MDLabel executeInEDT() {

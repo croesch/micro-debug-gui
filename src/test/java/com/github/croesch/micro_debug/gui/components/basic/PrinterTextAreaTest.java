@@ -41,7 +41,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class PrinterTextAreaTest extends DefaultGUITestCase {
 
-  private PrinterTextArea getTA(final String name) {
+  public static PrinterTextArea getTA(final String name) {
     return GuiActionRunner.execute(new GuiQuery<PrinterTextArea>() {
       @Override
       protected PrinterTextArea executeInEDT() {
