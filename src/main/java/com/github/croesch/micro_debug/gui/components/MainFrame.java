@@ -20,6 +20,14 @@ package com.github.croesch.micro_debug.gui.components;
 
 import java.awt.Dimension;
 
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
+import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
+import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -49,6 +57,34 @@ public final class MainFrame extends SizedFrame {
   public MainFrame(final Mic1 proc) {
     super("...", new Dimension(SPECIAL_VALUE, SPECIAL_VALUE));
     this.processor = proc;
+
+    buildUI();
+  }
+
+  /**
+   * Builds the ui of this frame.
+   * 
+   * @since Date: Apr 8, 2012
+   */
+  private void buildUI() {
+    setLayout(new MigLayout("fill"));
+
+    final JScrollPane regPane = new MDScrollPane("register", new MDPanel("register"));
+    final JScrollPane memPane = new MDScrollPane("memory", new MDPanel("memory"));
+    final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
+    final JScrollPane procPane = new MDScrollPane("processorTAs", new MDPanel("processorTAs"));
+    final JScrollPane debugPane = new MDScrollPane("debuggerTA", new MDPanel("debuggerTA"));
+
+    final JSplitPane bottomPane = new MDSplitPane("processorTas-debuggerTa",
+                                                  JSplitPane.HORIZONTAL_SPLIT,
+                                                  procPane,
+                                                  debugPane);
+
+    final JSplitPane leftPane = new MDSplitPane("register-mem", JSplitPane.VERTICAL_SPLIT, regPane, memPane);
+    final JSplitPane rightPane = new MDSplitPane("code-tas", JSplitPane.VERTICAL_SPLIT, codePane, bottomPane);
+
+    final JSplitPane pane = new MDSplitPane("register-rest", JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
+    add(pane, "grow");
   }
 
   /**
