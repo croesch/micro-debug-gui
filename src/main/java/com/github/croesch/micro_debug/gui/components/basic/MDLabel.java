@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.components.api.IInvertable;
 
 /**
  * An extension of {@link JLabel} that contains some default behavior that not each client should have to implement.
@@ -31,7 +32,7 @@ import com.github.croesch.micro_debug.commons.Utils;
  * @author croesch
  * @since Date: Mar 3, 2012
  */
-public class MDLabel extends JLabel {
+public class MDLabel extends JLabel implements IInvertable {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -3518553239851224436L;
@@ -56,9 +57,7 @@ public class MDLabel extends JLabel {
   }
 
   /**
-   * Inverts the background color of this label. Useful when displaying table like structures.
-   * 
-   * @since Date: Mar 13, 2012
+   * {@inheritDoc}
    */
   public final void invert() {
     final Color newColor = this.otherColor;

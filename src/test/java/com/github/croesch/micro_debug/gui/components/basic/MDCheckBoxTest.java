@@ -20,15 +20,18 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JCheckBoxFixture;
 import org.junit.Test;
 
@@ -289,5 +292,35 @@ public class MDCheckBoxTest extends DefaultGUITestCase {
     cb.requireText("");
     assertThat(cb.component().getName()).isNull();
     assertThat(cb.component().getIcon()).isEqualTo(i);
+  }
+
+  @Test
+  public void testInvert() {
+    printlnMethodName();
+    final JCheckBoxFixture cb = new JCheckBoxFixture(robot(), getCheckBox("cb", "text"));
+    final Color normalColor = cb.background().target();
+    final Color invertedColor = UIManager.getColor("CheckBox.background").darker();
+    cb.background().requireEqualTo(normalColor);
+
+    invertColor(cb);
+    cb.background().requireEqualTo(invertedColor);
+
+    invertColor(cb);
+    cb.background().requireEqualTo(normalColor);
+
+    invertColor(cb);
+    cb.background().requireEqualTo(invertedColor);
+
+    invertColor(cb);
+    cb.background().requireEqualTo(normalColor);
+  }
+
+  private void invertColor(final JCheckBoxFixture cbFixture) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        cbFixture.targetCastedTo(MDCheckBox.class).invert();
+      }
+    });
   }
 }

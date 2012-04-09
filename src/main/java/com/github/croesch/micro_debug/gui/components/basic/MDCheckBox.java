@@ -18,9 +18,14 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
+import java.awt.Color;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.UIManager;
+
+import com.github.croesch.micro_debug.gui.components.api.IInvertable;
 
 /**
  * An extension of {@link JCheckBox} that contains some default behavior that not each client should have to implement.
@@ -28,10 +33,17 @@ import javax.swing.JCheckBox;
  * @author croesch
  * @since Date: Apr 9, 2012
  */
-public class MDCheckBox extends JCheckBox {
+public class MDCheckBox extends JCheckBox implements IInvertable {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -4966283337378730078L;
+
+  /**
+   * Initially the background color for inverted check boxes, when inverted once this contains the background color,
+   * currently not visible. For instance, if the check box is currently inverted this contains the normal background
+   * color.
+   */
+  private Color otherColor = UIManager.getColor("CheckBox.background").darker();
 
   /**
    * Creates an unselected {@link MDCheckBox} button with the given name, no text and no icon.
@@ -135,5 +147,14 @@ public class MDCheckBox extends JCheckBox {
   public MDCheckBox(final String name, final String text, final Icon icon, final boolean selected) {
     super(text, icon, selected);
     setName(name);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void invert() {
+    final Color newColor = this.otherColor;
+    this.otherColor = getBackground();
+    setBackground(newColor);
   }
 }
