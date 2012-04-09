@@ -68,6 +68,27 @@ public class RegisterPanelTest extends DefaultGUITestCase {
   }
 
   @Test
+  public void testGetCheckBox() {
+    printlnMethodName();
+
+    final RegisterPanel p = getPanel("r");
+    showInFrame(p);
+
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
+    assertThat(panel.checkBox("bpCB-CPP").component()).isEqualTo(p.getCheckBox(Register.CPP));
+    assertThat(panel.checkBox("bpCB-H").component()).isEqualTo(p.getCheckBox(Register.H));
+    assertThat(panel.checkBox("bpCB-LV").component()).isEqualTo(p.getCheckBox(Register.LV));
+    assertThat(panel.checkBox("bpCB-MAR").component()).isEqualTo(p.getCheckBox(Register.MAR));
+    assertThat(panel.checkBox("bpCB-MBR").component()).isEqualTo(p.getCheckBox(Register.MBR));
+    assertThat(panel.checkBox("bpCB-MBRU").component()).isEqualTo(p.getCheckBox(Register.MBRU));
+    assertThat(panel.checkBox("bpCB-MDR").component()).isEqualTo(p.getCheckBox(Register.MDR));
+    assertThat(panel.checkBox("bpCB-OPC").component()).isEqualTo(p.getCheckBox(Register.OPC));
+    assertThat(panel.checkBox("bpCB-PC").component()).isEqualTo(p.getCheckBox(Register.PC));
+    assertThat(panel.checkBox("bpCB-SP").component()).isEqualTo(p.getCheckBox(Register.SP));
+    assertThat(panel.checkBox("bpCB-TOS").component()).isEqualTo(p.getCheckBox(Register.TOS));
+  }
+
+  @Test
   public void testPanel() {
     printlnMethodName();
 
@@ -76,46 +97,57 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     final JPanelFixture panel = new JPanelFixture(robot(), p);
     assertThat(panel.component().getName()).isEqualTo("r");
     panel.label("regDesc-CPP").requireText("CPP");
+    panel.checkBox("bpCB-CPP").requireNotSelected();
     assertThat(panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.CPP
                                                                                                       .getValue());
 
     panel.label("regDesc-H").requireText("H");
+    panel.checkBox("bpCB-H").requireNotSelected();
     assertThat(panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber())
       .isEqualTo(Register.H.getValue());
 
     panel.label("regDesc-LV").requireText("LV");
+    panel.checkBox("bpCB-LV").requireNotSelected();
     assertThat(panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.LV
                                                                                                      .getValue());
 
     panel.label("regDesc-MAR").requireText("MAR");
+    panel.checkBox("bpCB-MAR").requireNotSelected();
     assertThat(panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MAR
                                                                                                       .getValue());
 
     panel.label("regDesc-MBR").requireText("MBR");
+    panel.checkBox("bpCB-MBR").requireNotSelected();
     assertThat(panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBR
                                                                                                       .getValue());
 
     panel.label("regDesc-MBRU").requireText("MBRU");
+    panel.checkBox("bpCB-MBRU").requireNotSelected();
     assertThat(panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBRU
                                                                                                        .getValue());
 
     panel.label("regDesc-MDR").requireText("MDR");
+    panel.checkBox("bpCB-MDR").requireNotSelected();
     assertThat(panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MDR
                                                                                                       .getValue());
 
     panel.label("regDesc-OPC").requireText("OPC");
+    panel.checkBox("bpCB-OPC").requireNotSelected();
     assertThat(panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.OPC
                                                                                                       .getValue());
 
     panel.label("regDesc-PC").requireText("PC");
+    panel.checkBox("bpCB-PC").requireNotSelected();
     assertThat(panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.PC
                                                                                                      .getValue());
 
     panel.label("regDesc-SP").requireText("SP");
+    panel.checkBox("bpCB-SP").requireNotSelected();
     assertThat(panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.SP
                                                                                                      .getValue());
 
     panel.label("regDesc-TOS").requireText("TOS");
+    panel.checkBox("bpCB-TOS").requireNotSelected();
     assertThat(panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.TOS
                                                                                                       .getValue());
   }

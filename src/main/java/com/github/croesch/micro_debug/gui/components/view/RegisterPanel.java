@@ -23,6 +23,7 @@ import java.util.EnumMap;
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.gui.components.basic.MDCheckBox;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
@@ -42,6 +43,9 @@ public class RegisterPanel extends MDPanel {
   /** the stored numbered labels */
   private final EnumMap<Register, NumberLabel> labels = new EnumMap<Register, NumberLabel>(Register.class);
 
+  /** the stored checkboxes */
+  private final EnumMap<Register, MDCheckBox> checkBoxes = new EnumMap<Register, MDCheckBox>(Register.class);
+
   /**
    * Constructs a new {@link RegisterPanel} with a line for each register presenting its name and value.
    * 
@@ -60,19 +64,23 @@ public class RegisterPanel extends MDPanel {
    */
   private void buildUI() {
     final MDPanel compPanel = new MDPanel(getName() + "-inner");
-    compPanel.setLayout(new MigLayout("fill, wrap 4", "[]0![grow]0![]0![grow]"));
+    compPanel.setLayout(new MigLayout("fill, wrap 5", "[]0![]0![grow]0![]0![grow]"));
 
     for (int i = 0; i < Register.values().length; ++i) {
       final Register r = Register.values()[i];
 
       final NumberLabel label = new NumberLabel("regValue-" + r.name(), "{0}");
       label.setNumber(r.getValue());
-      this.labels.put(r, label);
       final MDLabel descLabel = new MDLabel("regDesc-" + r.name(), r);
       final MDLabel spaceL = new MDLabel("spacerL-" + r.name(), null);
       final MDLabel spaceR = new MDLabel("spacerR-" + r.name(), null);
+      final MDCheckBox bpCB = new MDCheckBox("bpCB-" + r.name());
+
+      this.labels.put(r, label);
+      this.checkBoxes.put(r, bpCB);
 
       if (i % 2 == 0) {
+        bpCB.invert();
         label.setOpaque(true);
         label.invert();
         descLabel.setOpaque(true);
@@ -83,6 +91,7 @@ public class RegisterPanel extends MDPanel {
         spaceR.invert();
       }
 
+      compPanel.add(bpCB, new CC().grow());
       compPanel.add(descLabel, new CC().grow());
       compPanel.add(spaceL, new CC().grow());
       compPanel.add(label, new CC().grow());
@@ -104,5 +113,16 @@ public class RegisterPanel extends MDPanel {
         this.labels.get(r).setNumber(r.getValue());
       }
     }
+  }
+
+  /**
+   * Returns the check box that is responsible for setting break points for the given {@link Register}.
+   * 
+   * @since Date: Apr 9, 2012
+   * @param r the {@link Register}
+   * @return the check box that to select/unselect breakpoints for the given {@link Register}.
+   */
+  public final MDCheckBox getCheckBox(final Register r) {
+    return this.checkBoxes.get(r);
   }
 }
