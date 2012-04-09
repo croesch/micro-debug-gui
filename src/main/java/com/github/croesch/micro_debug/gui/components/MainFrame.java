@@ -29,6 +29,7 @@ import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
+import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -69,7 +70,7 @@ public final class MainFrame extends SizedFrame {
   private void buildUI() {
     setLayout(new MigLayout("fill"));
 
-    final JScrollPane regPane = new MDScrollPane("register", new MDPanel("register"));
+    final JScrollPane regPane = new MDScrollPane("register", new RegisterPanel("register"));
     final JScrollPane memPane = new MDScrollPane("memory", new MDPanel("memory"));
     final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
     final JScrollPane procPane = new MDScrollPane("processorTAs", new MDPanel("processorTAs"));
