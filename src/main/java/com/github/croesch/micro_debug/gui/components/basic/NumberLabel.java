@@ -117,6 +117,16 @@ public class NumberLabel extends MDLabel {
   }
 
   /**
+   * Gets the current number value for this label.
+   * 
+   * @since Date: Apr 9, 2012
+   * @return the current number stored in this label
+   */
+  public final int getNumber() {
+    return this.number;
+  }
+
+  /**
    * Updates the text displayed on the label.
    * 
    * @since Date: Mar 13, 2012
