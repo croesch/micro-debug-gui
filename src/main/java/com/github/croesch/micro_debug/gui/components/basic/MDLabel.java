@@ -20,6 +20,7 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import java.awt.Color;
 
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
@@ -44,15 +45,88 @@ public class MDLabel extends JLabel implements IInvertable {
   private Color otherColor = UIManager.getColor("Label.background").darker();
 
   /**
-   * Constructs the label with the given name and the given text.
+   * Constructs a {@link MDLabel} with the given name and the given text.
    * 
    * @since Date: Mar 3, 2012
-   * @param name the name of the component to set via {@link #setName(String)}
+   * @param name the name of this {@link MDLabel}.
    * @param text the {@link Object} thats {@link String} representation will be set as the text of the label
    * @see #setName(String)
    */
   public MDLabel(final String name, final Object text) {
     super(Utils.toString(text));
+    setName(name);
+  }
+
+  /**
+   * Constructs a {@link MDLabel} with the given name, the given image and the horizontal alignment as specified.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of this {@link MDLabel}.
+   * @param image the image to be displayed by the label
+   * @param horizontalAlignment the horizontal alignment of this label, one of the following:
+   *        {@link javax.swing.SwingConstants#LEFT}, {@link javax.swing.SwingConstants#CENTER},
+   *        {@link javax.swing.SwingConstants#RIGHT}, {@link javax.swing.SwingConstants#LEADING} or
+   *        {@link javax.swing.SwingConstants#TRAILING}
+   */
+  public MDLabel(final String name, final Icon image, final int horizontalAlignment) {
+    super(image, horizontalAlignment);
+    setName(name);
+  }
+
+  /**
+   * Constructs a {@link MDLabel} with the given name and the given image.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of this {@link MDLabel}.
+   * @param image the image to be displayed by the label
+   */
+  public MDLabel(final String name, final Icon image) {
+    super(image);
+    setName(name);
+  }
+
+  /**
+   * Constructs a {@link MDLabel} with the given name, the given text, the given image and the horizontal alignment as
+   * specified.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of this {@link MDLabel}.
+   * @param text the {@link Object} thats {@link String} representation will be set as the text of the label
+   * @param image the image to be displayed by the label
+   * @param horizontalAlignment the horizontal alignment of this label, one of the following:
+   *        {@link javax.swing.SwingConstants#LEFT}, {@link javax.swing.SwingConstants#CENTER},
+   *        {@link javax.swing.SwingConstants#RIGHT}, {@link javax.swing.SwingConstants#LEADING} or
+   *        {@link javax.swing.SwingConstants#TRAILING}
+   */
+  public MDLabel(final String name, final Object text, final Icon image, final int horizontalAlignment) {
+    super(Utils.toString(text), image, horizontalAlignment);
+    setName(name);
+  }
+
+  /**
+   * Constructs a {@link MDLabel} with the given name, the given text and the horizontal alignment as specified.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of this {@link MDLabel}.
+   * @param text the {@link Object} thats {@link String} representation will be set as the text of the label
+   * @param horizontalAlignment the horizontal alignment of this label, one of the following:
+   *        {@link javax.swing.SwingConstants#LEFT}, {@link javax.swing.SwingConstants#CENTER},
+   *        {@link javax.swing.SwingConstants#RIGHT}, {@link javax.swing.SwingConstants#LEADING} or
+   *        {@link javax.swing.SwingConstants#TRAILING}
+   */
+  public MDLabel(final String name, final Object text, final int horizontalAlignment) {
+    super(Utils.toString(text), horizontalAlignment);
+    setName(name);
+  }
+
+  /**
+   * Constructs a {@link MDLabel} with the given name.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of this {@link MDLabel}.
+   */
+  public MDLabel(final String name) {
+    super();
     setName(name);
   }
 
