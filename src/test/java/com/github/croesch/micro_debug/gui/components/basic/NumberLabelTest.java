@@ -45,6 +45,15 @@ public class NumberLabelTest extends DefaultGUITestCase {
     });
   }
 
+  public static NumberLabel getLabel(final String name, final int num) {
+    return GuiActionRunner.execute(new GuiQuery<NumberLabel>() {
+      @Override
+      protected NumberLabel executeInEDT() {
+        return new NumberLabel(name, num);
+      }
+    });
+  }
+
   @Test
   public void testLabel_NumericalVisualisations() {
     printlnMethodName();
@@ -128,14 +137,14 @@ public class NumberLabelTest extends DefaultGUITestCase {
   }
 
   @Test
-  public void testLabel() {
+  public void testLabel_StringObject() {
     printlnMethodName();
     JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", "{0}"));
     labelFixture.requireText("0");
     assertThat(labelFixture.component().getName()).isEqualTo("label");
     requireNumber(labelFixture, 0);
 
-    labelFixture = new JLabelFixture(robot(), getLabel("", 12));
+    labelFixture = new JLabelFixture(robot(), getLabel("", Integer.valueOf(12)));
     labelFixture.requireText("12");
     assertThat(labelFixture.component().getName()).isEmpty();
     requireNumber(labelFixture, 0);
@@ -149,6 +158,35 @@ public class NumberLabelTest extends DefaultGUITestCase {
     labelFixture.requireText("");
     assertThat(labelFixture.component().getName()).isEmpty();
     requireNumber(labelFixture, 0);
+  }
+
+  @Test
+  public void testLabel_StringInt() {
+    printlnMethodName();
+    JLabelFixture labelFixture = new JLabelFixture(robot(), getLabel("label", 0));
+    labelFixture.requireText("0");
+    assertThat(labelFixture.component().getName()).isEqualTo("label");
+    requireNumber(labelFixture, 0);
+
+    labelFixture = new JLabelFixture(robot(), getLabel("", 12));
+    labelFixture.requireText("12");
+    assertThat(labelFixture.component().getName()).isEmpty();
+    requireNumber(labelFixture, 12);
+
+    labelFixture = new JLabelFixture(robot(), getLabel(null, -1));
+    labelFixture.requireText("-1");
+    assertThat(labelFixture.component().getName()).isNull();
+    requireNumber(labelFixture, -1);
+
+    labelFixture = new JLabelFixture(robot(), getLabel("", Integer.MAX_VALUE));
+    labelFixture.requireText("2147483647");
+    assertThat(labelFixture.component().getName()).isEmpty();
+    requireNumber(labelFixture, Integer.MAX_VALUE);
+
+    labelFixture = new JLabelFixture(robot(), getLabel("", Integer.MIN_VALUE));
+    labelFixture.requireText("-2147483648");
+    assertThat(labelFixture.component().getName()).isEmpty();
+    requireNumber(labelFixture, Integer.MIN_VALUE);
   }
 
   @Test
@@ -184,6 +222,14 @@ public class NumberLabelTest extends DefaultGUITestCase {
 
     setNumber(labelFixture, 12);
     labelFixture.requireText("12{1}{2}3");
+    requireNumber(labelFixture, 12);
+
+    labelFixture = new JLabelFixture(robot(), getLabel("label", null));
+    labelFixture.requireText("");
+    requireNumber(labelFixture, 0);
+
+    setNumber(labelFixture, 12);
+    labelFixture.requireText("");
     requireNumber(labelFixture, 12);
   }
 

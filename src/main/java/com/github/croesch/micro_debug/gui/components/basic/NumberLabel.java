@@ -89,8 +89,22 @@ public class NumberLabel extends MDLabel {
    * @param textMask the mask to visualise the value of the label
    */
   public NumberLabel(final String name, final Object textMask) {
-    super(name, null);
+    super(name);
     this.mask = Utils.toString(textMask);
+    updateNumber();
+  }
+
+  /**
+   * Constructs a new label with the given value and the given name. The mask will be, just displaying the given number.
+   * 
+   * @since Date: Apr 12, 2012
+   * @param name the name of the label
+   * @param num the value of the label
+   */
+  public NumberLabel(final String name, final int num) {
+    super(name);
+    this.mask = "{0}";
+    this.number = num;
     updateNumber();
   }
 
