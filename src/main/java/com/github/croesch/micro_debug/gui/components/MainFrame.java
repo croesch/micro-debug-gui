@@ -45,7 +45,7 @@ public final class MainFrame extends SizedFrame {
   private final transient Mic1 processor;
 
   /** the controller of the debugger */
-  private final MainController controller;
+  private final transient MainController controller;
 
   /**
    * Constructs the main frame of the application to debug the given processor.

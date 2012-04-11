@@ -33,9 +33,6 @@ public final class MainController {
   /** the {@link BreakpointManager} that contains the breakpoints currently set in the debugger */
   private final BreakpointManager bpm = new BreakpointManager();
 
-  /** the view of the debugger */
-  private final MainView mainView;
-
   /**
    * Constructs the main controller for the given main view.
    * 
@@ -43,8 +40,7 @@ public final class MainController {
    * @param view the view this controller controlls and interacts with
    */
   public MainController(final MainView view) {
-    this.mainView = view;
-    new RegisterController(this.mainView.getRegisterView(), this.bpm);
+    new RegisterController(view.getRegisterView(), this.bpm);
   }
 
   /**
