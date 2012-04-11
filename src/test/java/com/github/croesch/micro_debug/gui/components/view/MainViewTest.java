@@ -21,6 +21,8 @@ package com.github.croesch.micro_debug.gui.components.view;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -33,7 +35,10 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.error.MacroFileFormatException;
+import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
  * Provides test cases for {@link MainView}.
@@ -43,23 +48,27 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
  */
 public class MainViewTest extends DefaultGUITestCase {
 
-  public static JFrame showViewInFrame(final String name) {
+  public static JFrame showViewInFrame(final String name, final Mic1 proc) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
       @Override
       protected JFrame executeInEDT() throws Throwable {
         final JFrame f = new JFrame();
         f.setLayout(new MigLayout("fill"));
-        f.add(new MainView(name).getViewComponent(), "grow");
+        f.add(new MainView(name, proc).getViewComponent(), "grow");
         return f;
       }
     });
   }
 
   @Test
-  public void testView() {
+  public void testView() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
     printlnMethodName();
 
-    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view"));
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", proc));
     frame.show(new Dimension(800, 500));
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);

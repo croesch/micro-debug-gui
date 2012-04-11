@@ -58,7 +58,7 @@ public final class MainFrame extends SizedFrame {
     this.processor = proc;
 
     setLayout(new MigLayout("fill"));
-    final MainView view = new MainView("main-view");
+    final MainView view = new MainView("main-view", this.processor);
     this.controller = new MainController(view);
     add(view.getViewComponent(), "grow");
   }
