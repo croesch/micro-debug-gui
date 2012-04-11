@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui.components;
+package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.awt.Dimension;
 
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
@@ -32,33 +34,33 @@ import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
-import com.github.croesch.micro_debug.mic1.Mic1;
-import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
-import com.github.croesch.micro_debug.mic1.controlstore.MicroInstructionReader;
 
 /**
- * Provides test cases for {@link MainFrame}.
+ * Provides test cases for {@link MainView}.
  * 
  * @author croesch
- * @since Date: Apr 8, 2012
+ * @since Date: Apr 11, 2012
  */
-public class MainFrameTest extends DefaultGUITestCase {
+public class MainViewTest extends DefaultGUITestCase {
 
-  public static MainFrame getFrame(final Mic1 processor) {
-    return GuiActionRunner.execute(new GuiQuery<MainFrame>() {
+  public static JFrame showViewInFrame(final String name) {
+    return GuiActionRunner.execute(new GuiQuery<JFrame>() {
       @Override
-      protected MainFrame executeInEDT() throws Throwable {
-        return new MainFrame(processor);
+      protected JFrame executeInEDT() throws Throwable {
+        final JFrame f = new JFrame();
+        f.setLayout(new MigLayout("fill"));
+        f.add(new MainView(name).getViewComponent(), "grow");
+        return f;
       }
     });
   }
 
   @Test
-  public void testFrame() {
+  public void testView() {
     printlnMethodName();
 
-    final FrameFixture frame = new FrameFixture(robot(), getFrame(null));
-    frame.show();
+    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view"));
+    frame.show(new Dimension(800, 500));
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("main-view").component().getLeftComponent().getName()).isEqualTo("register-mem");
@@ -85,24 +87,5 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane(pane).component().getLeftComponent().getName()).isEqualTo("processorTAs");
     assertThat(frame.splitPane(pane).component().getRightComponent()).isInstanceOf(JScrollPane.class);
     assertThat(frame.splitPane(pane).component().getRightComponent().getName()).isEqualTo("debuggerTA");
-  }
-
-  @Test
-  public void testBreakpoints() throws IOException {
-    printlnMethodName();
-    // instruction writes all registers
-    final MicroInstruction in = MicroInstructionReader.read(new ByteArrayInputStream(new byte[] { 0,
-                                                                                                 0,
-                                                                                                 (byte) 0xFF,
-                                                                                                 (byte) 0xFF,
-                                                                                                 0 }));
-
-    final MainFrame mainFrame = getFrame(null);
-    final FrameFixture frame = new FrameFixture(robot(), mainFrame);
-    frame.show();
-    frame.checkBox("bpCB-PC").check();
-    assertThat(mainFrame.getController().getBpm().isBreakpoint(0, 0, in, in)).isTrue();
-    frame.checkBox("bpCB-PC").uncheck();
-    assertThat(mainFrame.getController().getBpm().isBreakpoint(0, 0, in, in)).isFalse();
   }
 }

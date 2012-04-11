@@ -20,16 +20,11 @@ package com.github.croesch.micro_debug.gui.components;
 
 import java.awt.Dimension;
 
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
 import net.miginfocom.swing.MigLayout;
 
-import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
-import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
-import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
-import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
+import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -49,6 +44,9 @@ public final class MainFrame extends SizedFrame {
   /** the processor to debug */
   private final transient Mic1 processor;
 
+  /** the controller of the debugger */
+  private final MainController controller;
+
   /**
    * Constructs the main frame of the application to debug the given processor.
    * 
@@ -59,33 +57,10 @@ public final class MainFrame extends SizedFrame {
     super("...", new Dimension(SPECIAL_VALUE, SPECIAL_VALUE));
     this.processor = proc;
 
-    buildUI();
-  }
-
-  /**
-   * Builds the ui of this frame.
-   * 
-   * @since Date: Apr 8, 2012
-   */
-  private void buildUI() {
     setLayout(new MigLayout("fill"));
-
-    final JScrollPane regPane = new MDScrollPane("register", new RegisterPanel("register"));
-    final JScrollPane memPane = new MDScrollPane("memory", new MDPanel("memory"));
-    final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
-    final JScrollPane procPane = new MDScrollPane("processorTAs", new MDPanel("processorTAs"));
-    final JScrollPane debugPane = new MDScrollPane("debuggerTA", new MDPanel("debuggerTA"));
-
-    final JSplitPane bottomPane = new MDSplitPane("processorTas-debuggerTa",
-                                                  JSplitPane.HORIZONTAL_SPLIT,
-                                                  procPane,
-                                                  debugPane);
-
-    final JSplitPane leftPane = new MDSplitPane("register-mem", JSplitPane.VERTICAL_SPLIT, regPane, memPane);
-    final JSplitPane rightPane = new MDSplitPane("code-tas", JSplitPane.VERTICAL_SPLIT, codePane, bottomPane);
-
-    final JSplitPane pane = new MDSplitPane("register-rest", JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
-    add(pane, "grow");
+    final MainView view = new MainView("main-view");
+    this.controller = new MainController(view);
+    add(view.getViewComponent(), "grow");
   }
 
   /**
@@ -96,5 +71,15 @@ public final class MainFrame extends SizedFrame {
    */
   public Mic1 getProcessor() {
     return this.processor;
+  }
+
+  /**
+   * Returns the main controller of the debugger, that controls user input for the GUI.
+   * 
+   * @since Date: Apr 11, 2012
+   * @return the {@link MainController} controlling the input of the user.
+   */
+  public MainController getController() {
+    return this.controller;
   }
 }
