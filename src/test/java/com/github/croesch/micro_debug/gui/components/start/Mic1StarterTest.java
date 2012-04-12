@@ -80,6 +80,7 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     frame.button("okay").requireDisabled();
     frame.button("macro-assembler-file-browse").click();
     final JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
     fileChooser.selectFile(new File("some.ijvm"));
     fileChooser.approve();
 
@@ -90,7 +91,9 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     frame.button("okay").requireDisabled();
 
     frame.textBox("micro-assembler-file-path").requireEmpty();
-    frame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home") + "/some.ijvm");
+    frame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home")
+                                                                   + System.getProperty("file.separator")
+                                                                   + "/some.ijvm");
     frame.textBox("macro-assembler-file-path").requireDisabled();
     frame.textBox("macro-assembler-file-path").requireNotEditable();
 
