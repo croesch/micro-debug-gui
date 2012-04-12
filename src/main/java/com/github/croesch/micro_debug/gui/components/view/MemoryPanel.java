@@ -64,7 +64,8 @@ public class MemoryPanel extends MDPanel {
 
     for (int i = 0; i < size; ++i) {
       final NumberLabel label = new NumberLabel("memValue-" + i, proc.getMemoryValue(i));
-      final NumberLabel descLabel = new NumberLabel("memDesc-" + i, i);
+      final NumberLabel descLabel = new NumberLabel("memDesc-" + i, "{0}:");
+      descLabel.setNumber(i);
 
       this.labels[i] = label;
 
