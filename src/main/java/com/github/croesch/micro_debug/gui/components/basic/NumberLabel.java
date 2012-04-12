@@ -33,6 +33,9 @@ public class NumberLabel extends MDLabel {
   /** generated serial version UID */
   private static final long serialVersionUID = -1068419079694826800L;
 
+  /** instance of number parser to avoid masses of instances */
+  private static final IntegerParser PARSER = new IntegerParser();
+
   /** the number that is the value this label holds */
   private int number = 0;
 
@@ -110,7 +113,7 @@ public class NumberLabel extends MDLabel {
 
   @Override
   public final void setText(final String text) {
-    final Integer num = new IntegerParser().parse(text);
+    final Integer num = PARSER.parse(text);
     if (num == null) {
       this.number = 0;
     } else {
