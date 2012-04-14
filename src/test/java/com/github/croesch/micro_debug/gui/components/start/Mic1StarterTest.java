@@ -29,6 +29,7 @@ import org.fest.swing.edt.GuiTask;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.FileFormatException;
@@ -45,6 +46,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
 public class Mic1StarterTest extends DefaultGUITestCase {
 
   @Test
+  @Ignore("problem with FEST showing the frame containing 65K JLabels")
   public void testCreate() throws FileFormatException, FileNotFoundException {
     printlnMethodName();
     final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
@@ -65,6 +67,7 @@ public class Mic1StarterTest extends DefaultGUITestCase {
   }
 
   @Test
+  @Ignore("problem with FEST showing the frame containing 65K JLabels")
   public void testStart() throws FileFormatException, FileNotFoundException {
     printlnMethodName();
     final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();

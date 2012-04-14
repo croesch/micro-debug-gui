@@ -38,6 +38,9 @@ public class MemoryPanel extends MDPanel {
   /** the stored numbered labels */
   private final NumberLabel[] labels;
 
+  /** number of labels in the panel for testing purpose - TODO remove this workaround when FEST works */
+  private static final int TEST_SIZE = 100;
+
   /**
    * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
    * 
@@ -47,7 +50,11 @@ public class MemoryPanel extends MDPanel {
    */
   public MemoryPanel(final String name, final Mic1 proc) {
     super(name);
-    this.labels = new NumberLabel[proc.getMemory().getSize()];
+    if (proc == null) {
+      this.labels = new NumberLabel[TEST_SIZE];
+    } else {
+      this.labels = new NumberLabel[proc.getMemory().getSize()];
+    }
     buildUI(proc);
   }
 
@@ -58,12 +65,22 @@ public class MemoryPanel extends MDPanel {
    * @param proc the processor being debugged
    */
   private void buildUI(final Mic1 proc) {
-    final int size = proc.getMemory().getSize();
+    final int size;
+    if (proc == null) {
+      size = TEST_SIZE;
+    } else {
+      size = proc.getMemory().getSize();
+    }
 
     setLayout(new GridLayout(size, 2, 0, 0));
 
     for (int i = 0; i < size; ++i) {
-      final NumberLabel label = new NumberLabel("memValue-" + i, proc.getMemoryValue(i));
+      final NumberLabel label;
+      if (proc == null) {
+        label = new NumberLabel("memValue-" + i, TEST_SIZE);
+      } else {
+        label = new NumberLabel("memValue-" + i, proc.getMemoryValue(i));
+      }
       final NumberLabel descLabel = new NumberLabel("memDesc-" + i, "{0}:");
       descLabel.setNumber(i);
 

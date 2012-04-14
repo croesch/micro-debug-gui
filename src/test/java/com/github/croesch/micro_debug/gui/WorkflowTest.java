@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.FileFormatException;
@@ -43,6 +44,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
 public class WorkflowTest extends DefaultGUITestCase {
 
   @Test
+  @Ignore("problem with FEST showing the frame containing 65K JLabels")
   public void testWorkflow() throws FileFormatException, FileNotFoundException, InterruptedException {
     printlnMethodName();
 
