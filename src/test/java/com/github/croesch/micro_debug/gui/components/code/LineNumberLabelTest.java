@@ -71,6 +71,15 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     });
   }
 
+  private LineNumberLabel getLabel(final ACodeArea ta, final LineNumberMapper mapper) {
+    return GuiActionRunner.execute(new GuiQuery<LineNumberLabel>() {
+      @Override
+      protected LineNumberLabel executeInEDT() {
+        return new LineNumberLabel(ta, mapper);
+      }
+    });
+  }
+
   private ACodeArea getTA(final String name, final String text) {
     return GuiActionRunner.execute(new GuiQuery<ACodeArea>() {
       @Override
@@ -282,7 +291,12 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   @Test(expected = NullPointerException.class)
   public void testNullTA() {
-    new JLabelFixture(robot(), getLabel(null));
+    getLabel(null);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testNullMapper() {
+    getLabel(getTA("ta", "hi"), null);
   }
 
   private String getTextAsserted(final int lines) {

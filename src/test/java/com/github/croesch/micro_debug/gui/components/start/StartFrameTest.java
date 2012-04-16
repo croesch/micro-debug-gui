@@ -30,6 +30,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.fest.swing.core.MouseButton;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
@@ -314,5 +315,15 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
     this.startFrame.button("okay").requireEnabled();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull_Creator() {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() {
+        new StartFrame(null);
+      }
+    });
   }
 }

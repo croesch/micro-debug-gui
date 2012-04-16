@@ -97,6 +97,15 @@ public class RulerTest extends DefaultGUITestCase {
     });
   }
 
+  private Ruler getRuler(final ACodeArea area, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+    return GuiActionRunner.execute(new GuiQuery<Ruler>() {
+      @Override
+      protected Ruler executeInEDT() {
+        return new Ruler(area, bpm, mapper);
+      }
+    });
+  }
+
   @Test
   public void testSynchronisationWithManager() {
     printlnMethodName();
@@ -298,4 +307,20 @@ public class RulerTest extends DefaultGUITestCase {
     assertThat(r.isBreakpoint(line)).isFalse();
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull_TA() {
+    final LineBreakPointHandler bpm = new LineBreakPointHandler();
+    getRuler(null, bpm);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull_BPM() {
+    getRuler(getTA("ta", "hi"), null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull_Mapper() {
+    final LineBreakPointHandler bpm = new LineBreakPointHandler();
+    getRuler(getTA("ta", "hi"), bpm, null);
+  }
 }
