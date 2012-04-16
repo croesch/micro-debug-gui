@@ -42,7 +42,7 @@ public class MemoryPanel extends MDPanel {
   private static final int TEST_SIZE = 100;
 
   /** the processor being debugged */
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
