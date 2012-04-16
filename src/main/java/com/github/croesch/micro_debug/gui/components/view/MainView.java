@@ -92,4 +92,16 @@ public final class MainView {
   public RegisterPanel getRegisterView() {
     return this.registerView;
   }
+
+  /**
+   * Returns the component responsible for visualising the {@link com.github.croesch.micro_debug.mic1.mem.Memory} s
+   * values.
+   * 
+   * @since Date: Apr 16, 2012
+   * @return the {@link JComponent} containing the view visualising the
+   *         {@link com.github.croesch.micro_debug.mic1.mem.Memory}s values.
+   */
+  public MemoryPanel getMemoryView() {
+    return this.memoryView;
+  }
 }

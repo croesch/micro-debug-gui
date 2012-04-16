@@ -49,6 +49,7 @@ public final class MainController implements IProcessorInterpreter {
    */
   public MainController(final MainView view) {
     this.controllers.add(new RegisterController(view.getRegisterView(), this.bpm));
+    this.controllers.add(new MemoryController(view.getMemoryView()));
   }
 
   /**
