@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
@@ -62,7 +63,6 @@ public class MemoryPanelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         final JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLayout(new MigLayout("fill"));
         f.add(panel);
         f.setSize(500, 500);
@@ -98,5 +98,50 @@ public class MemoryPanelTest extends DefaultGUITestCase {
       panel.label("memDesc-" + addr).requireText(addr + ":");
       assertThat(panel.label("memValue-" + addr).targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(100);
     }
+  }
+
+  @Test
+  public void testUpdate() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MemoryPanel p = getPanel("mem", proc);
+
+    for (int i = 0; i < proc.getMemory().getSize(); ++i) {
+      assertThat(p.getLabel(i).getNumber()).isEqualTo(proc.getMemoryValue(i));
+    }
+
+    final int value1 = proc.getMemoryValue(17);
+    final int value2 = proc.getMemoryValue(4711);
+    proc.setMemoryValue(17, 42);
+    proc.setMemoryValue(4711, 42);
+
+    for (int i = 0; i < proc.getMemory().getSize(); ++i) {
+      if (i != 17 && i != 4711) {
+        assertThat(p.getLabel(i).getNumber()).isEqualTo(proc.getMemoryValue(i));
+      }
+    }
+    assertThat(p.getLabel(17).getNumber()).isEqualTo(value1);
+    assertThat(p.getLabel(17).getNumber()).isNotEqualTo(proc.getMemoryValue(17));
+    assertThat(p.getLabel(4711).getNumber()).isEqualTo(value2);
+    assertThat(p.getLabel(4711).getNumber()).isNotEqualTo(proc.getMemoryValue(4711));
+
+    update(p);
+
+    for (int i = 0; i < proc.getMemory().getSize(); ++i) {
+      assertThat(p.getLabel(i).getNumber()).isEqualTo(proc.getMemoryValue(i));
+    }
+  }
+
+  private void update(final MemoryPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.update();
+      }
+    });
   }
 }

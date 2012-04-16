@@ -41,6 +41,9 @@ public class MemoryPanel extends MDPanel {
   /** number of labels in the panel for testing purpose - TODO remove this workaround when FEST works */
   private static final int TEST_SIZE = 100;
 
+  /** the processor being debugged */
+  private final Mic1 processor;
+
   /**
    * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
    * 
@@ -50,36 +53,36 @@ public class MemoryPanel extends MDPanel {
    */
   public MemoryPanel(final String name, final Mic1 proc) {
     super(name);
-    if (proc == null) {
+    this.processor = proc;
+    if (this.processor == null) {
       this.labels = new NumberLabel[TEST_SIZE];
     } else {
-      this.labels = new NumberLabel[proc.getMemory().getSize()];
+      this.labels = new NumberLabel[this.processor.getMemory().getSize()];
     }
-    buildUI(proc);
+    buildUI();
   }
 
   /**
    * Builds the panel and the components for it and assembles them.
    * 
    * @since Date: Apr 11, 2012
-   * @param proc the processor being debugged
    */
-  private void buildUI(final Mic1 proc) {
+  private void buildUI() {
     final int size;
-    if (proc == null) {
+    if (this.processor == null) {
       size = TEST_SIZE;
     } else {
-      size = proc.getMemory().getSize();
+      size = this.processor.getMemory().getSize();
     }
 
     setLayout(new GridLayout(size, 2, 0, 0));
 
     for (int i = 0; i < size; ++i) {
       final NumberLabel label;
-      if (proc == null) {
+      if (this.processor == null) {
         label = new NumberLabel("memValue-" + i, TEST_SIZE);
       } else {
-        label = new NumberLabel("memValue-" + i, proc.getMemoryValue(i));
+        label = new NumberLabel("memValue-" + i, this.processor.getMemoryValue(i));
       }
       final NumberLabel descLabel = new NumberLabel("memDesc-" + i, "{0}:");
       descLabel.setNumber(i);
@@ -104,6 +107,26 @@ public class MemoryPanel extends MDPanel {
    * @since Date: Apr 9, 2012
    */
   public final void update() {
-    // TODO
+    if (this.processor != null) {
+      for (int i = 0; i < this.labels.length; ++i) {
+        if (this.labels[i].getNumber() != this.processor.getMemoryValue(i)) {
+          this.labels[i].setNumber(this.processor.getMemoryValue(i));
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns the value label for the given memory address.
+   * 
+   * @since Date: Apr 16, 2012
+   * @param number the label represents the value at the memory address with this number
+   * @return the label showing the value of the memory at the given address.
+   */
+  public final NumberLabel getLabel(final int number) {
+    if (number < 0 || number >= this.labels.length) {
+      throw new IllegalArgumentException();
+    }
+    return this.labels[number];
   }
 }
