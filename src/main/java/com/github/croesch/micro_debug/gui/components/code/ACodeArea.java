@@ -23,6 +23,7 @@ import java.awt.Font;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.basic.MDTextPane;
 
@@ -38,6 +39,7 @@ public abstract class ACodeArea extends MDTextPane {
   private static final long serialVersionUID = 2012704080901679378L;
 
   /** the object that identifies the highlight marker, <code>null</code> if no highlight currently exists */
+  @Nullable
   private Object highlightMarker = null;
 
   /**

@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
@@ -87,6 +88,7 @@ public class AboutFrame extends SizedFrame {
    * @return the content of the file
    * @throws IOException if the file cannot be read
    */
+  @NotNull
   private String getFileText(final String file) throws IOException {
     final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(file);
     if (resourceAsStream == null) {
@@ -110,6 +112,7 @@ public class AboutFrame extends SizedFrame {
    * @return the content of the stream
    * @throws IOException if the stream cannot be read properly.
    */
+  @NotNull
   private String readFile(final InputStream resourceAsStream) throws IOException {
     final StringBuilder text = new StringBuilder();
     final Reader r = new InputStreamReader(resourceAsStream);
@@ -131,6 +134,7 @@ public class AboutFrame extends SizedFrame {
    * @param file the path to the file to read the content from.
    * @return the content of the file, or an empty {@link String}, if an error occurred.
    */
+  @NotNull
   private String getFileContent(final String file) {
     try {
       return getFileText(file);
@@ -146,6 +150,7 @@ public class AboutFrame extends SizedFrame {
    * @since Date: Mar 3, 2012
    * @return the component that visualises the name and version information.
    */
+  @NotNull
   private MDLabel generateAboutArea() {
     final String text = "<html><h1>" + InternalSettings.NAME + "</h1>\n<b>" + InternalSettings.VERSION + "</b>";
     return new MDLabel("name-and-version", text);
@@ -157,6 +162,7 @@ public class AboutFrame extends SizedFrame {
    * @since Date: Mar 3, 2012
    * @return the component that visualises the copyright information.
    */
+  @NotNull
   private MDLabel generateCopyrightArea() {
     final String text = getFileContent(COPYRIGHT_FILE);
     return new MDLabel("copyright-text", text);
@@ -168,6 +174,7 @@ public class AboutFrame extends SizedFrame {
    * @since Date: Mar 3, 2012
    * @return the component that visualises the programs description.
    */
+  @NotNull
   private MDLabel generateDescriptionArea() {
     return new MDLabel("description", GuiText.GUI_ABOUT_DESCRIPTION.text(InternalSettings.NAME));
   }
@@ -178,6 +185,7 @@ public class AboutFrame extends SizedFrame {
    * @since Date: Mar 3, 2012
    * @return the component that visualises the license information.
    */
+  @NotNull
   private JComponent generateLicenseArea() {
     final String text = getFileContent(LICENSE_FILE);
     final MDLabel textArea = new MDLabel("license-text", text);

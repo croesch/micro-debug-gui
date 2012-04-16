@@ -23,6 +23,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+
 /**
  * {@link DocumentListener} for the {@link StartFrame} to deactivate the start action, if at least one field is empty.
  * 
@@ -32,12 +34,15 @@ import javax.swing.text.JTextComponent;
 class TextFieldsDocumentListener implements DocumentListener {
 
   /** the field that contains the path to the binary micro assembler file */
+  @NotNull
   private final JTextComponent microPathField;
 
   /** the field that contains the path to the binary macro assembler file */
+  @NotNull
   private final JTextComponent macroPathField;
 
   /** the {@link Action} to deactivate if at least one of the fields is empty */
+  @NotNull
   private final Action action;
 
   /**

@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.controller;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
 
 /**
@@ -29,6 +30,7 @@ import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
 final class MemoryController implements IController {
 
   /** the memory view */
+  @NotNull
   private final MemoryPanel view;
 
   /**

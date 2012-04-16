@@ -23,6 +23,8 @@ import java.awt.Component;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+
 /**
  * Listener that repaints the component if any event happens.
  * 
@@ -32,6 +34,7 @@ import javax.swing.event.DocumentListener;
 public final class ComponentRepaintListener implements DocumentListener {
 
   /** the component to repaint on events */
+  @NotNull
   private final Component component;
 
   /**
@@ -41,6 +44,9 @@ public final class ComponentRepaintListener implements DocumentListener {
    * @param comp the component to repaint on any event
    */
   public ComponentRepaintListener(final Component comp) {
+    if (comp == null) {
+      throw new IllegalArgumentException();
+    }
     this.component = comp;
   }
 

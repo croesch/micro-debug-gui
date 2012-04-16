@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.mic1.api.IProcessorInterpreter;
@@ -36,9 +37,11 @@ import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 public final class MainController implements IProcessorInterpreter {
 
   /** the {@link BreakpointManager} that contains the breakpoints currently set in the debugger */
+  @NotNull
   private final BreakpointManager bpm = new BreakpointManager();
 
   /** the different controllers of the program - each responsible for a small part */
+  @NotNull
   private final List<IController> controllers = new ArrayList<IController>();
 
   /**
@@ -58,6 +61,7 @@ public final class MainController implements IProcessorInterpreter {
    * @since Date: Apr 11, 2012
    * @return the {@link BreakpointManager} that is the model, managing the breakpoints of the debugger.
    */
+  @NotNull
   public BreakpointManager getBpm() {
     return this.bpm;
   }

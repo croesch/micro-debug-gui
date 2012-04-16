@@ -30,6 +30,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.commons.Utils;
 
 /**
@@ -41,6 +43,7 @@ import com.github.croesch.micro_debug.commons.Utils;
 abstract class ACodeFormatter implements DocumentListener {
 
   /** the attributes to format all text that isn't identified to be something special */
+  @NotNull
   private final MutableAttributeSet invalidFormat = new SimpleAttributeSet();
 
   /**
@@ -59,6 +62,7 @@ abstract class ACodeFormatter implements DocumentListener {
    * @since Date: Apr 6, 2012
    * @return the {@link MutableAttributeSet} to format invalid tokens with
    */
+  @NotNull
   public final MutableAttributeSet getInvalidFormat() {
     return this.invalidFormat;
   }
@@ -157,6 +161,7 @@ abstract class ACodeFormatter implements DocumentListener {
    * @param doc the document to read the text from.
    * @return the whole text of the document.
    */
+  @Nullable
   private String getText(final StyledDocument doc) {
     try {
       return doc.getText(0, doc.getLength());

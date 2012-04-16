@@ -18,6 +18,8 @@
  */
 package com.github.croesch.micro_debug.gui.actions.api;
 
+import com.github.croesch.micro_debug.annotation.Nullable;
+
 /**
  * Provider for file paths of binary assembler files: micro assembler and macro assembler.
  * 
@@ -32,6 +34,7 @@ public interface IBinaryFilePathProvider {
    * @since Date: Mar 9, 2012
    * @return the file path to the binary macro assembler file.
    */
+  @Nullable
   String getMacroAssemblerFilePath();
 
   /**
@@ -40,6 +43,7 @@ public interface IBinaryFilePathProvider {
    * @since Date: Mar 9, 2012
    * @return the file path to the binary micro assembler file.
    */
+  @Nullable
   String getMicroAssemblerFilePath();
 
 }

@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.actions.api.IBinaryFilePathProvider;
 import com.github.croesch.micro_debug.gui.actions.api.IMic1Creator;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
@@ -38,9 +39,11 @@ public final class Mic1CreatingAction extends AbstractAction {
   private static final long serialVersionUID = -5379485412067390144L;
 
   /** the creator of the processor that should receive the file paths */
+  @NotNull
   private final transient IMic1Creator processorCreator;
 
   /** the provider of the file paths */
+  @NotNull
   private final IBinaryFilePathProvider binFilePathProvider;
 
   /**

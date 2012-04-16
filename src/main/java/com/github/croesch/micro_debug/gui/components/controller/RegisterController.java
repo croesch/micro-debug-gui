@@ -22,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
 import com.github.croesch.micro_debug.mic1.register.Register;
@@ -35,9 +36,11 @@ import com.github.croesch.micro_debug.mic1.register.Register;
 final class RegisterController implements ChangeListener, IController {
 
   /** the {@link BreakpointManager} that contains the breakpoint definitions of the debugger */
+  @NotNull
   private final BreakpointManager breakpointManager;
 
   /** the register view */
+  @NotNull
   private final RegisterPanel view;
 
   /**

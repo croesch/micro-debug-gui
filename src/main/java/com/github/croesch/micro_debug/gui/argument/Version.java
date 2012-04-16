@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.argument;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.argument.AArgument;
 import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
@@ -58,11 +59,13 @@ public final class Version extends AArgument {
    * @since Date: Feb 28, 2012
    * @return the single instance of this argument.
    */
+  @NotNull
   public static Version getInstance() {
     return LazyHolder.INSTANCE;
   }
 
   @Override
+  @NotNull
   protected String name() {
     return "version";
   }

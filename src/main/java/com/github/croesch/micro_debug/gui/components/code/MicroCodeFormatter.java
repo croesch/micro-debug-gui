@@ -27,6 +27,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.mic1.register.Register;
 
 /**
@@ -53,21 +54,27 @@ final class MicroCodeFormatter extends ACodeFormatter {
   private static final List<Character> SEPS = Arrays.asList(';', '(', ')', ' ', '\t', '\n', '\r');
 
   /** the attributes to format register tokens */
+  @NotNull
   private final MutableAttributeSet registerFormat = new SimpleAttributeSet();
 
   /** the attributes to format control line tokens */
+  @NotNull
   private final MutableAttributeSet linesFormat = new SimpleAttributeSet();
 
   /** the attributes to format keywords */
+  @NotNull
   private final MutableAttributeSet keywordsFormat = new SimpleAttributeSet();
 
   /** the attributes to format operators */
+  @NotNull
   private final MutableAttributeSet operatorsFormat = new SimpleAttributeSet();
 
   /** the attributes to format separators */
+  @NotNull
   private final MutableAttributeSet separatorsFormat = new SimpleAttributeSet();
 
   /** the attributes to format numbers */
+  @NotNull
   private final MutableAttributeSet numberFormat = new SimpleAttributeSet();
 
   /**

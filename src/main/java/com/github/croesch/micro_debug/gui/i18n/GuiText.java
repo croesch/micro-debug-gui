@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.i18n;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.properties.XMLPropertiesProvider;
 
 /**
@@ -55,6 +56,7 @@ public enum GuiText {
   GUI_START_MICRO;
 
   /** the value of this instance */
+  @NotNull
   private final String string;
 
   /**
@@ -70,6 +72,7 @@ public enum GuiText {
   }
 
   @Override
+  @NotNull
   public String toString() {
     return text();
   }
@@ -80,6 +83,7 @@ public enum GuiText {
    * @since Date: Feb 28, 2012
    * @return the String that represents the object
    */
+  @NotNull
   public String text() {
     return this.string;
   }
@@ -92,6 +96,7 @@ public enum GuiText {
    * @return the String that represents the object with replaced placeholders
    * @see XMLPropertiesProvider#replacePlaceholdersInString(String, Object...)
    */
+  @NotNull
   public String text(final Object ... s) {
     return XMLPropertiesProvider.replacePlaceholdersInString(this.string, s);
   }

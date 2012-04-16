@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.parser.IntegerParser;
 import com.github.croesch.micro_debug.properties.APropertiesProvider;
@@ -40,6 +41,7 @@ public class NumberLabel extends MDLabel {
   private int number = 0;
 
   /** the mask to display the number */
+  @NotNull
   private final String mask;
 
   /**
@@ -78,10 +80,12 @@ public class NumberLabel extends MDLabel {
      * @param num the number to format to {@link String} with this number format
      * @return the {@link String} representing the given number in this style
      */
+    @NotNull
     public abstract String getRepresentation(int num);
   }
 
   /** the current style to format the numerical value */
+  @NotNull
   private STYLE numberStyle = STYLE.DECIMAL;
 
   /**

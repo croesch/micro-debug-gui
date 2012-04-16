@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
@@ -42,15 +43,18 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
   private static final long serialVersionUID = -5234458420083482975L;
 
   /** the string that represents the HTML-Code for the color to highlight a specific line */
+  @NotNull
   private final String highColor;
 
   /** the number of the line that is highlighted */
   private int highlightedLine = -1;
 
   /** the text component this component shows the line numbers for */
+  @NotNull
   private final ACodeArea textArea;
 
   /** the abstraction layer that maps real line numbers to line numbers for the user */
+  @NotNull
   private final transient LineNumberMapper lineNumberMapper;
 
   /**

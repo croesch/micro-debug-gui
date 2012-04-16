@@ -24,6 +24,8 @@ import java.io.PrintStream;
 
 import javax.swing.SwingUtilities;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+
 /**
  * A text area that has a {@link PrintStream} to append content to the text area.
  * 
@@ -36,6 +38,7 @@ public abstract class AStreamTextArea extends MDTextArea {
   private static final long serialVersionUID = -1970161406114775052L;
 
   /** the {@link PrintStream} that is able to append text to this text area */
+  @NotNull
   private final transient PrintStream stream;
 
   /**
@@ -84,6 +87,7 @@ public abstract class AStreamTextArea extends MDTextArea {
    * @since Date: Mar 17, 2012
    * @return the {@link PrintStream} to write to that text area.
    */
+  @NotNull
   protected final PrintStream getStream() {
     return this.stream;
   }

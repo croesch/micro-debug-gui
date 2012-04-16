@@ -20,6 +20,8 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import java.awt.GridLayout;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -36,12 +38,17 @@ public class MemoryPanel extends MDPanel {
   private static final long serialVersionUID = -3144367254666894663L;
 
   /** the stored numbered labels */
+  @NotNull
   private final NumberLabel[] labels;
 
   /** number of labels in the panel for testing purpose - TODO remove this workaround when FEST works */
   private static final int TEST_SIZE = 100;
 
-  /** the processor being debugged */
+  /**
+   * the processor being debugged<br>
+   * TODO change from {@link Nullable} to {@link NotNull}
+   */
+  @Nullable
   private final transient Mic1 processor;
 
   /**
@@ -123,6 +130,7 @@ public class MemoryPanel extends MDPanel {
    * @param number the label represents the value at the memory address with this number
    * @return the label showing the value of the memory at the given address.
    */
+  @NotNull
   public final NumberLabel getLabel(final int number) {
     if (number < 0 || number >= this.labels.length) {
       throw new IllegalArgumentException();

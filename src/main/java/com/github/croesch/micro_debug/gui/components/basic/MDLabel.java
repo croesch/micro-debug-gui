@@ -24,6 +24,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.api.IInvertable;
 
@@ -42,6 +43,7 @@ public class MDLabel extends JLabel implements IInvertable {
    * Initially the background color for inverted labels, when inverted once this contains the background color,
    * currently not visible. For instance, if the label is currently inverted this contains the normal background color.
    */
+  @NotNull
   private Color otherColor = UIManager.getColor("Label.background").darker();
 
   /**

@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.debug;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 
 /**
@@ -32,6 +33,7 @@ import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 public class LineBreakPointHandler implements ILineBreakPointManager {
 
   /** the list of lines that contain breakpoints */
+  @NotNull
   private final List<Integer> breakPoints = new ArrayList<Integer>();
 
   /** {@inheritDoc} */

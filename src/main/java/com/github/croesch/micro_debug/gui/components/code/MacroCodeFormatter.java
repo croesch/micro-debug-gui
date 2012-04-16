@@ -30,6 +30,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.mic1.mem.IJVMCommand;
 import com.github.croesch.micro_debug.mic1.mem.IJVMConfigReader;
 
@@ -45,21 +46,27 @@ final class MacroCodeFormatter extends ACodeFormatter {
   private static final List<Character> SEPS = Arrays.asList(' ', '\t', '\n', '\r');
 
   /** the token that are identified as commands */
+  @NotNull
   private final List<String> commands;
 
   /** the attributes to format command tokens */
+  @NotNull
   private final MutableAttributeSet commandFormat = new SimpleAttributeSet();
 
   /** the attributes to format addresses */
+  @NotNull
   private final MutableAttributeSet addressFormat = new SimpleAttributeSet();
 
   /** the attributes to format brackets */
+  @NotNull
   private final MutableAttributeSet bracketsFormat = new SimpleAttributeSet();
 
   /** the attributes to format separators */
+  @NotNull
   private final MutableAttributeSet separatorsFormat = new SimpleAttributeSet();
 
   /** the attributes to format numbers */
+  @NotNull
   private final MutableAttributeSet numberFormat = new SimpleAttributeSet();
 
   /**

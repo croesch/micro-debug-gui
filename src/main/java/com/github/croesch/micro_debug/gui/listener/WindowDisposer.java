@@ -22,6 +22,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+
 /**
  * {@link ActionListener} that disposes a {@link Window} when the action is performed.
  * 
@@ -31,6 +33,7 @@ import java.awt.event.ActionListener;
 public final class WindowDisposer implements ActionListener {
 
   /** the window to dispose when the action is performed */
+  @NotNull
   private final Window window;
 
   /**

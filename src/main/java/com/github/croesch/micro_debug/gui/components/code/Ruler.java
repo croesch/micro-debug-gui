@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 import com.github.croesch.micro_debug.gui.components.basic.ComponentRepaintListener;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
@@ -54,12 +55,15 @@ public class Ruler extends JPanel {
   private static final int SMALL_MARKER_SIZE = 2;
 
   /** the text component this ruler shows information for */
+  @NotNull
   private final ACodeArea textComponent;
 
   /** the manager for breakpoints */
+  @NotNull
   private final transient ILineBreakPointManager lineBreakPointManager;
 
   /** the abstraction layer that maps real line numbers to line numbers for the user */
+  @NotNull
   private final transient LineNumberMapper lineNumberMapper;
 
   /**
@@ -72,6 +76,9 @@ public class Ruler extends JPanel {
    *        the user
    */
   public Ruler(final ACodeArea tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+    if (tc == null || bpm == null || mapper == null) {
+      throw new IllegalArgumentException();
+    }
     this.textComponent = tc;
     this.lineBreakPointManager = bpm;
     this.lineNumberMapper = mapper;

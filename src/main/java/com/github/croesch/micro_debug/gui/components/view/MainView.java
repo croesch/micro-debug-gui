@@ -22,6 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
@@ -36,12 +37,15 @@ import com.github.croesch.micro_debug.mic1.Mic1;
 public final class MainView {
 
   /** the {@link JComponent} that contains the whole visualised view */
+  @NotNull
   private final JComponent view;
 
   /** the view that visualises the {@link com.github.croesch.micro_debug.mic1.register.Register}s */
+  @NotNull
   private final RegisterPanel registerView = new RegisterPanel("register");
 
   /** the view that visualises the {@link com.github.croesch.micro_debug.mic1.mem.Memory} */
+  @NotNull
   private final MemoryPanel memoryView;
 
   /**
@@ -77,6 +81,7 @@ public final class MainView {
    * @since Date: Apr 11, 2012
    * @return a {@link JComponent} containing the whole view.
    */
+  @NotNull
   public JComponent getViewComponent() {
     return this.view;
   }
@@ -89,6 +94,7 @@ public final class MainView {
    * @return the {@link JComponent} containing the view visualising the
    *         {@link com.github.croesch.micro_debug.mic1.register.Register}s.
    */
+  @NotNull
   public RegisterPanel getRegisterView() {
     return this.registerView;
   }
@@ -101,6 +107,7 @@ public final class MainView {
    * @return the {@link JComponent} containing the view visualising the
    *         {@link com.github.croesch.micro_debug.mic1.mem.Memory}s values.
    */
+  @NotNull
   public MemoryPanel getMemoryView() {
     return this.memoryView;
   }

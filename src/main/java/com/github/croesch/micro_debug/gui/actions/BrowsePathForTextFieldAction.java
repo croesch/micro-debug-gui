@@ -25,6 +25,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.text.JTextComponent;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
@@ -39,9 +41,11 @@ public final class BrowsePathForTextFieldAction extends AbstractAction {
   private static final long serialVersionUID = -6707366915038196520L;
 
   /** the text component to set the browsed file path to */
+  @NotNull
   private final JTextComponent txtComponent;
 
   /** the parent component for adjusting the file chooser */
+  @Nullable
   private final Component parent;
 
   /**

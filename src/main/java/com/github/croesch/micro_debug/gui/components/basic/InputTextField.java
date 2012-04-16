@@ -26,6 +26,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.mic1.io.Input;
 
@@ -41,15 +42,19 @@ public class InputTextField extends MDTextField {
   private static final long serialVersionUID = 3090320096442873111L;
 
   /** the lock to acquire for manipulating the content entered via the text field */
+  @NotNull
   private final Lock lock = new ReentrantLock();
 
   /** condition that signals when the user has entered text */
+  @NotNull
   private final transient Condition notEmpty = this.lock.newCondition();
 
   /** the input stream that reads the data entered via the text field */
+  @NotNull
   private final transient InputStream stream = new TextFieldInputStream();
 
   /** contains the text entered via the text field, not read by the processor yet */
+  @NotNull
   private final StringBuffer sb = new StringBuffer();
 
   /**

@@ -23,6 +23,8 @@ import java.util.EnumMap;
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.components.basic.MDCheckBox;
 import com.github.croesch.micro_debug.gui.components.basic.MDLabel;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
@@ -41,9 +43,11 @@ public class RegisterPanel extends MDPanel {
   private static final long serialVersionUID = 5614777767524193566L;
 
   /** the stored numbered labels */
+  @NotNull
   private final EnumMap<Register, NumberLabel> labels = new EnumMap<Register, NumberLabel>(Register.class);
 
   /** the stored checkboxes */
+  @NotNull
   private final EnumMap<Register, MDCheckBox> checkBoxes = new EnumMap<Register, MDCheckBox>(Register.class);
 
   /**
@@ -122,6 +126,7 @@ public class RegisterPanel extends MDPanel {
    * @param r the {@link Register}
    * @return the check box that to select/unselect breakpoints for the given {@link Register}.
    */
+  @Nullable
   public final MDCheckBox getCheckBox(final Register r) {
     return this.checkBoxes.get(r);
   }

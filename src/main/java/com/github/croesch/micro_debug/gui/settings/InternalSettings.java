@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.settings;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.properties.PropertiesProvider;
 
 /**
@@ -34,6 +35,7 @@ public enum InternalSettings {
   NAME;
 
   /** the value set up in the properties file */
+  @NotNull
   private final String value;
 
   /**
@@ -56,11 +58,13 @@ public enum InternalSettings {
    * @since Date: Feb 25, 2012
    * @return the value of this setting, read from the properties file.
    */
+  @NotNull
   public String getValue() {
     return this.value;
   }
 
   @Override
+  @NotNull
   public String toString() {
     return getValue();
   }

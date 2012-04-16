@@ -25,6 +25,7 @@ import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.UIManager;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.IInvertable;
 
 /**
@@ -43,6 +44,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * currently not visible. For instance, if the check box is currently inverted this contains the normal background
    * color.
    */
+  @NotNull
   private Color otherColor = UIManager.getColor("CheckBox.background").darker();
 
   /**

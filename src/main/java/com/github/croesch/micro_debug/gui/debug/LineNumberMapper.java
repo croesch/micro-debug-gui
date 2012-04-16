@@ -21,6 +21,8 @@ package com.github.croesch.micro_debug.gui.debug;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+
 /**
  * Abstraction layer to be able to have a special line numbering available but can this internal handle with normal line
  * numbers. When constructed the real line numbers and the line numbers available for the user are the same.<br>
@@ -39,9 +41,11 @@ import java.util.Map;
 public class LineNumberMapper {
 
   /** Stores for each real line number the users representation of the line number - <em>the line</em> */
+  @NotNull
   private final Map<Integer, Integer> linesMap = new HashMap<Integer, Integer>();
 
   /** for each <em>line</em> this map stores the entry of the real line - <em>the number</em> */
+  @NotNull
   private final Map<Integer, Integer> numbersMap = new HashMap<Integer, Integer>();
 
   /**

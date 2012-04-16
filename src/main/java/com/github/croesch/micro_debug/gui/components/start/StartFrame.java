@@ -24,6 +24,7 @@ import javax.swing.Action;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.actions.BrowsePathForTextFieldAction;
 import com.github.croesch.micro_debug.gui.actions.Mic1CreatingAction;
@@ -56,12 +57,15 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   private static final int FRAME_WIDTH = 485;
 
   /** the text field that contains the path to the binary assembler file */
+  @NotNull
   private final MDTextField macroPathField = new MDTextField("macro-assembler-file-path");
 
   /** the text field that contains the path to the binary micro assembler file */
+  @NotNull
   private final MDTextField microPathField = new MDTextField("micro-assembler-file-path");
 
   /** the object that is able to create the {@link com.github.croesch.micro_debug.mic1.Mic1} */
+  @NotNull
   private final transient IMic1Creator mic1Creator;
 
   /**

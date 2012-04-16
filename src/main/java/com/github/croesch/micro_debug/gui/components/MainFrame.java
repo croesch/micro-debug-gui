@@ -22,6 +22,8 @@ import java.awt.Dimension;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
@@ -42,9 +44,11 @@ public final class MainFrame extends SizedFrame {
   private static final long serialVersionUID = 888748757383386602L;
 
   /** the processor to debug */
+  @Nullable
   private final transient Mic1 processor;
 
   /** the controller of the debugger */
+  @NotNull
   private final transient MainController controller;
 
   /**
@@ -69,6 +73,7 @@ public final class MainFrame extends SizedFrame {
    * @since Date: Mar 10, 2012
    * @return the {@link Mic1} that is debugged.
    */
+  @Nullable
   public Mic1 getProcessor() {
     return this.processor;
   }
@@ -79,6 +84,7 @@ public final class MainFrame extends SizedFrame {
    * @since Date: Apr 11, 2012
    * @return the {@link MainController} controlling the input of the user.
    */
+  @NotNull
   public MainController getController() {
     return this.controller;
   }
