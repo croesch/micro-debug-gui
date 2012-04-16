@@ -58,7 +58,7 @@ public final class MainView {
     final JScrollPane memPane = new MDScrollPane("memory", this.memoryView);
     final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
     final JScrollPane procPane = new MDScrollPane("processorTAs", new MDPanel("processorTAs"));
-    final JScrollPane debugPane = new MDScrollPane("debuggerTA", new MDPanel("debuggerTA"));
+    final JScrollPane debugPane = new MDScrollPane("debuggerTA", new DebuggerTAView("debuggerTA"));
 
     final JSplitPane bottomPane = new MDSplitPane("processorTas-debuggerTa",
                                                   JSplitPane.HORIZONTAL_SPLIT,

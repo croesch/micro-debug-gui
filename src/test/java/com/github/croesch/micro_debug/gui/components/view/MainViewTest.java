@@ -34,6 +34,7 @@ import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
@@ -99,5 +100,11 @@ public class MainViewTest extends DefaultGUITestCase {
     assertThat(frame.splitPane(pane).component().getLeftComponent().getName()).isEqualTo("processorTAs");
     assertThat(frame.splitPane(pane).component().getRightComponent()).isInstanceOf(JScrollPane.class);
     assertThat(frame.splitPane(pane).component().getRightComponent().getName()).isEqualTo("debuggerTA");
+
+    frame.textBox("printer-ta").requireEmpty();
+    Printer.println("Hello world!");
+    frame.textBox("printer-ta").requireText("Hello world!" + getLineSeparator());
+    Printer.println("Ciao world!");
+    frame.textBox("printer-ta").requireText("Hello world!" + getLineSeparator() + "Ciao world!" + getLineSeparator());
   }
 }
