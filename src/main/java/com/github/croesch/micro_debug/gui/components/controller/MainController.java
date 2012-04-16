@@ -18,8 +18,13 @@
  */
 package com.github.croesch.micro_debug.gui.components.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
+import com.github.croesch.micro_debug.mic1.api.IProcessorInterpreter;
+import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 
 /**
  * The main controller of the GUI of the debugger. Contains the logical actions to perform based on events received from
@@ -28,10 +33,13 @@ import com.github.croesch.micro_debug.gui.components.view.MainView;
  * @author croesch
  * @since Date: Apr 11, 2012
  */
-public final class MainController {
+public final class MainController implements IProcessorInterpreter {
 
   /** the {@link BreakpointManager} that contains the breakpoints currently set in the debugger */
   private final BreakpointManager bpm = new BreakpointManager();
+
+  /** the different controllers of the program - each responsible for a small part */
+  private final List<IController> controllers = new ArrayList<IController>();
 
   /**
    * Constructs the main controller for the given main view.
@@ -40,7 +48,7 @@ public final class MainController {
    * @param view the view this controller controlls and interacts with
    */
   public MainController(final MainView view) {
-    new RegisterController(view.getRegisterView(), this.bpm);
+    this.controllers.add(new RegisterController(view.getRegisterView(), this.bpm));
   }
 
   /**
@@ -51,5 +59,25 @@ public final class MainController {
    */
   public BreakpointManager getBpm() {
     return this.bpm;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean canContinue(final int microLine,
+                             final int macroLine,
+                             final MicroInstruction currentInstruction,
+                             final MicroInstruction nextInstruction) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void tickDone(final MicroInstruction instruction, final boolean macroCodeFetching) {
+    for (final IController controller : this.controllers) {
+      controller.performViewUpdate();
+    }
   }
 }

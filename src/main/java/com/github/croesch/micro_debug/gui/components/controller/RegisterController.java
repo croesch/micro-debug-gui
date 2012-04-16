@@ -32,7 +32,7 @@ import com.github.croesch.micro_debug.mic1.register.Register;
  * @author croesch
  * @since Date: Apr 11, 2012
  */
-final class RegisterController implements ChangeListener {
+final class RegisterController implements ChangeListener, IController {
 
   /** the {@link BreakpointManager} that contains the breakpoint definitions of the debugger */
   private final BreakpointManager breakpointManager;
@@ -78,5 +78,12 @@ final class RegisterController implements ChangeListener {
         }
       }
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void performViewUpdate() {
+    this.view.update();
   }
 }

@@ -30,12 +30,14 @@ import net.miginfocom.swing.MigLayout;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanelTest;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
@@ -156,5 +158,81 @@ public class RegisterControllerTest extends DefaultGUITestCase {
   @Test(expected = IllegalArgumentException.class)
   public void testCstr_NullBpm() {
     new RegisterController(RegisterPanelTest.getPanel("panel"), null);
+  }
+
+  @Test
+  public void testUpdate() {
+    printlnMethodName();
+
+    Register.CPP.setValue(42);
+    Register.H.setValue(43);
+    Register.LV.setValue(44);
+    Register.MAR.setValue(45);
+    Register.MBR.setValue(46);
+    Register.MDR.setValue(48);
+    Register.OPC.setValue(49);
+    Register.PC.setValue(50);
+    Register.SP.setValue(51);
+    Register.TOS.setValue(52);
+
+    update();
+
+    assertThat(this.panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(42);
+    assertThat(this.panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(43);
+    assertThat(this.panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(44);
+    assertThat(this.panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(45);
+    assertThat(this.panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(46);
+    assertThat(this.panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(46);
+    assertThat(this.panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(48);
+    assertThat(this.panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(49);
+    assertThat(this.panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(50);
+    assertThat(this.panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(51);
+    assertThat(this.panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(52);
+
+    Register.CPP.setValue(4711);
+    Register.H.setValue(4712);
+    Register.LV.setValue(4713);
+    Register.MAR.setValue(4714);
+    Register.MBR.setValue(42);
+    Register.MDR.setValue(4717);
+    Register.OPC.setValue(4718);
+    Register.PC.setValue(4719);
+    Register.SP.setValue(4720);
+    Register.TOS.setValue(4721);
+
+    assertThat(this.panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(42);
+    assertThat(this.panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(43);
+    assertThat(this.panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(44);
+    assertThat(this.panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(45);
+    assertThat(this.panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(46);
+    assertThat(this.panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(46);
+    assertThat(this.panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(48);
+    assertThat(this.panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(49);
+    assertThat(this.panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(50);
+    assertThat(this.panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(51);
+    assertThat(this.panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(52);
+
+    update();
+
+    assertThat(this.panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4711);
+    assertThat(this.panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4712);
+    assertThat(this.panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4713);
+    assertThat(this.panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4714);
+    assertThat(this.panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(42);
+    assertThat(this.panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(42);
+    assertThat(this.panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4717);
+    assertThat(this.panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4718);
+    assertThat(this.panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4719);
+    assertThat(this.panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4720);
+    assertThat(this.panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(4721);
+  }
+
+  private void update() {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        RegisterControllerTest.this.controller.performViewUpdate();
+      }
+    });
   }
 }
