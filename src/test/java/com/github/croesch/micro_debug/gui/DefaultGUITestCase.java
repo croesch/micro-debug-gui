@@ -18,9 +18,16 @@
  */
 package com.github.croesch.micro_debug.gui;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiTask;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -98,4 +105,16 @@ public class DefaultGUITestCase extends DefaultTestCase {
    */
   protected void onTearDown() {}
 
+  protected void showInFrame(final JPanel panel) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        final JFrame f = new JFrame();
+        f.setLayout(new BorderLayout());
+        f.add(panel, BorderLayout.CENTER);
+        f.setSize(500, 500);
+        f.setVisible(true);
+      }
+    });
+  }
 }

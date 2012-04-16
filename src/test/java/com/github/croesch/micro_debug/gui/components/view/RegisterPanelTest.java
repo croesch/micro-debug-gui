@@ -21,11 +21,6 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import net.miginfocom.swing.MigLayout;
-
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -49,20 +44,6 @@ public class RegisterPanelTest extends DefaultGUITestCase {
       @Override
       protected RegisterPanel executeInEDT() throws Throwable {
         return new RegisterPanel(name);
-      }
-    });
-  }
-
-  private void showInFrame(final JPanel panel) {
-    GuiActionRunner.execute(new GuiTask() {
-      @Override
-      protected void executeInEDT() throws Throwable {
-        final JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setLayout(new MigLayout("fill"));
-        f.add(panel);
-        f.setSize(500, 500);
-        f.setVisible(true);
       }
     });
   }

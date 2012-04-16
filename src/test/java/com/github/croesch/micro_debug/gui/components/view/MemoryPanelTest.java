@@ -24,11 +24,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import net.miginfocom.swing.MigLayout;
-
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -54,19 +49,6 @@ public class MemoryPanelTest extends DefaultGUITestCase {
       @Override
       protected MemoryPanel executeInEDT() throws Throwable {
         return new MemoryPanel(name, proc);
-      }
-    });
-  }
-
-  private void showInFrame(final JPanel panel) {
-    GuiActionRunner.execute(new GuiTask() {
-      @Override
-      protected void executeInEDT() throws Throwable {
-        final JFrame f = new JFrame();
-        f.setLayout(new MigLayout("fill"));
-        f.add(panel);
-        f.setSize(500, 500);
-        f.setVisible(true);
       }
     });
   }
