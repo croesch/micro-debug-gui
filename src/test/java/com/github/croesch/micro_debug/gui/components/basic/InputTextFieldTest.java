@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 
 import javax.swing.JFrame;
 
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -85,7 +86,7 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     tfFixture.requireEmpty();
     activate(tfFixture);
 
-    getThreadTyping("Test", 500, tfFixture).start();
+    getThreadTyping(robot(), "Test", 500, tfFixture).start();
 
     assertThat(Input.read()).isEqualTo("T".getBytes()[0]);
 
@@ -106,7 +107,7 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     assertThat(Input.read()).isEqualTo("s".getBytes()[0]);
     assertThat(Input.read()).isEqualTo("\n".getBytes()[0]);
 
-    getThreadTyping("...", 500, tfFixture).start();
+    getThreadTyping(robot(), "...", 500, tfFixture).start();
 
     assertThat(Input.read()).isEqualTo(".".getBytes()[0]);
     assertThat(Input.read()).isEqualTo(".".getBytes()[0]);
@@ -116,7 +117,10 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     assertThat(out.toString()).isEmpty();
   }
 
-  private Thread getThreadTyping(final String text, final long timeOut, final JTextComponentFixture tfFixture) {
+  public static Thread getThreadTyping(final Robot robot,
+                                       final String text,
+                                       final long timeOut,
+                                       final JTextComponentFixture tfFixture) {
     return new Thread() {
       @Override
       public void run() {
@@ -126,7 +130,7 @@ public class InputTextFieldTest extends DefaultGUITestCase {
           Assert.fail();
         }
         tfFixture.enterText(text);
-        robot().pressAndReleaseKeys(KeyEvent.VK_ENTER);
+        robot.pressAndReleaseKeys(KeyEvent.VK_ENTER);
       };
     };
   }

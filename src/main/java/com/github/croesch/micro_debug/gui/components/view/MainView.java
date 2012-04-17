@@ -61,7 +61,7 @@ public final class MainView {
     final JScrollPane regPane = new MDScrollPane("register", this.registerView);
     final JScrollPane memPane = new MDScrollPane("memory", this.memoryView);
     final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
-    final JScrollPane procPane = new MDScrollPane("processorTAs", new MDPanel("processorTAs"));
+    final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));
     final JScrollPane debugPane = new MDScrollPane("debuggerTA", new DebuggerTAView("debuggerTA"));
 
     final JSplitPane bottomPane = new MDSplitPane("processorTas-debuggerTa",

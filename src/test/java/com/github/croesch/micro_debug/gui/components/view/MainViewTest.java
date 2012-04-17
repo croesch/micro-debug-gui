@@ -38,7 +38,10 @@ import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.basic.InputTextFieldTest;
 import com.github.croesch.micro_debug.mic1.Mic1;
+import com.github.croesch.micro_debug.mic1.io.Input;
+import com.github.croesch.micro_debug.mic1.io.Output;
 
 /**
  * Provides test cases for {@link MainView}.
@@ -106,5 +109,15 @@ public class MainViewTest extends DefaultGUITestCase {
     frame.textBox("printer-ta").requireText("Hello world!" + getLineSeparator());
     Printer.println("Ciao world!");
     frame.textBox("printer-ta").requireText("Hello world!" + getLineSeparator() + "Ciao world!" + getLineSeparator());
+
+    frame.textBox("output-ta").requireEmpty();
+    frame.textBox("input-tf").requireEmpty();
+    InputTextFieldTest.getThreadTyping(robot(), "hi", 50, frame.textBox("input-tf")).start();
+
+    Output.print(Input.read());
+    Output.print(Input.read());
+    Output.print(Input.read());
+    frame.textBox("output-ta").requireText("hi\n");
+    frame.textBox("input-tf").requireEmpty();
   }
 }
