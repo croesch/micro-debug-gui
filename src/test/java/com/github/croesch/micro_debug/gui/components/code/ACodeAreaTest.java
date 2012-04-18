@@ -28,6 +28,7 @@ import javax.swing.text.Highlighter.Highlight;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
@@ -69,42 +70,42 @@ public class ACodeAreaTest extends DefaultGUITestCase {
     final FrameFixture frame = showFrameWithArea();
     frame.textBox().requireNotEditable();
     frame.textBox().setText("...\nzweite Zeile\n\n4");
-    highlightLine(frame, 0);
-    assertLineHighlighted(frame, 0);
+    highlightLine(frame.textBox(), 0);
+    assertLineHighlighted(frame.textBox(), 0);
 
-    highlightLine(frame, 1);
-    assertLineHighlighted(frame, 1);
+    highlightLine(frame.textBox(), 1);
+    assertLineHighlighted(frame.textBox(), 1);
 
-    highlightLine(frame, 2);
-    assertLineHighlighted(frame, 2);
+    highlightLine(frame.textBox(), 2);
+    assertLineHighlighted(frame.textBox(), 2);
 
-    highlightLine(frame, 3);
-    assertLineHighlighted(frame, 3);
+    highlightLine(frame.textBox(), 3);
+    assertLineHighlighted(frame.textBox(), 3);
 
-    highlightLine(frame, 4);
-    assertNoLineHighlighted(frame);
+    highlightLine(frame.textBox(), 4);
+    assertNoLineHighlighted(frame.textBox());
 
-    highlightLine(frame, 3);
-    assertLineHighlighted(frame, 3);
+    highlightLine(frame.textBox(), 3);
+    assertLineHighlighted(frame.textBox(), 3);
 
-    highlightLine(frame, -1);
-    assertNoLineHighlighted(frame);
+    highlightLine(frame.textBox(), -1);
+    assertNoLineHighlighted(frame.textBox());
   }
 
-  private void assertLineHighlighted(final FrameFixture frame, final int line) {
-    final Highlight[] highlights = frame.textBox().targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
+  public static void assertLineHighlighted(final JTextComponentFixture textBox, final int line) {
+    final Highlight[] highlights = textBox.targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
     assertThat(highlights).hasSize(1);
-    assertThat(highlights[0].getStartOffset()).isEqualTo(frame.textBox().targetCastedTo(ACodeArea.class)
+    assertThat(highlights[0].getStartOffset()).isEqualTo(textBox.targetCastedTo(ACodeArea.class)
                                                            .getLineStartOffset(line));
     assertThat(highlights[0].getPainter()).isInstanceOf(LineHighlighter.class);
   }
 
-  private void assertNoLineHighlighted(final FrameFixture frame) {
-    final Highlight[] highlights = frame.textBox().targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
+  public static void assertNoLineHighlighted(final JTextComponentFixture textBox) {
+    final Highlight[] highlights = textBox.targetCastedTo(ACodeArea.class).getHighlighter().getHighlights();
     assertThat(highlights).isEmpty();
   }
 
-  private void highlightLine(final FrameFixture frame, final int line) {
-    frame.textBox().targetCastedTo(ACodeArea.class).highlight(line);
+  public static void highlightLine(final JTextComponentFixture textBox, final int line) {
+    textBox.targetCastedTo(ACodeArea.class).highlight(line);
   }
 }

@@ -235,31 +235,31 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     labelFixture.requireText(getTextAsserted(1));
     highlight(labelFixture, -10);
     labelFixture.requireText(getTextAsserted(1));
+    highlight(labelFixture, -2);
+    labelFixture.requireText(getTextAsserted(1));
     highlight(labelFixture, -1);
     labelFixture.requireText(getTextAsserted(1));
-    highlight(labelFixture, 0);
-    labelFixture.requireText(getTextAsserted(1));
-    highlight(labelFixture, 2);
+    highlight(labelFixture, 1);
     labelFixture.requireText(getTextAsserted(1));
     highlight(labelFixture, 10);
     labelFixture.requireText(getTextAsserted(1));
 
-    highlight(labelFixture, 1);
-    labelFixture.requireText(getTextAsserted(1, 1));
+    highlight(labelFixture, 0);
+    labelFixture.requireText(getTextAsserted(1, 0));
 
     ta.deleteText();
-    labelFixture.requireText(getTextAsserted(1, 1));
+    labelFixture.requireText(getTextAsserted(1, 0));
     ta.enterText(getLineSeparator() + "..\r\n\nvierte Zeile\n");
-    labelFixture.requireText(getTextAsserted(5, 1));
+    labelFixture.requireText(getTextAsserted(5, 0));
 
-    highlight(labelFixture, 3);
-    labelFixture.requireText(getTextAsserted(5, 3));
-
-    highlight(labelFixture, 6);
-    labelFixture.requireText(getTextAsserted(5));
+    highlight(labelFixture, 2);
+    labelFixture.requireText(getTextAsserted(5, 2));
 
     highlight(labelFixture, 5);
-    labelFixture.requireText(getTextAsserted(5, 5));
+    labelFixture.requireText(getTextAsserted(5));
+
+    highlight(labelFixture, 4);
+    labelFixture.requireText(getTextAsserted(5, 4));
 
     ta.selectText(0, getLineSeparator().length());
     ta.pressAndReleaseKeys(KeyEvent.VK_DELETE);
@@ -285,7 +285,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
     for (int i = 0; i < 100; ++i) {
       highlight(labelFixture, i);
-      labelFixture.requireText(getTextAsserted(100, i));
+      assertThat(labelFixture.component().getText()).isEqualTo(getTextAsserted(100, i));
     }
   }
 
@@ -303,7 +303,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     return getTextAsserted(lines, this.lineMapper);
   }
 
-  private String getTextAsserted(final int lines, final LineNumberMapper mapper) {
+  private static String getTextAsserted(final int lines, final LineNumberMapper mapper) {
     final StringBuilder sb = new StringBuilder("<html>");
     for (int line = 0; line < lines; ++line) {
       sb.append(Utils.toHexString(mapper.getLineForNumber(line))).append("<br>");
@@ -311,23 +311,34 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     return sb.toString();
   }
 
-  private String getTextAsserted(final int lines, final int highlighted) {
-    final String toReplaceSuffix = Utils.toHexString(highlighted - 1) + "<br>";
-    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted - 1)
+  public static void assertLabelHas(final JLabelFixture label,
+                                    final int lines,
+                                    final int highlighted,
+                                    final LineNumberMapper mapper) {
+    assertThat(label.component().getText()).isEqualTo(getTextAsserted(lines, highlighted, mapper));
+  }
+
+  private static String getTextAsserted(final int lines, final int highlighted, final LineNumberMapper mapper) {
+    final String toReplaceSuffix = Utils.toHexString(highlighted) + "<br>";
+    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted)
                                      + "</font><br>";
     switch (highlighted) {
-      case 1:
-        return getTextAsserted(lines).replace("<html>" + toReplaceSuffix, "<html>" + replacementSuffix);
+      case 0:
+        return getTextAsserted(lines, mapper).replace("<html>" + toReplaceSuffix, "<html>" + replacementSuffix);
       default:
-        return getTextAsserted(lines).replace("<br>" + toReplaceSuffix, "<br>" + replacementSuffix);
+        return getTextAsserted(lines, mapper).replace("<br>" + toReplaceSuffix, "<br>" + replacementSuffix);
     }
+  }
+
+  private String getTextAsserted(final int lines, final int highlighted) {
+    return getTextAsserted(lines, highlighted, this.lineMapper);
   }
 
   private void highlight(final JLabelFixture labelFixture, final int line) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
-        labelFixture.targetCastedTo(LineNumberLabel.class).highlight(line - 1);
+        labelFixture.targetCastedTo(LineNumberLabel.class).highlight(line);
       }
     });
   }
