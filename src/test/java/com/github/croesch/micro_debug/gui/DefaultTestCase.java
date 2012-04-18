@@ -79,6 +79,10 @@ public class DefaultTestCase {
   }
 
   protected final StringBuilder readFile(final String name) throws IOException {
+    return readFile(name, true);
+  }
+
+  protected final StringBuilder readFile(final String name, final boolean nativeLF) throws IOException {
     final StringBuilder sb = new StringBuilder();
     final InputStream stream = ClassLoader.getSystemResourceAsStream(name);
     try {
@@ -86,7 +90,11 @@ public class DefaultTestCase {
       int c;
       while ((c = r.read()) != -1) {
         if (c == '\n') {
-          sb.append(getLineSeparator());
+          if (nativeLF) {
+            sb.append(getLineSeparator());
+          } else {
+            sb.append('\n');
+          }
         } else {
           sb.append((char) c);
         }
