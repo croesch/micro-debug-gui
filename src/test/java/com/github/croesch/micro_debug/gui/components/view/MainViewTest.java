@@ -35,6 +35,7 @@ import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.commons.Printer;
+import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
@@ -51,13 +52,13 @@ import com.github.croesch.micro_debug.mic1.io.Output;
  */
 public class MainViewTest extends DefaultGUITestCase {
 
-  public static JFrame showViewInFrame(final String name, final Mic1 proc) {
+  public static JFrame showViewInFrame(final String name, final Mic1 proc, final BreakpointManager bpm) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
       @Override
       protected JFrame executeInEDT() throws Throwable {
         final JFrame f = new JFrame();
         f.setLayout(new MigLayout("fill"));
-        f.add(new MainView(name, proc).getViewComponent(), "grow");
+        f.add(new MainView(name, proc, bpm).getViewComponent(), "grow");
         return f;
       }
     });
@@ -75,7 +76,7 @@ public class MainViewTest extends DefaultGUITestCase {
     //    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     //
     //  final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", proc));
-    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", null));
+    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", null, new BreakpointManager()));
     frame.show(new Dimension(800, 500));
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);

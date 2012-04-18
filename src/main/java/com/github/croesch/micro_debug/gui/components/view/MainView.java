@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
@@ -54,8 +55,9 @@ public final class MainView {
    * @since Date: Apr 11, 2012
    * @param name the name of the view to set
    * @param proc the processor being debugged
+   * @param bpm the model for breakpoints of this debugger
    */
-  public MainView(final String name, final Mic1 proc) {
+  public MainView(final String name, final Mic1 proc, final BreakpointManager bpm) {
     this.memoryView = new MemoryPanel("memory", proc);
 
     final JScrollPane regPane = new MDScrollPane("register", this.registerView);

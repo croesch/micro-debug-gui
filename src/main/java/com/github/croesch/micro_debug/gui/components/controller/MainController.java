@@ -38,7 +38,7 @@ public final class MainController implements IProcessorInterpreter {
 
   /** the {@link BreakpointManager} that contains the breakpoints currently set in the debugger */
   @NotNull
-  private final BreakpointManager bpm = new BreakpointManager();
+  private final BreakpointManager breakpointManager;
 
   /** the different controllers of the program - each responsible for a small part */
   @NotNull
@@ -49,9 +49,15 @@ public final class MainController implements IProcessorInterpreter {
    * 
    * @since Date: Apr 11, 2012
    * @param view the view this controller controlls and interacts with
+   * @param bpm the model for breakpoints of this debugger
    */
-  public MainController(final MainView view) {
-    this.controllers.add(new RegisterController(view.getRegisterView(), this.bpm));
+  public MainController(final MainView view, final BreakpointManager bpm) {
+    if (bpm == null) {
+      throw new IllegalArgumentException();
+    }
+    this.breakpointManager = bpm;
+
+    this.controllers.add(new RegisterController(view.getRegisterView(), this.breakpointManager));
     this.controllers.add(new MemoryController(view.getMemoryView()));
   }
 
@@ -63,7 +69,7 @@ public final class MainController implements IProcessorInterpreter {
    */
   @NotNull
   public BreakpointManager getBpm() {
-    return this.bpm;
+    return this.breakpointManager;
   }
 
   /**

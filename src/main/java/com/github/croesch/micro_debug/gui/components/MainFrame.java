@@ -24,6 +24,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
+import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
@@ -62,8 +63,11 @@ public final class MainFrame extends SizedFrame {
     this.processor = proc;
 
     setLayout(new MigLayout("fill"));
-    final MainView view = new MainView("main-view", this.processor);
-    this.controller = new MainController(view);
+
+    final BreakpointManager bpm = new BreakpointManager();
+    final MainView view = new MainView("main-view", this.processor, bpm);
+    this.controller = new MainController(view, bpm);
+
     add(view.getViewComponent(), "grow");
   }
 
