@@ -63,16 +63,16 @@ public class MacroCodeViewTest extends DefaultGUITestCase {
 
   @Test(expected = IllegalArgumentException.class)
   public void testNullBpm() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
-    final String micFile = MicroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
-    final String macFile = MicroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final String micFile = MacroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = MacroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     getPanel("..", proc, null);
   }
 
   @Test
   public void testPanel() throws IOException {
-    final String micFile = MicroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
-    final String macFile = MicroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final String micFile = MacroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = MacroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
     final MacroCodeView p = getPanel("macro", proc, new BreakpointManager());
