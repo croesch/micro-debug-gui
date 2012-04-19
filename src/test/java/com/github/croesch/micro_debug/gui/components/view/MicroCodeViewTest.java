@@ -78,7 +78,7 @@ public class MicroCodeViewTest extends DefaultGUITestCase {
     final MicroCodeView p = getPanel("micro", proc, new BreakpointManager());
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
-    assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/add.ijvm.disp", false).toString());
+    assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/mic1ijvm.mic1.disp", false).toString());
 
     highlight(p, 17);
     ACodeAreaTest.assertLineHighlighted(panel.textBox(), 17);
