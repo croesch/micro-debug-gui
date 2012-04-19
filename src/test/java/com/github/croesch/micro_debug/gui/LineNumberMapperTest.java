@@ -51,7 +51,7 @@ public class LineNumberMapperTest extends DefaultTestCase {
   }
 
   @Test
-  public void setNewMapping_Null() {
+  public void testSetNewMapping_Null() {
     printlnMethodName();
 
     final LineNumberMapper mapper = new LineNumberMapper();
@@ -79,7 +79,7 @@ public class LineNumberMapperTest extends DefaultTestCase {
   }
 
   @Test
-  public void setNewMapping() {
+  public void testSetNewMapping() {
     printlnMethodName();
 
     final LineNumberMapper mapper = new LineNumberMapper();
