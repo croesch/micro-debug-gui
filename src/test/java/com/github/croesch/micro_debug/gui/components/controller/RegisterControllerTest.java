@@ -83,6 +83,11 @@ public class RegisterControllerTest extends DefaultGUITestCase {
   public void testSettingBreakpoints() throws IOException {
     printlnMethodName();
 
+    final int e = robot().settings().eventPostingDelay();
+    final int d = robot().settings().delayBetweenEvents();
+    robot().settings().eventPostingDelay(2 * e);
+    robot().settings().delayBetweenEvents(2 * d);
+
     this.panel.checkBox("bpCB-TOS").check();
     // instruction writes only TOS
     MicroInstruction in = MicroInstructionReader.read(new ByteArrayInputStream(new byte[] { 0, 0, (byte) 0x02, 0, 0 }));
@@ -141,6 +146,9 @@ public class RegisterControllerTest extends DefaultGUITestCase {
       this.panel.checkBox("bpCB-" + r.name()).doubleClick();
       assertThat(this.bpm.isBreakpoint(0, 0, in, in)).isFalse();
     }
+
+    robot().settings().eventPostingDelay(e);
+    robot().settings().delayBetweenEvents(d);
   }
 
   @Test
