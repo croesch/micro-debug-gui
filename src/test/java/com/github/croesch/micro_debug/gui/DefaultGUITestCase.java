@@ -43,6 +43,8 @@ import org.junit.Ignore;
 @Ignore("Just default case")
 public class DefaultGUITestCase extends DefaultTestCase {
 
+  private static final int NORMAL_DELAY = 50;
+
   private Robot robot;
 
   @BeforeClass
@@ -64,9 +66,9 @@ public class DefaultGUITestCase extends DefaultTestCase {
    * Creates this test's <code>{@link Robot}</code> using a new AWT hierarchy.
    */
   protected final void setUpRobot() {
-    this.robot = BasicRobot.robotWithNewAwtHierarchy();
-    this.robot.settings().delayBetweenEvents(50);
-    this.robot.settings().eventPostingDelay(50);
+    this.robot = BasicRobot.robotWithCurrentAwtHierarchy();
+    this.robot.settings().delayBetweenEvents(NORMAL_DELAY);
+    this.robot.settings().eventPostingDelay(NORMAL_DELAY);
   }
 
   /**
@@ -109,6 +111,7 @@ public class DefaultGUITestCase extends DefaultTestCase {
 
   protected void showInFrame(final JPanel panel) {
     GuiActionRunner.execute(new GuiTask() {
+
       @Override
       protected void executeInEDT() throws Throwable {
         final JFrame f = new JFrame();
@@ -131,5 +134,10 @@ public class DefaultGUITestCase extends DefaultTestCase {
           break;
       }
     }
+  }
+
+  protected void slowDownRobot() {
+    robot().settings().eventPostingDelay(2 * NORMAL_DELAY);
+    robot().settings().delayBetweenEvents(2 * NORMAL_DELAY);
   }
 }

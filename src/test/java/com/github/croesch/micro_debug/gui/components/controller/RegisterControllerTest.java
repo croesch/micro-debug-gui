@@ -60,6 +60,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
 
   public static JFrame showInFrame(final RegisterPanel panel) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
+
       @Override
       protected JFrame executeInEDT() {
         final JFrame f = new JFrame();
@@ -83,10 +84,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
   public void testSettingBreakpoints() throws IOException {
     printlnMethodName();
 
-    final int e = robot().settings().eventPostingDelay();
-    final int d = robot().settings().delayBetweenEvents();
-    robot().settings().eventPostingDelay(2 * e);
-    robot().settings().delayBetweenEvents(2 * d);
+    slowDownRobot();
 
     this.panel.checkBox("bpCB-TOS").check();
     // instruction writes only TOS
@@ -146,9 +144,6 @@ public class RegisterControllerTest extends DefaultGUITestCase {
       this.panel.checkBox("bpCB-" + r.name()).doubleClick();
       assertThat(this.bpm.isBreakpoint(0, 0, in, in)).isFalse();
     }
-
-    robot().settings().eventPostingDelay(e);
-    robot().settings().delayBetweenEvents(d);
   }
 
   @Test
@@ -237,6 +232,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
 
   private void update() {
     GuiActionRunner.execute(new GuiTask() {
+
       @Override
       protected void executeInEDT() throws Throwable {
         RegisterControllerTest.this.controller.performViewUpdate();
