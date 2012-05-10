@@ -197,11 +197,11 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testOkayButton() throws Exception {
     printlnMethodName();
-    this.startFrame.textBox("micro-assembler-file-path").enterText("/macro/path.txt");
+    enterText(this.startFrame.textBox("micro-assembler-file-path"), "/macro/path.txt");
     this.startFrame.textBox("micro-assembler-file-path").deleteText();
     this.startFrame.button("okay").requireDisabled();
-    this.startFrame.textBox("micro-assembler-file-path").enterText("/micro/path.txt");
-    this.startFrame.textBox("macro-assembler-file-path").enterText("/macro/path.txt");
+    enterText(this.startFrame.textBox("micro-assembler-file-path"), "/micro/path.txt");
+    enterText(this.startFrame.textBox("macro-assembler-file-path"), "/macro/path.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
     this.startFrame.button("okay").requireEnabled();
     this.startFrame.button("okay").click();
@@ -226,7 +226,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.textBox("macro-assembler-file-path").deleteText();
     this.startFrame.button("okay").requireDisabled();
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.textBox("macro-assembler-file-path").enterText("/some/path/to/there.txt");
+    enterText(this.startFrame.textBox("macro-assembler-file-path"), "/some/path/to/there.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
     this.startFrame.button("okay").requireEnabled();
     this.startFrame.button("okay").click();

@@ -19,6 +19,7 @@
 package com.github.croesch.micro_debug.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -116,5 +118,18 @@ public class DefaultGUITestCase extends DefaultTestCase {
         f.setVisible(true);
       }
     });
+  }
+
+  protected void enterText(final JTextComponentFixture textBox, final String string) {
+    for (final char c : string.toCharArray()) {
+      switch (c) {
+        case '/':
+          textBox.pressKey(KeyEvent.VK_SHIFT).pressAndReleaseKeys(KeyEvent.VK_7).releaseKey(KeyEvent.VK_SHIFT);
+          break;
+        default:
+          textBox.enterText(String.valueOf(c));
+          break;
+      }
+    }
   }
 }
