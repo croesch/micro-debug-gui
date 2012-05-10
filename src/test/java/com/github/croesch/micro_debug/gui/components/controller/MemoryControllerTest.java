@@ -25,11 +25,13 @@ import java.io.FileNotFoundException;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanelTest;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -57,31 +59,59 @@ public class MemoryControllerTest extends DefaultGUITestCase {
 
     final MemoryPanel p = MemoryPanelTest.getPanel("mem", proc);
     final MemoryController controller = new MemoryController(p);
+    showInFrame(p);
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
 
-    final int value1 = proc.getMemoryValue(17);
-    final int value2 = proc.getMemoryValue(4711);
-    proc.setMemoryValue(17, 42);
-    proc.setMemoryValue(4711, 42);
-
-    for (int i = 0; i < proc.getMemory().getSize(); ++i) {
-      if (i != 17 && i != 4711) {
-        assertThat(p.getLabel(i).getNumber()).isEqualTo(proc.getMemoryValue(i));
+    for (int offs = 0; offs < 250; offs += 50) {
+      panel.scrollBar().scrollTo(offs);
+      for (int i = 0; i < 20; ++i) {
+        final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+        assertThat(label.getNumber()).isEqualTo(proc.getMemoryValue(offs + i));
       }
     }
-    assertThat(p.getLabel(17).getNumber()).isEqualTo(value1);
-    assertThat(p.getLabel(17).getNumber()).isNotEqualTo(proc.getMemoryValue(17));
-    assertThat(p.getLabel(4711).getNumber()).isEqualTo(value2);
-    assertThat(p.getLabel(4711).getNumber()).isNotEqualTo(proc.getMemoryValue(4711));
+
+    proc.setMemoryValue(17, 42);
+    proc.setMemoryValue(211, 42);
+
+    panel.scrollBar().scrollToMinimum();
+
+    for (int offs = 0; offs < 250; offs += 50) {
+      panel.scrollBar().scrollTo(offs);
+      for (int i = 0; i < 20; ++i) {
+        final int adr = offs + i;
+        final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+        assertThat(label.getNumber()).isEqualTo(proc.getMemoryValue(adr));
+      }
+    }
+
+    panel.scrollBar().scrollTo(17);
+    proc.setMemoryValue(17, 17);
+    proc.setMemoryValue(18, 18);
+    NumberLabel label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
+    assertThat(label.getNumber()).isEqualTo(42);
+    assertThat(label.getNumber()).isNotEqualTo(17);
 
     update(controller);
 
-    for (int i = 0; i < proc.getMemory().getSize(); ++i) {
-      assertThat(p.getLabel(i).getNumber()).isEqualTo(proc.getMemoryValue(i));
-    }
+    label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
+    assertThat(label.getNumber()).isNotEqualTo(42);
+    assertThat(label.getNumber()).isEqualTo(17);
+
+    proc.setMemoryValue(18, -42);
+    label = panel.label("memValue-1").targetCastedTo(NumberLabel.class);
+    assertThat(label.getNumber()).isEqualTo(18);
+    assertThat(label.getNumber()).isNotEqualTo(-42);
+
+    panel.scrollBar().scrollUnitDown();
+
+    label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
+    assertThat(label.getNumber()).isNotEqualTo(18);
+    assertThat(label.getNumber()).isEqualTo(-42);
   }
 
   private void update(final MemoryController controller) {
     GuiActionRunner.execute(new GuiTask() {
+
       @Override
       protected void executeInEDT() throws Throwable {
         controller.performViewUpdate();

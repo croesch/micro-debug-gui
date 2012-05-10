@@ -18,12 +18,18 @@
  */
 package com.github.croesch.micro_debug.gui.components.view;
 
-import java.awt.GridLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
-import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
+import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -37,19 +43,22 @@ public class MemoryPanel extends MDPanel {
   /** generated serial version UID */
   private static final long serialVersionUID = -3144367254666894663L;
 
-  /** the stored numbered labels */
+  /** the labels presenting the content of the memory */
   @NotNull
-  private final NumberLabel[] labels;
+  private final NumberLabel[] labels = new NumberLabel[IntegerSettings.MEMORY_WORDS_VISIBLE.getValue()];
 
-  /** number of labels in the panel for testing purpose - TODO remove this workaround when FEST works */
-  private static final int TEST_SIZE = 100;
+  /** the labels describing the content of the memory - the adresses of the word values */
+  @NotNull
+  private final NumberLabel[] descLabels = new NumberLabel[IntegerSettings.MEMORY_WORDS_VISIBLE.getValue()];
 
   /**
-   * the processor being debugged<br>
-   * TODO change from {@link Nullable} to {@link NotNull}
+   * the processor being debugged
    */
-  @Nullable
+  @NotNull
   private final transient Mic1 processor;
+
+  /** the scroll bar to scroll through the values of the memory */
+  private JScrollBar scrollBar;
 
   /**
    * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
@@ -61,11 +70,6 @@ public class MemoryPanel extends MDPanel {
   public MemoryPanel(final String name, final Mic1 proc) {
     super(name);
     this.processor = proc;
-    if (this.processor == null) {
-      this.labels = new NumberLabel[TEST_SIZE];
-    } else {
-      this.labels = new NumberLabel[this.processor.getMemory().getSize()];
-    }
     buildUI();
   }
 
@@ -75,26 +79,16 @@ public class MemoryPanel extends MDPanel {
    * @since Date: Apr 11, 2012
    */
   private void buildUI() {
-    final int size;
-    if (this.processor == null) {
-      size = TEST_SIZE;
-    } else {
-      size = this.processor.getMemory().getSize();
-    }
+    final JPanel panel = new JPanel(new MigLayout("fill, wrap 2", "[fill, 30%]0![grow,fill]"));
+    setLayout(new MigLayout("fill", "[grow,fill][]", "[fill][grow]"));
 
-    setLayout(new GridLayout(size, 2, 0, 0));
-
-    for (int i = 0; i < size; ++i) {
-      final NumberLabel label;
-      if (this.processor == null) {
-        label = new NumberLabel("memValue-" + i, TEST_SIZE);
-      } else {
-        label = new NumberLabel("memValue-" + i, this.processor.getMemoryValue(i));
-      }
+    for (int i = 0; i < this.labels.length; ++i) {
+      final NumberLabel label = new NumberLabel("memValue-" + i, this.processor.getMemoryValue(i));
       final NumberLabel descLabel = new NumberLabel("memDesc-" + i, "{0}:");
       descLabel.setNumber(i);
 
       this.labels[i] = label;
+      this.descLabels[i] = descLabel;
 
       if (i % 2 == 0) {
         label.setOpaque(true);
@@ -103,9 +97,20 @@ public class MemoryPanel extends MDPanel {
         descLabel.invert();
       }
 
-      add(descLabel);
-      add(label);
+      panel.add(descLabel);
+      panel.add(label);
     }
+
+    this.scrollBar = new JScrollBar(JScrollBar.VERTICAL, 0, this.labels.length, 0, this.processor.getMemory().getSize());
+    this.scrollBar.addAdjustmentListener(new AdjustmentListener() {
+
+      public void adjustmentValueChanged(final AdjustmentEvent e) {
+        update();
+      }
+    });
+
+    add(panel);
+    add(this.scrollBar);
   }
 
   /**
@@ -114,27 +119,12 @@ public class MemoryPanel extends MDPanel {
    * @since Date: Apr 9, 2012
    */
   public final void update() {
-    if (this.processor != null) {
-      for (int i = 0; i < this.labels.length; ++i) {
-        if (this.labels[i].getNumber() != this.processor.getMemoryValue(i)) {
-          this.labels[i].setNumber(this.processor.getMemoryValue(i));
-        }
-      }
+    final int value = this.scrollBar.getValue();
+    for (int i = 0; i < MemoryPanel.this.labels.length; ++i) {
+      MemoryPanel.this.labels[i].setText("" + MemoryPanel.this.processor.getMemoryValue(i + value));
     }
-  }
-
-  /**
-   * Returns the value label for the given memory address.
-   * 
-   * @since Date: Apr 16, 2012
-   * @param number the label represents the value at the memory address with this number
-   * @return the label showing the value of the memory at the given address.
-   */
-  @NotNull
-  public final NumberLabel getLabel(final int number) {
-    if (number < 0 || number >= this.labels.length) {
-      throw new IllegalArgumentException();
+    for (int i = 0; i < MemoryPanel.this.descLabels.length; ++i) {
+      MemoryPanel.this.descLabels[i].setText("" + (i + value));
     }
-    return this.labels[number];
   }
 }
