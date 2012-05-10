@@ -21,12 +21,14 @@ package com.github.croesch.micro_debug.gui.components.view;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
-import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
+import com.github.croesch.micro_debug.gui.components.basic.MDTabbedPane;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -62,7 +64,10 @@ public final class MainView {
 
     final JScrollPane regPane = new MDScrollPane("register", this.registerView);
     final JScrollPane memPane = new MDScrollPane("memory", this.memoryView);
-    final JScrollPane codePane = new MDScrollPane("code", new MDPanel("code"));
+    final JTabbedPane codePane = new MDTabbedPane("code");
+    codePane.add(GuiText.GUI_MAIN_MICRO_TAB_TITLE.text(), new MicroCodeView("macroCode", proc, bpm));
+    codePane.add(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(), new MicroCodeView("microCode", proc, bpm));
+
     final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));
     final JScrollPane debugPane = new MDScrollPane("debuggerTA", new DebuggerTAView("debuggerTA"));
 

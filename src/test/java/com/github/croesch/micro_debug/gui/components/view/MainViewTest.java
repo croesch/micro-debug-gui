@@ -21,11 +21,13 @@ package com.github.croesch.micro_debug.gui.components.view;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Dimension;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -54,6 +56,7 @@ public class MainViewTest extends DefaultGUITestCase {
 
   public static JFrame showViewInFrame(final String name, final Mic1 proc, final BreakpointManager bpm) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
+
       @Override
       protected JFrame executeInEDT() throws Throwable {
         final JFrame f = new JFrame();
@@ -68,15 +71,11 @@ public class MainViewTest extends DefaultGUITestCase {
   public void testView() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
     printlnMethodName();
 
-    /**
-     * TODO problem with FEST showing the frame containing 65K JLabels
-     */
-    //    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
-    //    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
-    //    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
-    //
-    //  final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", proc));
-    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", null, new BreakpointManager()));
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final FrameFixture frame = new FrameFixture(robot(), showViewInFrame("main-view", proc, new BreakpointManager()));
     frame.show(new Dimension(800, 500));
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
@@ -91,12 +90,10 @@ public class MainViewTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("register-mem").component().getRightComponent().getName()).isEqualTo("memory");
 
     assertThat(frame.splitPane("code-tas").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
-    // TODO change to tabbed pane
-    //    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JScrollPane.class);
+    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JTabbedPane.class);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent().getName()).isEqualTo("code");
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
-    assertThat(frame.splitPane("code-tas").component().getRightComponent().getName())
-      .isEqualTo("processorTas-debuggerTa");
+    assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");
 
     final String pane = "processorTas-debuggerTa";
     assertThat(frame.splitPane(pane).component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);

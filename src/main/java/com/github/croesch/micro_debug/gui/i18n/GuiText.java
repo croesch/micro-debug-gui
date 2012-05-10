@@ -53,7 +53,12 @@ public enum GuiText {
   /** the text to identify the components for macro assembler binary code */
   GUI_START_MACRO,
   /** the text to identify the components for micro assembler binary code */
-  GUI_START_MICRO;
+  GUI_START_MICRO,
+
+  /** the text to identify the micro code */
+  GUI_MAIN_MICRO_TAB_TITLE,
+  /** the text to identify the macro code */
+  GUI_MAIN_MACRO_TAB_TITLE;
 
   /** the value of this instance */
   @NotNull

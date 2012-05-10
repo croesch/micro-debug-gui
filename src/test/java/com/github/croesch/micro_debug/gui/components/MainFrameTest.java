@@ -21,16 +21,21 @@ package com.github.croesch.micro_debug.gui.components;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.error.MacroFileFormatException;
+import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
@@ -46,6 +51,7 @@ public class MainFrameTest extends DefaultGUITestCase {
 
   public static MainFrame getFrame(final Mic1 processor) {
     return GuiActionRunner.execute(new GuiQuery<MainFrame>() {
+
       @Override
       protected MainFrame executeInEDT() throws Throwable {
         return new MainFrame(processor);
@@ -54,10 +60,14 @@ public class MainFrameTest extends DefaultGUITestCase {
   }
 
   @Test
-  public void testFrame() {
+  public void testFrame() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
     printlnMethodName();
 
-    final FrameFixture frame = new FrameFixture(robot(), getFrame(null));
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final FrameFixture frame = new FrameFixture(robot(), getFrame(proc));
     frame.show();
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
@@ -72,12 +82,10 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("register-mem").component().getRightComponent().getName()).isEqualTo("memory");
 
     assertThat(frame.splitPane("code-tas").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
-    // TODO change to tabbed pane
-    //    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JScrollPane.class);
+    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JTabbedPane.class);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent().getName()).isEqualTo("code");
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
-    assertThat(frame.splitPane("code-tas").component().getRightComponent().getName())
-      .isEqualTo("processorTas-debuggerTa");
+    assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");
 
     final String pane = "processorTas-debuggerTa";
     assertThat(frame.splitPane(pane).component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
@@ -97,7 +105,11 @@ public class MainFrameTest extends DefaultGUITestCase {
                                                                                                  (byte) 0xFF,
                                                                                                  0 }));
 
-    final MainFrame mainFrame = getFrame(null);
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MainFrame mainFrame = getFrame(proc);
     final FrameFixture frame = new FrameFixture(robot(), mainFrame);
     frame.show();
     frame.checkBox("bpCB-PC").check();

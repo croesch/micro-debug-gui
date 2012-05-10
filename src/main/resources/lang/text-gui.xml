@@ -45,5 +45,8 @@
 	<entry key="gui-start-okay">Start</entry>
 	<entry key="gui-start-micro">micro assembler file</entry>
 	<entry key="gui-start-macro">macro assembler file</entry>
+	
+	<entry key="gui-main-micro-tab-title">micro code</entry>
+	<entry key="gui-main-macro-tab-title">macro code</entry>
 
 </properties>
