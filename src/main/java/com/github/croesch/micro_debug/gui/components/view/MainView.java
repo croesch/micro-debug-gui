@@ -51,6 +51,14 @@ public final class MainView {
   @NotNull
   private final MemoryPanel memoryView;
 
+  /** the view that visualises the micro code */
+  @NotNull
+  private final MicroCodeView microCodeView;
+
+  /** the view that visualises the macro code */
+  @NotNull
+  private final MacroCodeView macroCodeView;
+
   /**
    * Constructs the main view with the given name.
    * 
@@ -61,12 +69,14 @@ public final class MainView {
    */
   public MainView(final String name, final Mic1 proc, final BreakpointManager bpm) {
     this.memoryView = new MemoryPanel("memory", proc);
+    this.macroCodeView = new MacroCodeView("macroCode", proc, bpm);
+    this.microCodeView = new MicroCodeView("microCode", proc, bpm);
 
     final JScrollPane regPane = new MDScrollPane("register", this.registerView);
     final JScrollPane memPane = new MDScrollPane("memory", this.memoryView);
     final JTabbedPane codePane = new MDTabbedPane("code");
-    codePane.add(GuiText.GUI_MAIN_MICRO_TAB_TITLE.text(), new MicroCodeView("macroCode", proc, bpm));
-    codePane.add(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(), new MicroCodeView("microCode", proc, bpm));
+    codePane.add(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(), this.macroCodeView);
+    codePane.add(GuiText.GUI_MAIN_MICRO_TAB_TITLE.text(), this.microCodeView);
 
     final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));
     final JScrollPane debugPane = new MDScrollPane("debuggerTA", new DebuggerTAView("debuggerTA"));
@@ -117,5 +127,27 @@ public final class MainView {
   @NotNull
   public MemoryPanel getMemoryView() {
     return this.memoryView;
+  }
+
+  /**
+   * Returns the component responsible for visualising the micro code.
+   * 
+   * @since Date: May 11, 2012
+   * @return the {@link JComponent} containing the view visualising the micro code.
+   */
+  @NotNull
+  public MicroCodeView getMicroCodeView() {
+    return this.microCodeView;
+  }
+
+  /**
+   * Returns the component responsible for visualising the macro code.
+   * 
+   * @since Date: May 11, 2012
+   * @return the {@link JComponent} containing the view visualising the macro code.
+   */
+  @NotNull
+  public MacroCodeView getMacroCodeView() {
+    return this.macroCodeView;
   }
 }

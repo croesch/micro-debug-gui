@@ -66,7 +66,7 @@ public final class MainFrame extends SizedFrame {
 
     final BreakpointManager bpm = new BreakpointManager();
     final MainView view = new MainView("main-view", this.processor, bpm);
-    this.controller = new MainController(view, bpm);
+    this.controller = new MainController(this.processor, view, bpm);
 
     add(view.getViewComponent(), "grow");
   }

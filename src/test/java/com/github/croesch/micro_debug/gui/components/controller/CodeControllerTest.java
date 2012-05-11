@@ -48,7 +48,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  */
 public class CodeControllerTest extends DefaultGUITestCase {
 
-  private static final LineNumberMapper MICRO_MAPPER = new LineNumberMapper();
+  public static final LineNumberMapper MICRO_MAPPER = new LineNumberMapper();
 
   @Test(expected = IllegalArgumentException.class)
   public void testCstr_NullView() {
@@ -146,7 +146,9 @@ public class CodeControllerTest extends DefaultGUITestCase {
                                                   controller.getView().getLineNumberMapper());
   }
 
-  private void assertMicroHighlight(final CodeController controller, final JPanelFixture panel, final int oldH,
+  private void assertMicroHighlight(final CodeController controller,
+                                    final JPanelFixture panel,
+                                    final int oldH,
                                     final int newH) {
     ACodeAreaTest.assertLineHighlighted(panel.textBox(), oldH);
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, oldH, MICRO_MAPPER);
@@ -155,7 +157,9 @@ public class CodeControllerTest extends DefaultGUITestCase {
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, newH, MICRO_MAPPER);
   }
 
-  private void assertMacroHighlight(final CodeController controller, final JPanelFixture panel, final int oldH,
+  private void assertMacroHighlight(final CodeController controller,
+                                    final JPanelFixture panel,
+                                    final int oldH,
                                     final int newH) {
     assertMacroHighlight(controller, panel, oldH);
     update(controller);

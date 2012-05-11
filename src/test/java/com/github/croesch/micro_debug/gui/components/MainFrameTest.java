@@ -32,11 +32,19 @@ import javax.swing.JTabbedPane;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
+import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
+import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
+import com.github.croesch.micro_debug.gui.components.controller.CodeControllerTest;
+import com.github.croesch.micro_debug.gui.components.view.MacroCodeView;
+import com.github.croesch.micro_debug.gui.components.view.MicroCodeView;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstructionReader;
@@ -87,6 +95,13 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");
 
+    frame.tabbedPane("code").requireTabTitles(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(),
+                                              GuiText.GUI_MAIN_MICRO_TAB_TITLE.text());
+    assertThat(frame.tabbedPane("code").selectTab(0).selectedComponent()).isInstanceOf(MacroCodeView.class);
+    assertThat(frame.tabbedPane("code").selectedComponent().getName()).isEqualTo("macroCode");
+    assertThat(frame.tabbedPane("code").selectTab(1).selectedComponent()).isInstanceOf(MicroCodeView.class);
+    assertThat(frame.tabbedPane("code").selectedComponent().getName()).isEqualTo("microCode");
+
     final String pane = "processorTas-debuggerTa";
     assertThat(frame.splitPane(pane).component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane(pane).component().getLeftComponent()).isInstanceOf(JScrollPane.class);
@@ -116,5 +131,94 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(mainFrame.getController().getBpm().isBreakpoint(0, 0, in, in)).isTrue();
     frame.checkBox("bpCB-PC").uncheck();
     assertThat(mainFrame.getController().getBpm().isBreakpoint(0, 0, in, in)).isFalse();
+  }
+
+  @Test
+  public void testMicroCode() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MainFrame mainFrame = getFrame(proc);
+    final FrameFixture frame = new FrameFixture(robot(), mainFrame);
+    frame.show();
+
+    frame.tabbedPane().selectTab(1);
+
+    assertMicroHighlight(frame.panel("microCode"), 0);
+
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 2);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 0);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 2);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 16);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 22);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 23);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 2);
+    proc.microStep();
+    assertMicroHighlight(frame.panel("microCode"), 89);
+  }
+
+  @Test
+  public void testMacroCode() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MainFrame mainFrame = getFrame(proc);
+    final FrameFixture frame = new FrameFixture(robot(), mainFrame);
+    frame.show();
+
+    assertMacroNoHighlight(frame.panel("macroCode"));
+    proc.microStep();
+    assertMacroNoHighlight(frame.panel("macroCode"));
+    proc.microStep(2);
+    assertMacroHighlight(frame.panel("macroCode"), 0);
+    proc.microStep(2);
+    assertMacroNoHighlight(frame.panel("macroCode"));
+    proc.microStep(2);
+    assertMacroHighlight(frame.panel("macroCode"), 2);
+    proc.step();
+    assertMacroHighlight(frame.panel("macroCode"), 3);
+    proc.step();
+    assertMacroHighlight(frame.panel("macroCode"), 5);
+    proc.step();
+    assertMacroHighlight(frame.panel("macroCode"), 7);
+    proc.step();
+    assertMacroHighlight(frame.panel("macroCode"), 9);
+    proc.step();
+    assertMacroHighlight(frame.panel("macroCode"), 10);
+  }
+
+  private void assertMacroNoHighlight(final JPanelFixture panel) {
+    ACodeAreaTest.assertNoLineHighlighted(panel.textBox());
+    LineNumberLabelTest.assertLabelHasNoHighlight(panel.label("macroCode-code-ta-line-numbers"),
+                                                  panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(),
+                                                  panel.targetCastedTo(MacroCodeView.class).getLineNumberMapper());
+  }
+
+  private void assertMicroHighlight(final JPanelFixture panel, final int high) {
+    ACodeAreaTest.assertLineHighlighted(panel.textBox(), high);
+    LineNumberLabelTest.assertLabelHas(panel.label("microCode-code-ta-line-numbers"), 512, high,
+                                       CodeControllerTest.MICRO_MAPPER);
+  }
+
+  private void assertMacroHighlight(final JPanelFixture panel, final int high) {
+    ACodeAreaTest.assertLineHighlighted(panel.textBox(), panel.targetCastedTo(MacroCodeView.class)
+                                                              .getLineNumberMapper()
+                                                              .getNumberForLine(high));
+    LineNumberLabelTest.assertLabelHas(panel.label("macroCode-code-ta-line-numbers"),
+                                       panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(), high,
+                                       panel.targetCastedTo(MacroCodeView.class).getLineNumberMapper());
   }
 }

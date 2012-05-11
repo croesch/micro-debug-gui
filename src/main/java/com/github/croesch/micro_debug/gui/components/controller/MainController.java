@@ -21,9 +21,12 @@ package com.github.croesch.micro_debug.gui.components.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
+import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.api.IProcessorInterpreter;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 
@@ -48,17 +51,21 @@ public final class MainController implements IProcessorInterpreter {
    * Constructs the main controller for the given main view.
    * 
    * @since Date: Apr 11, 2012
+   * @param proc the processor to interprete
    * @param view the view this controller controlls and interacts with
    * @param bpm the model for breakpoints of this debugger
    */
-  public MainController(final MainView view, final BreakpointManager bpm) {
-    if (bpm == null) {
+  public MainController(final Mic1 proc, final MainView view, final BreakpointManager bpm) {
+    if (proc == null || bpm == null || view == null) {
       throw new IllegalArgumentException();
     }
     this.breakpointManager = bpm;
+    proc.setProcessorInterpreter(this);
 
     this.controllers.add(new RegisterController(view.getRegisterView(), this.breakpointManager));
     this.controllers.add(new MemoryController(view.getMemoryView()));
+    this.controllers.add(new CodeController(view.getMicroCodeView()));
+    this.controllers.add(new CodeController(view.getMacroCodeView()));
   }
 
   /**
@@ -87,8 +94,13 @@ public final class MainController implements IProcessorInterpreter {
    * {@inheritDoc}
    */
   public void tickDone(final MicroInstruction instruction, final boolean macroCodeFetching) {
-    for (final IController controller : this.controllers) {
-      controller.performViewUpdate();
-    }
+    SwingUtilities.invokeLater(new Runnable() {
+
+      public void run() {
+        for (final IController controller : MainController.this.controllers) {
+          controller.performViewUpdate();
+        }
+      }
+    });
   }
 }
