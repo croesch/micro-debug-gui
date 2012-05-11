@@ -58,4 +58,9 @@ public final class MicroCodeView extends ACodeView {
     }
     getCodeArea().setText(sb.toString());
   }
+
+  @Override
+  public void update() {
+    highlight(getProcessor().getNextMpc());
+  }
 }

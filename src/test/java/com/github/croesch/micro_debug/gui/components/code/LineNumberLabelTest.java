@@ -64,6 +64,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private LineNumberLabel getLabel(final ACodeArea ta) {
     return GuiActionRunner.execute(new GuiQuery<LineNumberLabel>() {
+
       @Override
       protected LineNumberLabel executeInEDT() {
         return new LineNumberLabel(ta, LineNumberLabelTest.this.lineMapper);
@@ -73,6 +74,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private LineNumberLabel getLabel(final ACodeArea ta, final LineNumberMapper mapper) {
     return GuiActionRunner.execute(new GuiQuery<LineNumberLabel>() {
+
       @Override
       protected LineNumberLabel executeInEDT() {
         return new LineNumberLabel(ta, mapper);
@@ -82,6 +84,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private ACodeArea getTA(final String name, final String text) {
     return GuiActionRunner.execute(new GuiQuery<ACodeArea>() {
+
       @Override
       protected ACodeArea executeInEDT() {
         final ACodeArea aCodeArea = new ACodeArea(name, null) {
@@ -98,6 +101,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private JFrame getFrame(final JComponent comp, final JLabel label) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
+
       @Override
       protected JFrame executeInEDT() {
         final JFrame frame = new JFrame();
@@ -311,6 +315,10 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
     return sb.toString();
   }
 
+  public static void assertLabelHasNoHighlight(final JLabelFixture label, final int lines, final LineNumberMapper mapper) {
+    assertThat(label.component().getText()).isEqualTo(getTextAsserted(lines, mapper));
+  }
+
   public static void assertLabelHas(final JLabelFixture label,
                                     final int lines,
                                     final int highlighted,
@@ -336,6 +344,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
 
   private void highlight(final JLabelFixture labelFixture, final int line) {
     GuiActionRunner.execute(new GuiTask() {
+
       @Override
       protected void executeInEDT() throws Throwable {
         labelFixture.targetCastedTo(LineNumberLabel.class).highlight(line);

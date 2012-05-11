@@ -89,6 +89,8 @@ public abstract class ACodeView extends MDPanel {
     pane.setRowHeaderView(rowHeader);
 
     add(pane, "grow");
+
+    update();
   }
 
   /**
@@ -97,6 +99,7 @@ public abstract class ACodeView extends MDPanel {
    * @since Date: Apr 19, 2012
    * @return the {@link Mic1} processor debugged.
    */
+  @NotNull
   protected final Mic1 getProcessor() {
     return this.processor;
   }
@@ -129,7 +132,7 @@ public abstract class ACodeView extends MDPanel {
    * @return the {@link LineNumberMapper} this view uses.
    */
   @NotNull
-  protected final LineNumberMapper getLineNumberMapper() {
+  public final LineNumberMapper getLineNumberMapper() {
     return this.mapper;
   }
 
@@ -139,7 +142,15 @@ public abstract class ACodeView extends MDPanel {
    * @since Date: Apr 19, 2012
    * @return the text area containing the code.
    */
+  @NotNull
   protected final ACodeArea getCodeArea() {
     return this.codeArea;
   }
+
+  /**
+   * Performs an update of the highlight of the code pane.
+   * 
+   * @since Date: May 11, 2012
+   */
+  public abstract void update();
 }

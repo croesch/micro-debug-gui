@@ -102,4 +102,9 @@ public final class MacroCodeView extends ACodeView {
     }
     getLineNumberMapper().setNewLines(lineNumbers);
   }
+
+  @Override
+  public void update() {
+    highlight(getProcessor().getNextMacroAddress());
+  }
 }
