@@ -59,6 +59,7 @@ public class RulerTest extends DefaultGUITestCase {
 
   private FrameFixture showFrame(final Ruler r, final JTextComponent ta) {
     final FrameFixture frameFixture = new FrameFixture(robot(), GuiActionRunner.execute(new GuiQuery<JFrame>() {
+
       @Override
       protected JFrame executeInEDT() {
         final JFrame frame = new JFrame();
@@ -75,6 +76,7 @@ public class RulerTest extends DefaultGUITestCase {
 
   private ACodeArea getTA(final String name, final Object text) {
     return GuiActionRunner.execute(new GuiQuery<ACodeArea>() {
+
       @Override
       protected ACodeArea executeInEDT() {
         final ACodeArea aCodeArea = new ACodeArea(name, null) {
@@ -90,6 +92,7 @@ public class RulerTest extends DefaultGUITestCase {
 
   private Ruler getRuler(final ACodeArea area, final ILineBreakPointManager bpm) {
     return GuiActionRunner.execute(new GuiQuery<Ruler>() {
+
       @Override
       protected Ruler executeInEDT() {
         return new Ruler(area, bpm, RulerTest.this.lineMapper);
@@ -99,6 +102,7 @@ public class RulerTest extends DefaultGUITestCase {
 
   private Ruler getRuler(final ACodeArea area, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
     return GuiActionRunner.execute(new GuiQuery<Ruler>() {
+
       @Override
       protected Ruler executeInEDT() {
         return new Ruler(area, bpm, mapper);
@@ -200,6 +204,8 @@ public class RulerTest extends DefaultGUITestCase {
     final Ruler r = getRuler(ta, bpm);
 
     showFrame(r, ta);
+
+    slowDownRobot();
 
     final int line = 3;
     robot().click(r, new Point(0, getYOfLine(ta, line)), MouseButton.LEFT_BUTTON, 2);

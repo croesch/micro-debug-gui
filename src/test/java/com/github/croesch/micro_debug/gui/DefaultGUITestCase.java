@@ -137,7 +137,7 @@ public class DefaultGUITestCase extends DefaultTestCase {
   }
 
   protected void slowDownRobot() {
-    robot().settings().eventPostingDelay(2 * NORMAL_DELAY);
+    robot().settings().eventPostingDelay(10 * NORMAL_DELAY);
     robot().settings().delayBetweenEvents(2 * NORMAL_DELAY);
   }
 }
