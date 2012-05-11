@@ -34,9 +34,8 @@
 	<entry key="gui-about-description">&lt;html&gt;
 		{0} is a debugger with a GUI for the Mic-1
 		processor invented by &lt;i&gt;Andrew S. Tannenbaum&lt;/i&gt;,
-		Structured Computer Organization, Fourth Edition (Prentice-Hall, 1998)
-		and described by &lt;i&gt;Prof. Dr. Karl Stroetmann&lt;/i&gt;. You can
-		debug the assembler code and the micro assembler code, too.&lt;p&gt;
+		Structured Computer Organization, Fourth Edition (Prentice-Hall, 1998).
+		You can debug the assembler code and the micro assembler code, too.&lt;p&gt;
 		This debugger has been developed for a seminar paper.&lt;p&gt;
 		Please see: &lt;a href="http://git.io/croesch-md-gui"&gt;http://git.io/croesch-md-gui&lt;/a&gt;
 	</entry>
