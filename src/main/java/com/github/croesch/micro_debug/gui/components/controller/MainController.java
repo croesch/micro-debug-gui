@@ -18,12 +18,14 @@
  */
 package com.github.croesch.micro_debug.gui.components.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -87,20 +89,26 @@ public final class MainController implements IProcessorInterpreter {
                              final MicroInstruction currentInstruction,
                              final MicroInstruction nextInstruction) {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   /**
    * {@inheritDoc}
    */
   public void tickDone(final MicroInstruction instruction, final boolean macroCodeFetching) {
-    SwingUtilities.invokeLater(new Runnable() {
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
 
-      public void run() {
-        for (final IController controller : MainController.this.controllers) {
-          controller.performViewUpdate();
+        public void run() {
+          for (final IController controller : MainController.this.controllers) {
+            controller.performViewUpdate();
+          }
         }
-      }
-    });
+      });
+    } catch (final InterruptedException e) {
+      Utils.logThrownThrowable(e);
+    } catch (final InvocationTargetException e) {
+      Utils.logThrownThrowable(e);
+    }
   }
 }
