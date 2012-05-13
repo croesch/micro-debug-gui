@@ -23,6 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import javax.swing.Action;
 
 import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
@@ -33,35 +34,47 @@ import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
- * Provides test cases for {@link Actions}.
+ * Provides test cases for {@link AboutAction}.
  * 
  * @author croesch
  * @since Date: May 12, 2012
  */
-public class ActionsTest extends DefaultGUITestCase {
+public class AboutActionTest extends DefaultGUITestCase {
+
+  private AboutAction action;
+
+  @Override
+  protected void setUpTestCase() throws Exception {
+    this.action = GuiActionRunner.execute(new GuiQuery<AboutAction>() {
+      @Override
+      protected AboutAction executeInEDT() throws Throwable {
+        return new AboutAction();
+      }
+    });
+  }
 
   @Test
-  public void testAbout() {
+  public void testAction() {
     printlnMethodName();
 
-    assertThat(Actions.ABOUT.toAction().getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_ABOUT.text());
+    assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_ABOUT.text());
 
-    perform(Actions.ABOUT);
+    perform(this.action);
     final FrameFixture frame = WindowFinder.findFrame(AboutFrame.class).using(robot());
     frame.close();
-    perform(Actions.ABOUT);
+    perform(this.action);
     frame.requireVisible();
-    perform(Actions.ABOUT);
+    perform(this.action);
     frame.requireVisible();
     frame.close();
     frame.requireNotVisible();
   }
 
-  private void perform(final Actions act) {
+  private void perform(final Action act) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
-        act.perform();
+        act.actionPerformed(null);
       }
     });
   }

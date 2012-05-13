@@ -18,32 +18,38 @@
  */
 package com.github.croesch.micro_debug.gui.actions;
 
+import static org.fest.assertions.Assertions.assertThat;
+
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.junit.Test;
+
+import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+
 /**
- * Provides an enumeration of actions to control the debugger.
+ * Provides test cases for {@link ActionProvider}.
  * 
  * @author croesch
- * @since Date: May 12, 2012
+ * @since Date: May 13, 2012
  */
-public enum Actions {
+public class ActionProviderTest extends DefaultGUITestCase {
 
-  /** action to visualize the about frame */
-  ABOUT,
+  private ActionProvider provider;
 
-  /** the action to quit the program */
-  EXIT,
+  @Override
+  protected void setUpTestCase() throws Exception {
+    this.provider = GuiActionRunner.execute(new GuiQuery<ActionProvider>() {
+      @Override
+      protected ActionProvider executeInEDT() throws Throwable {
+        return new ActionProvider();
+      }
+    });
+  }
 
-  /** the action to show the help frame */
-  HELP,
+  @Test
+  public void testGetAction() {
+    printlnMethodName();
 
-  /** the action to perform a micro step */
-  MICRO_STEP,
-
-  /** the action to reset the processor */
-  RESET,
-
-  /** the action to run the debugger */
-  RUN,
-
-  /** the action to perform a macro step */
-  STEP;
+    assertThat(this.provider.getAction(Actions.ABOUT)).isInstanceOf(AboutAction.class);
+  }
 }
