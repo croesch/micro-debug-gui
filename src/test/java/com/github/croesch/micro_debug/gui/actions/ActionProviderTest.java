@@ -54,5 +54,6 @@ public class ActionProviderTest extends DefaultGUITestCase {
     assertThat(this.provider.getAction(Actions.MICRO_STEP)).isInstanceOf(MicroStepAction.class);
     assertThat(this.provider.getAction(Actions.RESET)).isInstanceOf(ResetAction.class);
     assertThat(this.provider.getAction(Actions.RUN)).isInstanceOf(RunAction.class);
+    assertThat(this.provider.getAction(Actions.STEP)).isInstanceOf(StepAction.class);
   }
 }

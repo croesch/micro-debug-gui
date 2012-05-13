@@ -22,37 +22,37 @@ import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Action to perform a micro step of the processor.
+ * Action to perform a step of the processor.
  * 
  * @author croesch
  * @since Date: May 13, 2012
  */
-public final class MicroStepAction extends AbstractStepAction {
+public final class StepAction extends AbstractStepAction {
 
   /** generated serial version UID */
-  private static final long serialVersionUID = 3119114931438478253L;
+  private static final long serialVersionUID = -3384615453935946627L;
 
   /** the processor being debugged */
   private final Mic1 processor;
 
   /**
-   * Constructs the action to perform a micro step of the processor.
+   * Constructs the action to perform a step of the processor.
    * 
    * @since Date: May 13, 2012
    * @param proc the {@link Mic1} processor being debugged
    */
-  public MicroStepAction(final Mic1 proc) {
-    super(GuiText.GUI_ACTIONS_MICRO_STEP);
+  public StepAction(final Mic1 proc) {
+    super(GuiText.GUI_ACTIONS_STEP);
     this.processor = proc;
   }
 
   @Override
   protected void doStep() {
-    this.processor.microStep();
+    this.processor.step();
   }
 
   @Override
   protected void doStep(final int count) {
-    this.processor.microStep(count);
+    this.processor.step(count);
   }
 }

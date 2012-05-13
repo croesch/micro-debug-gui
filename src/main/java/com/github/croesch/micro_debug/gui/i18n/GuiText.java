@@ -67,7 +67,9 @@ public enum GuiText {
   /** the text for the reset action */
   GUI_ACTIONS_RESET,
   /** the text for the run action */
-  GUI_ACTIONS_RUN;
+  GUI_ACTIONS_RUN,
+  /** the text for the step action */
+  GUI_ACTIONS_STEP;
 
   /** the value of this instance */
   @NotNull
