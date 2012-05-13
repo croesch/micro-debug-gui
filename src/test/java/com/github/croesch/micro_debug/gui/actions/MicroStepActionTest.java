@@ -64,18 +64,8 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = GuiActionRunner.execute(new GuiQuery<MicroStepAction>() {
-      @Override
-      protected MicroStepAction executeInEDT() throws Throwable {
-        return new MicroStepAction(MicroStepActionTest.this.processor);
-      }
-    });
-    this.resetAction = GuiActionRunner.execute(new GuiQuery<ResetAction>() {
-      @Override
-      protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(MicroStepActionTest.this.processor);
-      }
-    });
+    this.action = createAction(this.processor);
+    this.resetAction = ResetActionTest.createAction(this.processor);
 
     this.txtComponent = GuiActionRunner.execute(new GuiQuery<JTextComponent>() {
       @Override
@@ -89,6 +79,15 @@ public class MicroStepActionTest extends DefaultGUITestCase {
       }
     });
     this.txtFixture = new JTextComponentFixture(robot(), this.txtComponent);
+  }
+
+  public static MicroStepAction createAction(final Mic1 proc) {
+    return GuiActionRunner.execute(new GuiQuery<MicroStepAction>() {
+      @Override
+      protected MicroStepAction executeInEDT() throws Throwable {
+        return new MicroStepAction(proc);
+      }
+    });
   }
 
   @Test

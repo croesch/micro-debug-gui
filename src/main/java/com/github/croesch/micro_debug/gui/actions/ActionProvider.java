@@ -46,6 +46,7 @@ public final class ActionProvider {
     this.actions.put(Actions.ABOUT, new AboutAction());
     this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor));
     this.actions.put(Actions.RESET, new ResetAction(processor));
+    this.actions.put(Actions.RUN, new RunAction(processor));
   }
 
   /**

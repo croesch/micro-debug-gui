@@ -31,17 +31,20 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Provides test cases for {@link ResetAction}.
+ * Provides test cases for {@link RunAction}.
  * 
  * @author croesch
  * @since Date: May 13, 2012
  */
-public class ResetActionTest extends DefaultGUITestCase {
+public class RunActionTest extends DefaultGUITestCase {
 
   private Action action;
+
+  private Action resetAction;
 
   private Mic1 processor;
 
@@ -53,13 +56,14 @@ public class ResetActionTest extends DefaultGUITestCase {
     new Mic1Interpreter(this.processor);
 
     this.action = createAction(this.processor);
+    this.resetAction = ResetActionTest.createAction(this.processor);
   }
 
-  public static ResetAction createAction(final Mic1 proc) {
-    return GuiActionRunner.execute(new GuiQuery<ResetAction>() {
+  public static RunAction createAction(final Mic1 proc) {
+    return GuiActionRunner.execute(new GuiQuery<RunAction>() {
       @Override
-      protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(proc);
+      protected RunAction executeInEDT() throws Throwable {
+        return new RunAction(proc);
       }
     });
   }
@@ -68,6 +72,18 @@ public class ResetActionTest extends DefaultGUITestCase {
   public void testAction() {
     printlnMethodName();
 
-    assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_RESET.text());
+    assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_RUN.text());
+
+    perform(this.action);
+    out.reset();
+
+    perform(this.resetAction);
+
+    perform(this.action);
+    assertThat(out.toString()).isEqualTo(Text.TICKS.text(14) + getLineSeparator());
+
+    out.reset();
+    perform(this.action);
+    assertThat(out.toString()).isEmpty();
   }
 }

@@ -51,5 +51,6 @@
 	<entry key="gui-actions-about">About</entry>
 	<entry key="gui-actions-micro-step">Micro step</entry>
 	<entry key="gui-actions-reset">Reset</entry>
+	<entry key="gui-actions-run">Run</entry>
 
 </properties>
