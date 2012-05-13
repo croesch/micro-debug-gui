@@ -24,7 +24,6 @@ import javax.swing.Action;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
@@ -69,14 +68,4 @@ public class AboutActionTest extends DefaultGUITestCase {
     frame.close();
     frame.requireNotVisible();
   }
-
-  private void perform(final Action act) {
-    GuiActionRunner.execute(new GuiTask() {
-      @Override
-      protected void executeInEDT() throws Throwable {
-        act.actionPerformed(null);
-      }
-    });
-  }
-
 }

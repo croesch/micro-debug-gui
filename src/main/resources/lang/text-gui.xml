@@ -49,5 +49,7 @@
 	<entry key="gui-main-macro-tab-title">macro code</entry>
 	
 	<entry key="gui-actions-about">About</entry>
+	<entry key="gui-actions-micro-step">Micro step</entry>
+	<entry key="gui-actions-reset">Reset</entry>
 
 </properties>

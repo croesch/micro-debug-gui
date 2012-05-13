@@ -20,38 +20,50 @@ package com.github.croesch.micro_debug.gui.actions;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.FileInputStream;
+
+import javax.swing.Action;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Provides test cases for {@link ActionProvider}.
+ * Provides test cases for {@link ResetAction}.
  * 
  * @author croesch
  * @since Date: May 13, 2012
  */
-public class ActionProviderTest extends DefaultGUITestCase {
+public class ResetActionTest extends DefaultGUITestCase {
 
-  private ActionProvider provider;
+  private Action action;
+
+  private Mic1 processor;
 
   @Override
   protected void setUpTestCase() throws Exception {
-    this.provider = GuiActionRunner.execute(new GuiQuery<ActionProvider>() {
+    final String micFile = getClass().getClassLoader().getResource("mic1/hi.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/hi.ijvm").getPath();
+    this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+    new Mic1Interpreter(this.processor);
+
+    this.action = GuiActionRunner.execute(new GuiQuery<ResetAction>() {
       @Override
-      protected ActionProvider executeInEDT() throws Throwable {
-        return new ActionProvider(null);
+      protected ResetAction executeInEDT() throws Throwable {
+        return new ResetAction(ResetActionTest.this.processor);
       }
     });
   }
 
   @Test
-  public void testGetAction() {
+  public void testAction() {
     printlnMethodName();
 
-    assertThat(this.provider.getAction(Actions.ABOUT)).isInstanceOf(AboutAction.class);
-    assertThat(this.provider.getAction(Actions.MICRO_STEP)).isInstanceOf(MicroStepAction.class);
-    assertThat(this.provider.getAction(Actions.RESET)).isInstanceOf(ResetAction.class);
+    assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_RESET.text());
   }
 }

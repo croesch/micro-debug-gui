@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -139,5 +140,14 @@ public class DefaultGUITestCase extends DefaultTestCase {
   protected void slowDownRobot() {
     robot().settings().eventPostingDelay(10 * NORMAL_DELAY);
     robot().settings().delayBetweenEvents(2 * NORMAL_DELAY);
+  }
+
+  protected void perform(final Action act) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        act.actionPerformed(null);
+      }
+    });
   }
 }
