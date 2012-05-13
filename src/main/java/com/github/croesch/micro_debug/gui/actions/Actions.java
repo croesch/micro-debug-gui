@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
  * Provides an enumeration of {@link AbstractAction}s to control the debugger.
@@ -38,7 +39,7 @@ import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
 public enum Actions {
 
   /** action to visualize the about frame */
-  ABOUT {
+  ABOUT (GuiText.GUI_ACTIONS_ABOUT) {
     /** the about frame */
     private AboutFrame frame;
 
@@ -64,7 +65,7 @@ public enum Actions {
   },
 
   /** the action to quit the program */
-  EXIT {
+  EXIT (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -72,7 +73,7 @@ public enum Actions {
   },
 
   /** the action to show the help frame */
-  HELP {
+  HELP (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -80,7 +81,7 @@ public enum Actions {
   },
 
   /** the action to perform a micro step */
-  MICRO_STEP {
+  MICRO_STEP (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -88,7 +89,7 @@ public enum Actions {
   },
 
   /** the action to reset the processor */
-  RESET {
+  RESET (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -96,7 +97,7 @@ public enum Actions {
   },
 
   /** the action to run the debugger */
-  RUN {
+  RUN (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -104,7 +105,7 @@ public enum Actions {
   },
 
   /** the action to perform a macro step */
-  STEP {
+  STEP (GuiText.GUI_ACTIONS_ABOUT) {
     @Override
     protected void perform() {
       // TODO Auto-generated method stub
@@ -118,9 +119,11 @@ public enum Actions {
    * Constructs the specific action and the wrapper for swing components.
    * 
    * @since Date: May 13, 2012
+   * @param name the {@link GuiText} containing the name of the description
    */
-  private Actions() {
-    this.action = new AbstractAction() {
+  private Actions(final GuiText name) {
+    this.action = new AbstractAction(name.text()) {
+
       /** generated serial version UID */
       private static final long serialVersionUID = -7910947802169844436L;
 

@@ -18,6 +18,10 @@
  */
 package com.github.croesch.micro_debug.gui.actions;
 
+import static org.fest.assertions.Assertions.assertThat;
+
+import javax.swing.Action;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.finder.WindowFinder;
@@ -26,6 +30,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
  * Provides test cases for {@link Actions}.
@@ -38,6 +43,8 @@ public class ActionsTest extends DefaultGUITestCase {
   @Test
   public void testAbout() {
     printlnMethodName();
+
+    assertThat(Actions.ABOUT.toAction().getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_ABOUT.text());
 
     perform(Actions.ABOUT);
     final FrameFixture frame = WindowFinder.findFrame(AboutFrame.class).using(robot());

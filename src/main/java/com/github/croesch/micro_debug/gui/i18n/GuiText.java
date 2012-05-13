@@ -58,7 +58,10 @@ public enum GuiText {
   /** the text to identify the micro code */
   GUI_MAIN_MICRO_TAB_TITLE,
   /** the text to identify the macro code */
-  GUI_MAIN_MACRO_TAB_TITLE;
+  GUI_MAIN_MACRO_TAB_TITLE,
+
+  /** the text for the about action */
+  GUI_ACTIONS_ABOUT;
 
   /** the value of this instance */
   @NotNull
