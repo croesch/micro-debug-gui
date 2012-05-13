@@ -21,9 +21,15 @@ package com.github.croesch.micro_debug.gui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.text.JTextComponent;
 
+import com.github.croesch.micro_debug.annotation.Nullable;
+import com.github.croesch.micro_debug.commons.Printer;
+import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
+import com.github.croesch.micro_debug.parser.IntegerParser;
 
 /**
  * Action to perform a micro step of the processor.
@@ -38,6 +44,13 @@ public final class MicroStepAction extends AbstractAction {
 
   /** the processor being debugged */
   private final Mic1 processor;
+
+  /** the text component containing the number of ticks to do */
+  @Nullable
+  private JTextComponent textComponent = null;
+
+  /** the {@link IntegerParser} to parse the number from the text component */
+  private final IntegerParser parser = new IntegerParser();
 
   /**
    * Constructs the action to perform a micro step of the processor.
@@ -54,6 +67,33 @@ public final class MicroStepAction extends AbstractAction {
    * {@inheritDoc}
    */
   public void actionPerformed(final ActionEvent e) {
-    this.processor.microStep();
+
+    if (this.textComponent != null && !Utils.isNullOrEmpty(this.textComponent.getText())) {
+      final Integer num = this.parser.parse(this.textComponent.getText());
+
+      if (num == null) {
+        // delete the text, if it's no valid number
+        Printer.printErrorln(Text.INVALID_NUMBER.text(this.textComponent.getText()));
+        this.textComponent.setText(null);
+      } else {
+        // valid number in text field -> do the number of steps
+        this.processor.microStep(num.intValue());
+      }
+    } else {
+      // no text component or empty -> do one step
+      this.processor.microStep();
+    }
+  }
+
+  /**
+   * Setting the text component that contains information (the number) about how many ticks should be done, when
+   * performing this action. If the given text component is <code>null</code>, one tick will be done when performing
+   * this action.
+   * 
+   * @since Date: May 13, 2012
+   * @param comp the text component containing information about how many ticks to do when this action is performed
+   */
+  public void setTextComponent(final JTextComponent comp) {
+    this.textComponent = comp;
   }
 }
