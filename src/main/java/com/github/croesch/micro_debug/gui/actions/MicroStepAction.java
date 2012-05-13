@@ -33,7 +33,7 @@ public final class MicroStepAction extends AbstractStepAction {
   private static final long serialVersionUID = 3119114931438478253L;
 
   /** the processor being debugged */
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs the action to perform a micro step of the processor.

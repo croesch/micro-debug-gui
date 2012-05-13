@@ -37,7 +37,7 @@ public final class ResetAction extends AbstractAction {
   private static final long serialVersionUID = 9082637554492739783L;
 
   /** the processor being debugged */
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs the action to reset the processor.

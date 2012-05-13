@@ -33,7 +33,7 @@ public final class StepAction extends AbstractStepAction {
   private static final long serialVersionUID = -3384615453935946627L;
 
   /** the processor being debugged */
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs the action to perform a step of the processor.
