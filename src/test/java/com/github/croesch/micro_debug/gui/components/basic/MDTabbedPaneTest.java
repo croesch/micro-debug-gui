@@ -19,10 +19,13 @@
 package com.github.croesch.micro_debug.gui.components.basic;
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import javax.swing.JTabbedPane;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
+
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 
 /**
