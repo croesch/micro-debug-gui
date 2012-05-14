@@ -145,6 +145,8 @@ public class MainFrameTest extends DefaultGUITestCase {
     final FrameFixture frame = new FrameFixture(robot(), mainFrame);
     frame.show();
 
+    slowDownRobot();
+
     frame.tabbedPane().selectTab(1);
 
     assertMicroHighlight(frame.panel("microCode"), 0);
