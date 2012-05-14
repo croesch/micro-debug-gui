@@ -20,47 +20,43 @@ package com.github.croesch.micro_debug.gui.actions;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import javax.swing.Action;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
-import com.github.croesch.micro_debug.mic1.Mic1;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
- * Provides test cases for {@link ActionProvider}.
+ * Provides test cases for {@link ExitAction}.
  * 
  * @author croesch
- * @since Date: May 13, 2012
+ * @since Date: May 14, 2012
  */
-public class ActionProviderTest extends DefaultGUITestCase {
+public class ExitActionTest extends DefaultGUITestCase {
 
-  private ActionProvider provider;
+  private Action action;
 
   @Override
   protected void setUpTestCase() throws Exception {
-    this.provider = getProvider(null);
+    this.action = createAction();
   }
 
-  public static ActionProvider getProvider(final Mic1 proc) {
-    return GuiActionRunner.execute(new GuiQuery<ActionProvider>() {
+  public static ExitAction createAction() {
+    return GuiActionRunner.execute(new GuiQuery<ExitAction>() {
       @Override
-      protected ActionProvider executeInEDT() throws Throwable {
-        return new ActionProvider(proc);
+      protected ExitAction executeInEDT() throws Throwable {
+        return new ExitAction();
       }
     });
   }
 
   @Test
-  public void testGetAction() {
+  public void testAction() {
     printlnMethodName();
 
-    assertThat(this.provider.getAction(Actions.ABOUT)).isInstanceOf(AboutAction.class);
-    assertThat(this.provider.getAction(Actions.EXIT)).isInstanceOf(ExitAction.class);
-    assertThat(this.provider.getAction(Actions.HELP)).isInstanceOf(HelpAction.class);
-    assertThat(this.provider.getAction(Actions.MICRO_STEP)).isInstanceOf(MicroStepAction.class);
-    assertThat(this.provider.getAction(Actions.RESET)).isInstanceOf(ResetAction.class);
-    assertThat(this.provider.getAction(Actions.RUN)).isInstanceOf(RunAction.class);
-    assertThat(this.provider.getAction(Actions.STEP)).isInstanceOf(StepAction.class);
+    assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_EXIT.text());
   }
 }

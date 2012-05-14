@@ -69,7 +69,18 @@ public enum GuiText {
   /** the text for the run action */
   GUI_ACTIONS_RUN,
   /** the text for the step action */
-  GUI_ACTIONS_STEP;
+  GUI_ACTIONS_STEP,
+  /** the text for the exit action */
+  GUI_ACTIONS_EXIT,
+  /** the text for the help action */
+  GUI_ACTIONS_HELP,
+
+  /** the text for the help menu */
+  GUI_MENU_HELP,
+  /** the text for the processor menu */
+  GUI_MENU_PROCESSOR,
+  /** the text for the micro-debug menu */
+  GUI_MENU_MICRODEBUG;
 
   /** the value of this instance */
   @NotNull
