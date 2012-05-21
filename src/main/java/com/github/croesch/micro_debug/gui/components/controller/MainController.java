@@ -97,14 +97,18 @@ public final class MainController implements IProcessorInterpreter {
    */
   public void tickDone(final MicroInstruction instruction, final boolean macroCodeFetching) {
     try {
-      SwingUtilities.invokeAndWait(new Runnable() {
-
+      final Runnable viewUpdate = new Runnable() {
         public void run() {
           for (final IController controller : MainController.this.controllers) {
             controller.performViewUpdate();
           }
         }
-      });
+      };
+      if (SwingUtilities.isEventDispatchThread()) {
+        viewUpdate.run();
+      } else {
+        SwingUtilities.invokeAndWait(viewUpdate);
+      }
     } catch (final InterruptedException e) {
       Utils.logThrownThrowable(e);
     } catch (final InvocationTargetException e) {
