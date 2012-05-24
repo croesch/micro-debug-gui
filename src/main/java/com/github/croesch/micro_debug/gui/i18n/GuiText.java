@@ -55,6 +55,8 @@ public enum GuiText {
   /** the text to identify the components for micro assembler binary code */
   GUI_START_MICRO,
 
+  /** the title of the main frame */
+  GUI_MAIN_TITLE,
   /** the text to identify the micro code */
   GUI_MAIN_MICRO_TAB_TITLE,
   /** the text to identify the macro code */

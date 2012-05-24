@@ -45,6 +45,7 @@ import com.github.croesch.micro_debug.gui.components.controller.CodeControllerTe
 import com.github.croesch.micro_debug.gui.components.view.MacroCodeView;
 import com.github.croesch.micro_debug.gui.components.view.MicroCodeView;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstructionReader;
@@ -77,6 +78,9 @@ public class MainFrameTest extends DefaultGUITestCase {
 
     final FrameFixture frame = new FrameFixture(robot(), getFrame(proc));
     frame.show();
+    assertThat(frame.component().getTitle()).isEqualTo(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME,
+                                                                                   InternalSettings.VERSION));
+
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("main-view").component().getLeftComponent().getName()).isEqualTo("register-mem");

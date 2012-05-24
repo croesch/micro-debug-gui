@@ -29,6 +29,8 @@ import com.github.croesch.micro_debug.gui.actions.ActionProvider;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainMenuBar;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -38,9 +40,6 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @since Date: Mar 10, 2012
  */
 public final class MainFrame extends JFrame {
-
-  /** height and width of the frame - TODO change to useful values */
-  private static final int SPECIAL_VALUE = 400;
 
   /** generated serial version UID */
   private static final long serialVersionUID = 888748757383386602L;
@@ -60,7 +59,7 @@ public final class MainFrame extends JFrame {
    * @param proc the processor to debug with this frame.
    */
   public MainFrame(final Mic1 proc) {
-    super("...");
+    super(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME, InternalSettings.VERSION));
     this.processor = proc;
 
     setLayout(new MigLayout("fill"));
