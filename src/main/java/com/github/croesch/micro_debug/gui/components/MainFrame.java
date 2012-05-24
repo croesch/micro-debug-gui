@@ -18,7 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components;
 
-import javax.swing.JFrame;
+import java.awt.Dimension;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -26,10 +26,12 @@ import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
+import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainMenuBar;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -39,7 +41,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: Mar 10, 2012
  */
-public final class MainFrame extends JFrame {
+public final class MainFrame extends SizedFrame {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 888748757383386602L;
@@ -59,7 +61,9 @@ public final class MainFrame extends JFrame {
    * @param proc the processor to debug with this frame.
    */
   public MainFrame(final Mic1 proc) {
-    super(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME, InternalSettings.VERSION));
+    super(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME, InternalSettings.VERSION),
+          new Dimension(IntegerSettings.MAIN_FRAME_WIDTH.getValue(), IntegerSettings.MAIN_FRAME_HEIGHT.getValue()));
+
     this.processor = proc;
 
     setLayout(new MigLayout("fill"));

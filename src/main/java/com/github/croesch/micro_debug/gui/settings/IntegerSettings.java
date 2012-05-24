@@ -30,7 +30,21 @@ import com.github.croesch.micro_debug.properties.PropertiesProvider;
 public enum IntegerSettings {
 
   /** the number of words displayed at once to the user */
-  MEMORY_WORDS_VISIBLE (20);
+  MEMORY_WORDS_VISIBLE (20),
+
+  /** the initial width of the main frame */
+  MAIN_FRAME_WIDTH (1000),
+  /** the initial height of the main frame */
+  MAIN_FRAME_HEIGHT (618),
+
+  /** the position of the slider between register and memory */
+  MAIN_FRAME_SLIDER_REGISTER_MEMORY (309),
+  /** the position of the slider between register, memory and the rest (code and textareas) */
+  MAIN_FRAME_SLIDER_REGISTERMEMORY_REST (300),
+  /** the position of the slider between code and textareas */
+  MAIN_FRAME_SLIDER_CODE_TEXTAREAS (400),
+  /** the position of the slider between textareas of processor and debugger */
+  MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER (350);
 
   /** the value set up in the properties file */
   private final int value;

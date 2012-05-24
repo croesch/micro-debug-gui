@@ -29,6 +29,7 @@ import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDTabbedPane;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -85,11 +86,15 @@ public final class MainView {
                                                   JSplitPane.HORIZONTAL_SPLIT,
                                                   procPane,
                                                   debugPane);
+    bottomPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER.getValue());
 
     final JSplitPane leftPane = new MDSplitPane("register-mem", JSplitPane.VERTICAL_SPLIT, regPane, memPane);
+    leftPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_REGISTER_MEMORY.getValue());
     final JSplitPane rightPane = new MDSplitPane("code-tas", JSplitPane.VERTICAL_SPLIT, codePane, bottomPane);
+    rightPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
     this.view = new MDSplitPane(name, JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
+    ((MDSplitPane) this.view).setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_REGISTERMEMORY_REST.getValue());
   }
 
   /**

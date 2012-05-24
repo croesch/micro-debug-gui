@@ -45,6 +45,7 @@ import com.github.croesch.micro_debug.gui.components.controller.CodeControllerTe
 import com.github.croesch.micro_debug.gui.components.view.MacroCodeView;
 import com.github.croesch.micro_debug.gui.components.view.MicroCodeView;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
@@ -81,23 +82,29 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.component().getTitle()).isEqualTo(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME,
                                                                                    InternalSettings.VERSION));
 
+    assertThat(frame.component().getHeight()).isEqualTo(IntegerSettings.MAIN_FRAME_HEIGHT.getValue());
+    assertThat(frame.component().getWidth()).isEqualTo(IntegerSettings.MAIN_FRAME_WIDTH.getValue());
+
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("main-view").component().getLeftComponent().getName()).isEqualTo("register-mem");
     assertThat(frame.splitPane("main-view").component().getRightComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("main-view").component().getRightComponent().getName()).isEqualTo("code-tas");
+    assertThat(frame.splitPane("main-view").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_REGISTERMEMORY_REST.getValue());
 
     assertThat(frame.splitPane("register-mem").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
     assertThat(frame.splitPane("register-mem").component().getLeftComponent()).isInstanceOf(JScrollPane.class);
     assertThat(frame.splitPane("register-mem").component().getLeftComponent().getName()).isEqualTo("register");
     assertThat(frame.splitPane("register-mem").component().getRightComponent()).isInstanceOf(JScrollPane.class);
     assertThat(frame.splitPane("register-mem").component().getRightComponent().getName()).isEqualTo("memory");
+    assertThat(frame.splitPane("register-mem").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_REGISTER_MEMORY.getValue());
 
     assertThat(frame.splitPane("code-tas").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JTabbedPane.class);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent().getName()).isEqualTo("code");
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");
+    assertThat(frame.splitPane("code-tas").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
     frame.tabbedPane("code").requireTabTitles(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(),
                                               GuiText.GUI_MAIN_MICRO_TAB_TITLE.text());
@@ -112,6 +119,7 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane(pane).component().getLeftComponent().getName()).isEqualTo("processorTAs");
     assertThat(frame.splitPane(pane).component().getRightComponent()).isInstanceOf(JScrollPane.class);
     assertThat(frame.splitPane(pane).component().getRightComponent().getName()).isEqualTo("debuggerTA");
+    assertThat(frame.splitPane(pane).component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER.getValue());
   }
 
   @Test
