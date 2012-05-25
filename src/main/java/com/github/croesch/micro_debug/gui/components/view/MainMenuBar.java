@@ -26,6 +26,7 @@ import com.github.croesch.micro_debug.gui.actions.Actions;
 import com.github.croesch.micro_debug.gui.components.basic.MDMenu;
 import com.github.croesch.micro_debug.gui.components.basic.MDMenuItem;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.KeyStrokes;
 
 /**
  * The menu bar for the main frame.
@@ -59,9 +60,15 @@ public final class MainMenuBar extends JMenuBar {
    */
   private JMenu createHelpMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("help", GuiText.GUI_MENU_HELP.text());
-    menu.add(new MDMenuItem("help-item", provider.getAction(Actions.HELP)));
+
+    final MDMenuItem help = new MDMenuItem("help-item", provider.getAction(Actions.HELP));
+    help.setAccelerator(KeyStrokes.HELP.stroke());
+    final MDMenuItem about = new MDMenuItem("about", provider.getAction(Actions.ABOUT));
+    about.setAccelerator(KeyStrokes.ABOUT.stroke());
+
+    menu.add(help);
     menu.addSeparator();
-    menu.add(new MDMenuItem("about", provider.getAction(Actions.ABOUT)));
+    menu.add(about);
     return menu;
   }
 
@@ -74,11 +81,21 @@ public final class MainMenuBar extends JMenuBar {
    */
   private JMenu createProcessorMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("processor", GuiText.GUI_MENU_PROCESSOR.text());
-    menu.add(new MDMenuItem("micro-step", provider.getAction(Actions.MICRO_STEP)));
-    menu.add(new MDMenuItem("step", provider.getAction(Actions.STEP)));
-    menu.add(new MDMenuItem("run", provider.getAction(Actions.RUN)));
+
+    final MDMenuItem microStep = new MDMenuItem("micro-step", provider.getAction(Actions.MICRO_STEP));
+    microStep.setAccelerator(KeyStrokes.MICRO_STEP.stroke());
+    final MDMenuItem step = new MDMenuItem("step", provider.getAction(Actions.STEP));
+    step.setAccelerator(KeyStrokes.STEP.stroke());
+    final MDMenuItem run = new MDMenuItem("run", provider.getAction(Actions.RUN));
+    run.setAccelerator(KeyStrokes.RUN.stroke());
+    final MDMenuItem reset = new MDMenuItem("reset", provider.getAction(Actions.RESET));
+    reset.setAccelerator(KeyStrokes.RESET.stroke());
+
+    menu.add(microStep);
+    menu.add(step);
+    menu.add(run);
     menu.addSeparator();
-    menu.add(new MDMenuItem("reset", provider.getAction(Actions.RESET)));
+    menu.add(reset);
     return menu;
   }
 
@@ -91,7 +108,11 @@ public final class MainMenuBar extends JMenuBar {
    */
   private JMenu createMicroDebugMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("micro-debug", GuiText.GUI_MENU_MICRODEBUG.text());
-    menu.add(new MDMenuItem("exit", provider.getAction(Actions.EXIT)));
+
+    final MDMenuItem exit = new MDMenuItem("exit", provider.getAction(Actions.EXIT));
+    exit.setAccelerator(KeyStrokes.EXIT.stroke());
+
+    menu.add(exit);
     return menu;
   }
 }

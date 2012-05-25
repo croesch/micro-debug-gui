@@ -38,6 +38,7 @@ import com.github.croesch.micro_debug.gui.actions.ActionProvider;
 import com.github.croesch.micro_debug.gui.actions.ActionProviderTest;
 import com.github.croesch.micro_debug.gui.actions.Actions;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.KeyStrokes;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -113,5 +114,13 @@ public class MainMenuBarTest extends DefaultGUITestCase {
     assertThat(frame.menuItem("reset").component().getAction()).isSameAs(provider.getAction(Actions.RESET));
     assertThat(frame.menuItem("about").component().getAction()).isSameAs(provider.getAction(Actions.ABOUT));
     assertThat(frame.menuItem("help-item").component().getAction()).isSameAs(provider.getAction(Actions.HELP));
+
+    assertThat(frame.menuItem("exit").component().getAccelerator()).isSameAs(KeyStrokes.EXIT.stroke());
+    assertThat(frame.menuItem("micro-step").component().getAccelerator()).isSameAs(KeyStrokes.MICRO_STEP.stroke());
+    assertThat(frame.menuItem("step").component().getAccelerator()).isSameAs(KeyStrokes.STEP.stroke());
+    assertThat(frame.menuItem("run").component().getAccelerator()).isSameAs(KeyStrokes.RUN.stroke());
+    assertThat(frame.menuItem("reset").component().getAccelerator()).isSameAs(KeyStrokes.RESET.stroke());
+    assertThat(frame.menuItem("about").component().getAccelerator()).isSameAs(KeyStrokes.ABOUT.stroke());
+    assertThat(frame.menuItem("help-item").component().getAccelerator()).isSameAs(KeyStrokes.HELP.stroke());
   }
 }
