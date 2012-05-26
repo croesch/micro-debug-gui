@@ -85,7 +85,7 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<MicroStepAction>() {
       @Override
       protected MicroStepAction executeInEDT() throws Throwable {
-        return new MicroStepAction(proc);
+        return new MicroStepAction(proc, DefaultGUITestCase.getWorker());
       }
     });
   }

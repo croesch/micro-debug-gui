@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.actions;
 
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -40,9 +41,10 @@ public final class MicroStepAction extends AbstractStepAction {
    * 
    * @since Date: May 13, 2012
    * @param proc the {@link Mic1} processor being debugged
+   * @param thread the thread to use for executing the action instead of the EDT.
    */
-  public MicroStepAction(final Mic1 proc) {
-    super(GuiText.GUI_ACTIONS_MICRO_STEP);
+  public MicroStepAction(final Mic1 proc, final WorkerThread thread) {
+    super(GuiText.GUI_ACTIONS_MICRO_STEP, thread);
     this.processor = proc;
   }
 

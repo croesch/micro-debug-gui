@@ -20,12 +20,13 @@ package com.github.croesch.micro_debug.gui.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.parser.IntegerParser;
@@ -36,7 +37,7 @@ import com.github.croesch.micro_debug.parser.IntegerParser;
  * @author croesch
  * @since Date: May 13, 2012
  */
-public abstract class AbstractStepAction extends AbstractAction {
+public abstract class AbstractStepAction extends AbstractExecuteOnWorkerThreadAction {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -3606423498158261866L;
@@ -53,15 +54,14 @@ public abstract class AbstractStepAction extends AbstractAction {
    * 
    * @since Date: May 13, 2012
    * @param txt {@link GuiText} that contains the name of the action
+   * @param thread the thread to use for executing the action instead of the EDT.
    */
-  public AbstractStepAction(final GuiText txt) {
-    super(txt.text());
+  public AbstractStepAction(final GuiText txt, final WorkerThread thread) {
+    super(txt, thread);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public final void actionPerformed(final ActionEvent e) {
+  @Override
+  public final void perform(final ActionEvent e) {
 
     if (this.textComponent != null && !Utils.isNullOrEmpty(this.textComponent.getText())) {
       final Integer num = this.parser.parse(this.textComponent.getText());
@@ -69,7 +69,11 @@ public abstract class AbstractStepAction extends AbstractAction {
       if (num == null) {
         // delete the text, if it's no valid number
         Printer.printErrorln(Text.INVALID_NUMBER.text(this.textComponent.getText()));
-        this.textComponent.setText(null);
+        SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+            AbstractStepAction.this.textComponent.setText(null);
+          }
+        });
       } else {
         // valid number in text field -> do the number of steps
         doStep(num.intValue());

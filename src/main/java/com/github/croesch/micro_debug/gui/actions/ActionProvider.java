@@ -23,6 +23,7 @@ import java.util.EnumMap;
 import javax.swing.Action;
 
 import com.github.croesch.micro_debug.annotation.Nullable;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -43,13 +44,15 @@ public final class ActionProvider {
    * @param processor the {@link Mic1} processor being debugged
    */
   public ActionProvider(final Mic1 processor) {
+    final WorkerThread thread = new WorkerThread("action-worker");
+
     this.actions.put(Actions.ABOUT, new AboutAction());
     this.actions.put(Actions.EXIT, new ExitAction());
     this.actions.put(Actions.HELP, new HelpAction());
-    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor));
-    this.actions.put(Actions.RESET, new ResetAction(processor));
-    this.actions.put(Actions.RUN, new RunAction(processor));
-    this.actions.put(Actions.STEP, new StepAction(processor));
+    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor, thread));
+    this.actions.put(Actions.RESET, new ResetAction(processor, thread));
+    this.actions.put(Actions.RUN, new RunAction(processor, thread));
+    this.actions.put(Actions.STEP, new StepAction(processor, thread));
   }
 
   /**

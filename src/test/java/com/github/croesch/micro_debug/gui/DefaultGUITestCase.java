@@ -20,6 +20,8 @@ package com.github.croesch.micro_debug.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -35,6 +37,9 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
+import com.github.croesch.micro_debug.gui.actions.AbstractExecuteOnWorkerThreadAction;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+
 /**
  * Default test case to be extended by all gui test classes.
  * 
@@ -47,6 +52,8 @@ public class DefaultGUITestCase extends DefaultTestCase {
   private static final int NORMAL_DELAY = 50;
 
   private Robot robot;
+
+  private static final WorkerThread worker = new WorkerThread("worker for test cases");
 
   @BeforeClass
   public static void setUpOnce() {
@@ -149,5 +156,37 @@ public class DefaultGUITestCase extends DefaultTestCase {
         act.actionPerformed(null);
       }
     });
+    if (act instanceof AbstractExecuteOnWorkerThreadAction) {
+      waitForWorkerThreadBeingIdle();
+    }
+  }
+
+  protected static WorkerThread getWorker() {
+    return worker;
+  }
+
+  protected static void waitForWorkerThreadBeingIdle() {
+    final ReentrantLock lock = new ReentrantLock();
+    final Condition wait = lock.newCondition();
+
+    worker.invokeLater(new Runnable() {
+      public void run() {
+        lock.lock();
+        try {
+          wait.signal();
+        } finally {
+          lock.unlock();
+        }
+      }
+    });
+
+    lock.lock();
+    try {
+      wait.await();
+    } catch (final InterruptedException e) {
+      e.printStackTrace();
+    } finally {
+      lock.unlock();
+    }
   }
 }

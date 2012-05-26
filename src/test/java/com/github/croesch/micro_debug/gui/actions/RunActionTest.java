@@ -63,7 +63,7 @@ public class RunActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<RunAction>() {
       @Override
       protected RunAction executeInEDT() throws Throwable {
-        return new RunAction(proc);
+        return new RunAction(proc, DefaultGUITestCase.getWorker());
       }
     });
   }

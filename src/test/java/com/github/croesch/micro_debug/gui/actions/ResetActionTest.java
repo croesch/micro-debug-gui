@@ -59,7 +59,7 @@ public class ResetActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<ResetAction>() {
       @Override
       protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(proc);
+        return new ResetAction(proc, DefaultGUITestCase.getWorker());
       }
     });
   }

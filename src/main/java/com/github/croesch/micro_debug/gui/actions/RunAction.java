@@ -20,8 +20,7 @@ package com.github.croesch.micro_debug.gui.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -31,7 +30,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: May 13, 2012
  */
-public final class RunAction extends AbstractAction {
+public final class RunAction extends AbstractExecuteOnWorkerThreadAction {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 9082637554492739783L;
@@ -44,16 +43,15 @@ public final class RunAction extends AbstractAction {
    * 
    * @since Date: May 13, 2012
    * @param proc the {@link Mic1} processor being debugged
+   * @param thread the thread to use for executing the action instead of the EDT.
    */
-  public RunAction(final Mic1 proc) {
-    super(GuiText.GUI_ACTIONS_RUN.text());
+  public RunAction(final Mic1 proc, final WorkerThread thread) {
+    super(GuiText.GUI_ACTIONS_RUN, thread);
     this.processor = proc;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public void actionPerformed(final ActionEvent e) {
+  @Override
+  public void perform(final ActionEvent e) {
     this.processor.run();
   }
 }

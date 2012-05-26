@@ -83,7 +83,7 @@ public class StepActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<StepAction>() {
       @Override
       protected StepAction executeInEDT() throws Throwable {
-        return new StepAction(proc);
+        return new StepAction(proc, DefaultGUITestCase.getWorker());
       }
     });
   }
