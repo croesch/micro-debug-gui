@@ -80,12 +80,7 @@ public final class MainFrame extends SizedFrame {
     final ActionProvider actionProvider = new ActionProvider(this.processor, this);
     setJMenuBar(new MainMenuBar(actionProvider));
 
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(final WindowEvent e) {
-        actionProvider.getAction(Actions.EXIT).actionPerformed(null);
-      }
-    });
+    addWindowListener(new WindowClosingListener(actionProvider));
   }
 
   /**
@@ -108,5 +103,32 @@ public final class MainFrame extends SizedFrame {
   @NotNull
   public MainController getController() {
     return this.controller;
+  }
+
+  /**
+   * Listener that invokes the exit action on window closing event.
+   * 
+   * @author croesch
+   * @since Date: May 26, 2012
+   */
+  private static class WindowClosingListener extends WindowAdapter {
+
+    /** the provider that provides the exit action */
+    private final ActionProvider actionProvider;
+
+    /**
+     * Constructs the listener that invokes the exit action on window closing event.
+     * 
+     * @since Date: May 26, 2012
+     * @param provider the action provider, providing the exit action
+     */
+    public WindowClosingListener(final ActionProvider provider) {
+      this.actionProvider = provider;
+    }
+
+    @Override
+    public void windowClosing(final WindowEvent e) {
+      this.actionProvider.getAction(Actions.EXIT).actionPerformed(null);
+    }
   }
 }

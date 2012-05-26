@@ -44,11 +44,11 @@ public final class ExitAction extends AbstractAction {
 
   /** the thread running actions outside the EDT */
   @Nullable
-  private final Thread thread;
+  private final transient Thread thread;
 
   /** the processor being debugged */
   @Nullable
-  private final Mic1 processor;
+  private final transient Mic1 processor;
 
   /**
    * Constructs the action to quit the debugger.
