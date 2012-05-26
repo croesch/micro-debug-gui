@@ -19,6 +19,8 @@
 package com.github.croesch.micro_debug.gui.components;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -26,6 +28,7 @@ import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
+import com.github.croesch.micro_debug.gui.actions.Actions;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainMenuBar;
@@ -74,7 +77,15 @@ public final class MainFrame extends SizedFrame {
 
     add(view.getViewComponent(), "grow");
 
-    setJMenuBar(new MainMenuBar(new ActionProvider(this.processor, this)));
+    final ActionProvider actionProvider = new ActionProvider(this.processor, this);
+    setJMenuBar(new MainMenuBar(actionProvider));
+
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(final WindowEvent e) {
+        actionProvider.getAction(Actions.EXIT).actionPerformed(null);
+      }
+    });
   }
 
   /**
