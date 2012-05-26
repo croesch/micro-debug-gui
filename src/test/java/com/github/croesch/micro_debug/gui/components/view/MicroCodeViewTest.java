@@ -78,6 +78,8 @@ public class MicroCodeViewTest extends DefaultGUITestCase {
     final MicroCodeView p = getPanel("micro", proc, new BreakpointManager());
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
+    assertThat(panel.textBox().component().getSelectionStart()).isZero();
+    assertThat(panel.textBox().component().getSelectionEnd()).isZero();
     assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/mic1ijvm.mic1.disp", false).toString());
 
     highlight(p, 17);

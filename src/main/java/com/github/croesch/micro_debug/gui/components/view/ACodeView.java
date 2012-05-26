@@ -91,6 +91,9 @@ public abstract class ACodeView extends MDPanel {
     add(pane, "grow");
 
     update();
+
+    // #32 scroll text areas to position 0 on startup
+    this.codeArea.select(0, 0);
   }
 
   /**

@@ -78,6 +78,8 @@ public class MacroCodeViewTest extends DefaultGUITestCase {
     final MacroCodeView p = getPanel("macro", proc, new BreakpointManager());
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
+    assertThat(panel.textBox().component().getSelectionStart()).isZero();
+    assertThat(panel.textBox().component().getSelectionEnd()).isZero();
     assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/add.ijvm.disp", false).toString());
 
     highlight(p, 18);
