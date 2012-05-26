@@ -74,7 +74,7 @@ public final class MainFrame extends SizedFrame {
 
     add(view.getViewComponent(), "grow");
 
-    setJMenuBar(new MainMenuBar(new ActionProvider(this.processor)));
+    setJMenuBar(new MainMenuBar(new ActionProvider(this.processor, this)));
   }
 
   /**

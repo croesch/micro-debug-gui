@@ -46,7 +46,7 @@ public class ActionProviderTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<ActionProvider>() {
       @Override
       protected ActionProvider executeInEDT() throws Throwable {
-        return new ActionProvider(proc);
+        return new ActionProvider(proc, null);
       }
     });
   }
