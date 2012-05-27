@@ -85,7 +85,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   private void enableWorkerActions(final boolean enable) {
     for (final Actions act : Actions.values()) {
       final Action action = this.actionProvider.getAction(act);
-      if (action != null && action instanceof AbstractExecuteOnWorkerThreadAction) {
+      if (action instanceof AbstractExecuteOnWorkerThreadAction) {
         action.setEnabled(enable);
       }
     }
