@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Dimension;
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -36,8 +37,11 @@ import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.debug.BreakpointManager;
+import com.github.croesch.micro_debug.error.MacroFileFormatException;
+import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanelTest;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
@@ -76,8 +80,17 @@ public class RegisterControllerTest extends DefaultGUITestCase {
     this.bpm = new BreakpointManager();
     final RegisterPanel p = RegisterPanelTest.getPanel("panel");
     new FrameFixture(robot(), showInFrame(p)).show(new Dimension(300, 500));
-    this.controller = new RegisterController(p, this.bpm);
+    this.controller = getController(p);
     this.panel = new JPanelFixture(robot(), p);
+  }
+
+  private RegisterController getController(final RegisterPanel p) {
+    return GuiActionRunner.execute(new GuiQuery<RegisterController>() {
+      @Override
+      protected RegisterController executeInEDT() throws Throwable {
+        return new RegisterController(p, RegisterControllerTest.this.bpm);
+      }
+    });
   }
 
   @Test
@@ -238,5 +251,30 @@ public class RegisterControllerTest extends DefaultGUITestCase {
         RegisterControllerTest.this.controller.performViewUpdate();
       }
     });
+  }
+
+  @Test
+  public void testNumberStyleSwitcher() throws MacroFileFormatException, MicroFileFormatException,
+                                       FileNotFoundException {
+    printlnMethodName();
+
+    for (final Register r : Register.values()) {
+      assertThat(this.panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
+
+    this.panel.radioButton("binary").check();
+    for (final Register r : Register.values()) {
+      assertThat(this.panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.BINARY);
+    }
+
+    this.panel.radioButton("decimal").check();
+    for (final Register r : Register.values()) {
+      assertThat(this.panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.DECIMAL);
+    }
+
+    this.panel.radioButton("hexadecimal").check();
+    for (final Register r : Register.values()) {
+      assertThat(this.panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
   }
 }

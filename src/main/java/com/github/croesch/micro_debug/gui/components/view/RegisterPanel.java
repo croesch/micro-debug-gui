@@ -50,6 +50,10 @@ public class RegisterPanel extends MDPanel {
   @NotNull
   private final EnumMap<Register, MDCheckBox> checkBoxes = new EnumMap<Register, MDCheckBox>(Register.class);
 
+  /** the component containing components to switch number format of registers' values */
+  @NotNull
+  private NumberStyleSwitcher switcher;
+
   /**
    * Constructs a new {@link RegisterPanel} with a line for each register presenting its name and value.
    * 
@@ -102,8 +106,11 @@ public class RegisterPanel extends MDPanel {
       compPanel.add(spaceR, new CC().grow());
     }
 
-    setLayout(new MigLayout("fill", "0![grow]0!", "0![]0![grow]0!"));
+    this.switcher = new NumberStyleSwitcher("memory-switcher");
+
+    setLayout(new MigLayout("fill", "0![grow]0!", "0![]0![]0![grow]0!"));
     add(compPanel, "growx");
+    add(this.switcher, "newline, growx");
   }
 
   /**
@@ -162,5 +169,16 @@ public class RegisterPanel extends MDPanel {
     for (final Register r : Register.values()) {
       this.labels.get(r).viewBinary();
     }
+  }
+
+  /**
+   * Returns the component containing components to switch number format of registers' values.
+   * 
+   * @since Date: May 27, 2012
+   * @return the component containing components to switch number format of registers' values.
+   */
+  @NotNull
+  public final NumberStyleSwitcher getNumberStyleSwitcher() {
+    return this.switcher;
   }
 }

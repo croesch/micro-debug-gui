@@ -18,6 +18,9 @@
  */
 package com.github.croesch.micro_debug.gui.components.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,7 +36,7 @@ import com.github.croesch.micro_debug.mic1.register.Register;
  * @author croesch
  * @since Date: Apr 11, 2012
  */
-final class RegisterController implements ChangeListener, IController {
+final class RegisterController implements ChangeListener, IController, ActionListener {
 
   /** the {@link BreakpointManager} that contains the breakpoint definitions of the debugger */
   @NotNull
@@ -61,6 +64,13 @@ final class RegisterController implements ChangeListener, IController {
     for (final Register r : Register.values()) {
       this.view.getCheckBox(r).addChangeListener(this);
     }
+
+    this.view.getNumberStyleSwitcher().getBinaryBtn().addActionListener(this);
+    this.view.getNumberStyleSwitcher().getDecimalBtn().addActionListener(this);
+    this.view.getNumberStyleSwitcher().getHexadecimalBtn().addActionListener(this);
+
+    this.view.getNumberStyleSwitcher().getHexadecimalBtn().setSelected(true);
+    this.view.viewHexadecimal();
   }
 
   /**
@@ -88,5 +98,18 @@ final class RegisterController implements ChangeListener, IController {
    */
   public void performViewUpdate() {
     this.view.update();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void actionPerformed(final ActionEvent e) {
+    if (this.view.getNumberStyleSwitcher().getBinaryBtn().equals(e.getSource())) {
+      this.view.viewBinary();
+    } else if (this.view.getNumberStyleSwitcher().getDecimalBtn().equals(e.getSource())) {
+      this.view.viewDecimal();
+    } else if (this.view.getNumberStyleSwitcher().getHexadecimalBtn().equals(e.getSource())) {
+      this.view.viewHexadecimal();
+    }
   }
 }
