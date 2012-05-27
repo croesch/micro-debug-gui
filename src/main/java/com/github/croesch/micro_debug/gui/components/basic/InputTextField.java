@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.io.InputStream;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
@@ -57,6 +60,14 @@ public class InputTextField extends MDTextField {
   @NotNull
   private final StringBuffer sb = new StringBuffer();
 
+  /** {@link Runnable} clearing the state that the text field requests input */
+  @NotNull
+  private final Runnable resetRequestInput;
+
+  /** {@link Runnable} visualizing the state that the text field requests input */
+  @NotNull
+  private final Runnable markRequestInput;
+
   /**
    * Constructs a new text field that is able to give input for the processor. To let the processor read the data
    * entered into this text field invoke {@link #activate()}.
@@ -67,6 +78,17 @@ public class InputTextField extends MDTextField {
   public InputTextField(final String name) {
     super(name);
     addActionListener(new TextFieldActionListener());
+
+    this.resetRequestInput = new Runnable() {
+      public void run() {
+        setBackground(Color.white);
+      }
+    };
+    this.markRequestInput = new Runnable() {
+      public void run() {
+        setBackground(Color.orange);
+      }
+    };
   }
 
   /**
@@ -102,6 +124,7 @@ public class InputTextField extends MDTextField {
         final String txt = getText();
         setText(null);
         InputTextField.this.sb.append(txt).append("\n");
+        SwingUtilities.invokeLater(InputTextField.this.resetRequestInput);
 
         InputTextField.this.notEmpty.signal();
       } finally {
@@ -124,6 +147,7 @@ public class InputTextField extends MDTextField {
       InputTextField.this.lock.lock();
       try {
         while (InputTextField.this.sb.length() == 0) {
+          SwingUtilities.invokeLater(InputTextField.this.markRequestInput);
           // wait for the user to enter the next data
           InputTextField.this.notEmpty.await();
         }

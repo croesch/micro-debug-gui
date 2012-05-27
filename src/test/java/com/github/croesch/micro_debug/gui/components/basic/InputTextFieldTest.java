@@ -20,9 +20,11 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -72,6 +74,8 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     final JTextComponentFixture tfFixture = frameFixture.textBox("tf");
     tfFixture.requireEmpty();
     assertThat(tfFixture.component().getName()).isEqualTo("tf");
+
+    assertThat(tfFixture.background().requireEqualTo(Color.WHITE));
   }
 
   @Test
@@ -86,12 +90,15 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     tfFixture.requireEmpty();
     activate(tfFixture);
 
-    getThreadTyping(robot(), "Test", 500, tfFixture).start();
+    tfFixture.background().requireEqualTo(Color.white);
+    getThreadTyping(robot(), "Test", 500, tfFixture, true, getThrownInOtherThreads()).start();
 
     assertThat(Input.read()).isEqualTo("T".getBytes()[0]);
 
+    tfFixture.background().requireEqualTo(Color.white);
     tfFixture.requireEmpty();
     tfFixture.enterText("this");
+    tfFixture.background().requireEqualTo(Color.white);
 
     assertThat(Input.read()).isEqualTo("e".getBytes()[0]);
 
@@ -107,21 +114,26 @@ public class InputTextFieldTest extends DefaultGUITestCase {
     assertThat(Input.read()).isEqualTo("s".getBytes()[0]);
     assertThat(Input.read()).isEqualTo("\n".getBytes()[0]);
 
-    getThreadTyping(robot(), "...", 500, tfFixture).start();
+    tfFixture.background().requireEqualTo(Color.white);
+    getThreadTyping(robot(), "...", 500, tfFixture, true, getThrownInOtherThreads()).start();
 
     assertThat(Input.read()).isEqualTo(".".getBytes()[0]);
+    tfFixture.background().requireEqualTo(Color.white);
     assertThat(Input.read()).isEqualTo(".".getBytes()[0]);
     assertThat(Input.read()).isEqualTo(".".getBytes()[0]);
     assertThat(Input.read()).isEqualTo("\n".getBytes()[0]);
 
     assertThat(out.toString()).isEmpty();
+    tfFixture.background().requireEqualTo(Color.white);
   }
 
   public static Thread getThreadTyping(final Robot robot,
                                        final String text,
                                        final long timeOut,
-                                       final JTextComponentFixture tfFixture) {
-    return new Thread() {
+                                       final JTextComponentFixture tfFixture,
+                                       final boolean colored,
+                                       final List<Throwable> throwables) {
+    final Thread thread = new Thread() {
       @Override
       public void run() {
         try {
@@ -129,10 +141,21 @@ public class InputTextFieldTest extends DefaultGUITestCase {
         } catch (final InterruptedException e) {
           Assert.fail();
         }
+        try {
+          if (colored) {
+            tfFixture.background().requireNotEqualTo(Color.WHITE);
+          } else {
+            tfFixture.background().requireEqualTo(Color.WHITE);
+          }
+        } catch (final AssertionError e) {
+          throwables.add(e);
+        }
         tfFixture.enterText(text);
         robot.pressAndReleaseKeys(KeyEvent.VK_ENTER);
       };
     };
+    thread.setDaemon(true);
+    return thread;
   }
 
   private void activate(final JTextComponentFixture tfFixture) {

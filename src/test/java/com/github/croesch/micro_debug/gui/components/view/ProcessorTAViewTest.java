@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -68,53 +69,73 @@ public class ProcessorTAViewTest extends DefaultGUITestCase {
     panel.textBox("output-ta").requireEmpty();
     panel.textBox("input-tf").requireEmpty();
 
-    InputTextFieldTest.getThreadTyping(robot(), "a", 200, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "a", 200, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
     panel.textBox("output-ta").requireEmpty();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\n");
-    InputTextFieldTest.getThreadTyping(robot(), "b", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "b", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\n");
-    InputTextFieldTest.getThreadTyping(robot(), "c", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "c", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\n");
-    InputTextFieldTest.getThreadTyping(robot(), "d", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "d", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\n");
-    InputTextFieldTest.getThreadTyping(robot(), "e", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "e", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\n");
-    InputTextFieldTest.getThreadTyping(robot(), "f", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "f", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\n");
-    InputTextFieldTest.getThreadTyping(robot(), "g", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "g", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\ng\n");
-    InputTextFieldTest.getThreadTyping(robot(), "h", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "h", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\ng\nh\n");
-    InputTextFieldTest.getThreadTyping(robot(), "i", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "i", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\ng\nh\ni\n");
-    InputTextFieldTest.getThreadTyping(robot(), "j", 50, panel.textBox("input-tf")).start();
+    panel.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "j", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
     Output.print(Input.read());

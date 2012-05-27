@@ -20,6 +20,8 @@ package com.github.croesch.micro_debug.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,6 +36,7 @@ import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -55,6 +58,8 @@ public class DefaultGUITestCase extends DefaultTestCase {
 
   private static final WorkerThread worker = new WorkerThread("worker for test cases");
 
+  private List<Throwable> thrownInOtherThreads = new ArrayList<Throwable>();
+
   @BeforeClass
   public static void setUpOnce() {
     FailOnThreadViolationRepaintManager.install();
@@ -63,6 +68,7 @@ public class DefaultGUITestCase extends DefaultTestCase {
   @Override
   protected final void setUpDetails() throws Exception {
     setUpRobot();
+    this.thrownInOtherThreads = new ArrayList<Throwable>();
     setUpTestCase();
   }
 
@@ -105,6 +111,12 @@ public class DefaultGUITestCase extends DefaultTestCase {
   @After
   public final void tearDown() {
     try {
+      if (!this.thrownInOtherThreads.isEmpty()) {
+        for (final Throwable t : this.thrownInOtherThreads) {
+          t.printStackTrace();
+        }
+        Assert.fail("Exception occured");
+      }
       onTearDown();
     } finally {
       cleanUp();
@@ -188,5 +200,9 @@ public class DefaultGUITestCase extends DefaultTestCase {
     } finally {
       lock.unlock();
     }
+  }
+
+  public List<Throwable> getThrownInOtherThreads() {
+    return this.thrownInOtherThreads;
   }
 }

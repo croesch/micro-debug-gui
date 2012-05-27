@@ -20,6 +20,7 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -110,9 +111,12 @@ public class MainViewTest extends DefaultGUITestCase {
 
     frame.textBox("output-ta").requireEmpty();
     frame.textBox("input-tf").requireEmpty();
-    InputTextFieldTest.getThreadTyping(robot(), "hi", 50, frame.textBox("input-tf")).start();
+    frame.textBox("input-tf").background().requireEqualTo(Color.white);
+    InputTextFieldTest.getThreadTyping(robot(), "hi", 50, frame.textBox("input-tf"), true, getThrownInOtherThreads())
+                      .start();
 
     Output.print(Input.read());
+    frame.textBox("input-tf").background().requireEqualTo(Color.white);
     Output.print(Input.read());
     Output.print(Input.read());
     frame.textBox("output-ta").requireText("hi\n");
