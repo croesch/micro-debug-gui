@@ -130,4 +130,37 @@ public class RegisterPanel extends MDPanel {
   public final MDCheckBox getCheckBox(final Register r) {
     return this.checkBoxes.get(r);
   }
+
+  /**
+   * Changes the representation of the registers' values to hexadecimal style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewHexadecimal() {
+    for (final Register r : Register.values()) {
+      this.labels.get(r).viewHexadecimal();
+    }
+  }
+
+  /**
+   * Changes the representation of the registers' values to decimal style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewDecimal() {
+    for (final Register r : Register.values()) {
+      this.labels.get(r).viewDecimal();
+    }
+  }
+
+  /**
+   * Changes the representation of the registers' values to binary style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewBinary() {
+    for (final Register r : Register.values()) {
+      this.labels.get(r).viewBinary();
+    }
+  }
 }

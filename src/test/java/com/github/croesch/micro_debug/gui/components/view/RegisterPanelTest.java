@@ -21,14 +21,19 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.FileNotFoundException;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.error.MacroFileFormatException;
+import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.mic1.register.Register;
 
 /**
@@ -79,58 +84,47 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     assertThat(panel.component().getName()).isEqualTo("r");
     panel.label("regDesc-CPP").requireText("CPP");
     panel.checkBox("bpCB-CPP").requireNotSelected();
-    assertThat(panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.CPP
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-CPP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.CPP.getValue());
 
     panel.label("regDesc-H").requireText("H");
     panel.checkBox("bpCB-H").requireNotSelected();
-    assertThat(panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber())
-      .isEqualTo(Register.H.getValue());
+    assertThat(panel.label("regValue-H").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.H.getValue());
 
     panel.label("regDesc-LV").requireText("LV");
     panel.checkBox("bpCB-LV").requireNotSelected();
-    assertThat(panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.LV
-                                                                                                     .getValue());
+    assertThat(panel.label("regValue-LV").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.LV.getValue());
 
     panel.label("regDesc-MAR").requireText("MAR");
     panel.checkBox("bpCB-MAR").requireNotSelected();
-    assertThat(panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MAR
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-MAR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MAR.getValue());
 
     panel.label("regDesc-MBR").requireText("MBR");
     panel.checkBox("bpCB-MBR").requireNotSelected();
-    assertThat(panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBR
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-MBR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBR.getValue());
 
     panel.label("regDesc-MBRU").requireText("MBRU");
     panel.checkBox("bpCB-MBRU").requireNotSelected();
-    assertThat(panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBRU
-                                                                                                       .getValue());
+    assertThat(panel.label("regValue-MBRU").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MBRU.getValue());
 
     panel.label("regDesc-MDR").requireText("MDR");
     panel.checkBox("bpCB-MDR").requireNotSelected();
-    assertThat(panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MDR
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-MDR").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.MDR.getValue());
 
     panel.label("regDesc-OPC").requireText("OPC");
     panel.checkBox("bpCB-OPC").requireNotSelected();
-    assertThat(panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.OPC
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-OPC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.OPC.getValue());
 
     panel.label("regDesc-PC").requireText("PC");
     panel.checkBox("bpCB-PC").requireNotSelected();
-    assertThat(panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.PC
-                                                                                                     .getValue());
+    assertThat(panel.label("regValue-PC").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.PC.getValue());
 
     panel.label("regDesc-SP").requireText("SP");
     panel.checkBox("bpCB-SP").requireNotSelected();
-    assertThat(panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.SP
-                                                                                                     .getValue());
+    assertThat(panel.label("regValue-SP").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.SP.getValue());
 
     panel.label("regDesc-TOS").requireText("TOS");
     panel.checkBox("bpCB-TOS").requireNotSelected();
-    assertThat(panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.TOS
-                                                                                                      .getValue());
+    assertThat(panel.label("regValue-TOS").targetCastedTo(NumberLabel.class).getNumber()).isEqualTo(Register.TOS.getValue());
   }
 
   @Test
@@ -209,6 +203,57 @@ public class RegisterPanelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         panel.targetCastedTo(RegisterPanel.class).update();
+      }
+    });
+  }
+
+  @Test
+  public void testNumericalStyle() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
+    printlnMethodName();
+
+    final RegisterPanel p = getPanel("r");
+    showInFrame(p);
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
+
+    viewBinary(p);
+    for (final Register r : Register.values()) {
+      assertThat(panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.BINARY);
+    }
+
+    viewDecimal(p);
+    for (final Register r : Register.values()) {
+      assertThat(panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.DECIMAL);
+    }
+
+    viewHexadecimal(p);
+    for (final Register r : Register.values()) {
+      assertThat(panel.label("regValue-" + r).targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
+  }
+
+  private void viewHexadecimal(final RegisterPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewHexadecimal();
+      }
+    });
+  }
+
+  private void viewDecimal(final RegisterPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewDecimal();
+      }
+    });
+  }
+
+  private void viewBinary(final RegisterPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewBinary();
       }
     });
   }
