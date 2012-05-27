@@ -43,6 +43,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   private final WorkerThread workerThread;
 
   /** the {@link ActionProvider} holding references to all actions */
+  @NotNull
   private final ActionProvider actionProvider;
 
   /**
@@ -58,7 +59,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
                                              final WorkerThread thread,
                                              final ActionProvider provider) {
     super(text.text());
-    if (thread == null) {
+    if (thread == null || provider == null) {
       throw new IllegalArgumentException();
     }
     this.workerThread = thread;

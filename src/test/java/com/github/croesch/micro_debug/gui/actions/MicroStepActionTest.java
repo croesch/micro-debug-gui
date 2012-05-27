@@ -184,4 +184,9 @@ public class MicroStepActionTest extends DefaultGUITestCase {
   public void testAction_NullThread() {
     createAction(this.processor, null, this.provider);
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAction_NullProvider() {
+    createAction(this.processor, getWorker(), null);
+  }
 }
