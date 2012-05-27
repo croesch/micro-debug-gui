@@ -85,7 +85,7 @@ public class MemoryPanel extends MDPanel {
    */
   private void buildUI() {
     final JPanel panel = new JPanel(new MigLayout("fill, wrap 2", "[fill, 30%]0![grow,fill]"));
-    setLayout(new MigLayout("fill", "[grow,fill][]", "[fill][grow]"));
+    setLayout(new MigLayout("fill", "0![grow,fill][]0!", "0![fill][grow]0!"));
 
     for (int i = 0; i < this.labels.length; ++i) {
       final NumberLabel label = new NumberLabel("memValue-" + i, this.processor.getMemoryValue(i));
