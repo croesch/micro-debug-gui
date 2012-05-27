@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanelTest;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -58,7 +60,7 @@ public class MemoryControllerTest extends DefaultGUITestCase {
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
     final MemoryPanel p = MemoryPanelTest.getPanel("mem", proc);
-    final MemoryController controller = new MemoryController(p);
+    final MemoryController controller = getController(p);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
 
@@ -115,6 +117,53 @@ public class MemoryControllerTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         controller.performViewUpdate();
+      }
+    });
+  }
+
+  @Test
+  public void testNumberStyleSwitcher() throws MacroFileFormatException, MicroFileFormatException,
+                                       FileNotFoundException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MemoryPanel p = MemoryPanelTest.getPanel("mem", proc);
+    getController(p);
+    showInFrame(p);
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
+
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
+
+    panel.radioButton("binary").check();
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.BINARY);
+    }
+
+    panel.radioButton("decimal").check();
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.DECIMAL);
+    }
+
+    panel.radioButton("hexadecimal").check();
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
+  }
+
+  private MemoryController getController(final MemoryPanel p) {
+    return GuiActionRunner.execute(new GuiQuery<MemoryController>() {
+      @Override
+      protected MemoryController executeInEDT() throws Throwable {
+        return new MemoryController(p);
       }
     });
   }

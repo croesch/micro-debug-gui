@@ -61,6 +61,10 @@ public class MemoryPanel extends MDPanel {
   @NotNull
   private JScrollBar scrollBar;
 
+  /** the component containing components to switch number format of memory's values */
+  @NotNull
+  private NumberStyleSwitcher switcher;
+
   /**
    * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
    * 
@@ -111,8 +115,11 @@ public class MemoryPanel extends MDPanel {
       }
     });
 
+    this.switcher = new NumberStyleSwitcher("memory-switcher");
+
     add(panel);
     add(this.scrollBar);
+    add(this.switcher, "newline, span 2");
   }
 
   /**
@@ -161,5 +168,16 @@ public class MemoryPanel extends MDPanel {
     for (int i = 0; i < this.labels.length; ++i) {
       this.labels[i].viewBinary();
     }
+  }
+
+  /**
+   * Returns the component containing components to switch number format of memory's values.
+   * 
+   * @since Date: May 27, 2012
+   * @return the component containing components to switch number format of memory's values.
+   */
+  @NotNull
+  public final NumberStyleSwitcher getNumberStyleSwitcher() {
+    return this.switcher;
   }
 }

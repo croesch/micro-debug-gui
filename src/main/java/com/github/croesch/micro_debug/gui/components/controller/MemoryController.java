@@ -18,6 +18,9 @@
  */
 package com.github.croesch.micro_debug.gui.components.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
 
@@ -27,7 +30,7 @@ import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
  * @author croesch
  * @since Date: Apr 16, 2012
  */
-final class MemoryController implements IController {
+final class MemoryController implements IController, ActionListener {
 
   /** the memory view */
   @NotNull
@@ -44,6 +47,13 @@ final class MemoryController implements IController {
       throw new IllegalArgumentException();
     }
     this.view = v;
+
+    this.view.getNumberStyleSwitcher().getBinaryBtn().addActionListener(this);
+    this.view.getNumberStyleSwitcher().getDecimalBtn().addActionListener(this);
+    this.view.getNumberStyleSwitcher().getHexadecimalBtn().addActionListener(this);
+
+    this.view.getNumberStyleSwitcher().getHexadecimalBtn().setSelected(true);
+    this.view.viewHexadecimal();
   }
 
   /**
@@ -51,5 +61,18 @@ final class MemoryController implements IController {
    */
   public void performViewUpdate() {
     this.view.update();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void actionPerformed(final ActionEvent e) {
+    if (this.view.getNumberStyleSwitcher().getBinaryBtn().equals(e.getSource())) {
+      this.view.viewBinary();
+    } else if (this.view.getNumberStyleSwitcher().getDecimalBtn().equals(e.getSource())) {
+      this.view.viewDecimal();
+    } else if (this.view.getNumberStyleSwitcher().getHexadecimalBtn().equals(e.getSource())) {
+      this.view.viewHexadecimal();
+    }
   }
 }
