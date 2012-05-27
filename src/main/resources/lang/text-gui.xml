@@ -46,6 +46,9 @@
 	<entry key="gui-start-macro">macro assembler file</entry>
 	
 	<entry key="gui-main-title">{0} - Version {1}</entry>
+	<entry key="gui-main-binary">bin.</entry>
+	<entry key="gui-main-decimal">dec.</entry>
+	<entry key="gui-main-hexadecimal">hex.</entry>
 	
 	<entry key="gui-actions-about">About</entry>
 	<entry key="gui-actions-micro-step">Micro step</entry>

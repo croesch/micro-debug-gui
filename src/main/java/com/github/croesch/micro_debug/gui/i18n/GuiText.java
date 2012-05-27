@@ -57,6 +57,12 @@ public enum GuiText {
 
   /** the title of the main frame */
   GUI_MAIN_TITLE,
+  /** the description for the number format: binary */
+  GUI_MAIN_BINARY,
+  /** the description for the number format: decimal */
+  GUI_MAIN_DECIMAL,
+  /** the description for the number format: hexadecimal */
+  GUI_MAIN_HEXADECIMAL,
 
   /** the text for the about action */
   GUI_ACTIONS_ABOUT,
