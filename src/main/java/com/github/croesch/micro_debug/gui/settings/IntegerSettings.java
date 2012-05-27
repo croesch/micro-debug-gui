@@ -44,7 +44,9 @@ public enum IntegerSettings {
   /** the position of the slider between code and textareas */
   MAIN_FRAME_SLIDER_CODE_TEXTAREAS (400),
   /** the position of the slider between textareas of processor and debugger */
-  MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER (350);
+  MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER (350),
+  /** the position of the slider between textarea for macro code and the one for micro code */
+  MAIN_FRAME_SLIDER_MACRO_MICRO (350);
 
   /** the value set up in the properties file */
   private final int value;

@@ -27,7 +27,6 @@ import java.io.IOException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
@@ -100,18 +99,18 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("register-mem").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_REGISTER_MEMORY.getValue());
 
     assertThat(frame.splitPane("code-tas").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
-    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JTabbedPane.class);
+    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent().getName()).isEqualTo("code");
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");
     assertThat(frame.splitPane("code-tas").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
-    frame.tabbedPane("code").requireTabTitles(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(),
-                                              GuiText.GUI_MAIN_MICRO_TAB_TITLE.text());
-    assertThat(frame.tabbedPane("code").selectTab(0).selectedComponent()).isInstanceOf(MacroCodeView.class);
-    assertThat(frame.tabbedPane("code").selectedComponent().getName()).isEqualTo("macroCode");
-    assertThat(frame.tabbedPane("code").selectTab(1).selectedComponent()).isInstanceOf(MicroCodeView.class);
-    assertThat(frame.tabbedPane("code").selectedComponent().getName()).isEqualTo("microCode");
+    assertThat(frame.splitPane("code").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
+    assertThat(frame.splitPane("code").component().getLeftComponent()).isInstanceOf(MacroCodeView.class);
+    assertThat(frame.splitPane("code").component().getLeftComponent().getName()).isEqualTo("macroCode");
+    assertThat(frame.splitPane("code").component().getRightComponent()).isInstanceOf(MicroCodeView.class);
+    assertThat(frame.splitPane("code").component().getRightComponent().getName()).isEqualTo("microCode");
+    assertThat(frame.splitPane("code").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final String pane = "processorTas-debuggerTa";
     assertThat(frame.splitPane(pane).component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
@@ -158,8 +157,6 @@ public class MainFrameTest extends DefaultGUITestCase {
     frame.show();
 
     slowDownRobot();
-
-    frame.tabbedPane().selectTab(1);
 
     assertMicroHighlight(frame.panel("microCode"), 0);
 

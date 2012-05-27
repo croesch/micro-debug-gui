@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -91,7 +90,7 @@ public class MainViewTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("register-mem").component().getRightComponent().getName()).isEqualTo("memory");
 
     assertThat(frame.splitPane("code-tas").component().getOrientation()).isEqualTo(JSplitPane.VERTICAL_SPLIT);
-    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JTabbedPane.class);
+    assertThat(frame.splitPane("code-tas").component().getLeftComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getLeftComponent().getName()).isEqualTo("code");
     assertThat(frame.splitPane("code-tas").component().getRightComponent()).isInstanceOf(JSplitPane.class);
     assertThat(frame.splitPane("code-tas").component().getRightComponent().getName()).isEqualTo("processorTas-debuggerTa");

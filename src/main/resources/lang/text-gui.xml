@@ -46,8 +46,6 @@
 	<entry key="gui-start-macro">macro assembler file</entry>
 	
 	<entry key="gui-main-title">{0} - Version {1}</entry>
-	<entry key="gui-main-micro-tab-title">micro code</entry>
-	<entry key="gui-main-macro-tab-title">macro code</entry>
 	
 	<entry key="gui-actions-about">About</entry>
 	<entry key="gui-actions-micro-step">Micro step</entry>

@@ -21,14 +21,11 @@ package com.github.croesch.micro_debug.gui.components.view;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
-import com.github.croesch.micro_debug.gui.components.basic.MDTabbedPane;
-import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -75,9 +72,14 @@ public final class MainView {
 
     final JScrollPane regPane = new MDScrollPane("register", this.registerView);
     final JScrollPane memPane = new MDScrollPane("memory", this.memoryView);
-    final JTabbedPane codePane = new MDTabbedPane("code");
-    codePane.add(GuiText.GUI_MAIN_MACRO_TAB_TITLE.text(), this.macroCodeView);
-    codePane.add(GuiText.GUI_MAIN_MICRO_TAB_TITLE.text(), this.microCodeView);
+    final JSplitPane leftPane = new MDSplitPane("register-mem", JSplitPane.VERTICAL_SPLIT, regPane, memPane);
+    leftPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_REGISTER_MEMORY.getValue());
+
+    final JSplitPane codePane = new MDSplitPane("code",
+                                                JSplitPane.HORIZONTAL_SPLIT,
+                                                this.macroCodeView,
+                                                this.microCodeView);
+    codePane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));
     final JScrollPane debugPane = new MDScrollPane("debuggerTA", new DebuggerTAView("debuggerTA"));
@@ -88,8 +90,6 @@ public final class MainView {
                                                   debugPane);
     bottomPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_PROCESSOR_DEBUGGER.getValue());
 
-    final JSplitPane leftPane = new MDSplitPane("register-mem", JSplitPane.VERTICAL_SPLIT, regPane, memPane);
-    leftPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_REGISTER_MEMORY.getValue());
     final JSplitPane rightPane = new MDSplitPane("code-tas", JSplitPane.VERTICAL_SPLIT, codePane, bottomPane);
     rightPane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
