@@ -154,12 +154,70 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     assertThat(descLabel.getNumber()).isEqualTo(18);
   }
 
+  @Test
+  public void testNumericalStyle() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MemoryPanel p = getPanel("mem", proc);
+    showInFrame(p);
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
+
+    viewBinary(p);
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.BINARY);
+    }
+
+    viewDecimal(p);
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.DECIMAL);
+    }
+
+    viewHexadecimal(p);
+    for (int i = 0; i < 20; ++i) {
+      final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
+      assertThat(label.getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
+    }
+
+  }
+
   private void update(final MemoryPanel p) {
     GuiActionRunner.execute(new GuiTask() {
-
       @Override
       protected void executeInEDT() throws Throwable {
         p.update();
+      }
+    });
+  }
+
+  private void viewHexadecimal(final MemoryPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewHexadecimal();
+      }
+    });
+  }
+
+  private void viewDecimal(final MemoryPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewDecimal();
+      }
+    });
+  }
+
+  private void viewBinary(final MemoryPanel p) {
+    GuiActionRunner.execute(new GuiTask() {
+      @Override
+      protected void executeInEDT() throws Throwable {
+        p.viewBinary();
       }
     });
   }

@@ -122,11 +122,44 @@ public class MemoryPanel extends MDPanel {
    */
   public final void update() {
     final int value = this.scrollBar.getValue();
-    for (int i = 0; i < MemoryPanel.this.labels.length; ++i) {
-      MemoryPanel.this.labels[i].setText("" + MemoryPanel.this.processor.getMemoryValue(i + value));
+    for (int i = 0; i < this.labels.length; ++i) {
+      this.labels[i].setText("" + this.processor.getMemoryValue(i + value));
     }
-    for (int i = 0; i < MemoryPanel.this.descLabels.length; ++i) {
-      MemoryPanel.this.descLabels[i].setText("" + (i + value));
+    for (int i = 0; i < this.descLabels.length; ++i) {
+      this.descLabels[i].setText("" + (i + value));
+    }
+  }
+
+  /**
+   * Changes the representation of the memory's values to hexadecimal style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewHexadecimal() {
+    for (int i = 0; i < this.labels.length; ++i) {
+      this.labels[i].viewHexadecimal();
+    }
+  }
+
+  /**
+   * Changes the representation of the memory's values to decimal style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewDecimal() {
+    for (int i = 0; i < this.labels.length; ++i) {
+      this.labels[i].viewDecimal();
+    }
+  }
+
+  /**
+   * Changes the representation of the memory's values to binary style.
+   * 
+   * @since Date: May 27, 2012
+   */
+  public final void viewBinary() {
+    for (int i = 0; i < this.labels.length; ++i) {
+      this.labels[i].viewBinary();
     }
   }
 }
