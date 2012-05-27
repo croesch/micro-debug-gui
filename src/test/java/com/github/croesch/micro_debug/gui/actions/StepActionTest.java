@@ -56,6 +56,8 @@ public class StepActionTest extends DefaultGUITestCase {
 
   private JTextComponentFixture txtFixture;
 
+  private ActionProvider provider;
+
   @Override
   protected void setUpTestCase() throws Exception {
     final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
@@ -63,7 +65,8 @@ public class StepActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = createAction(this.processor);
+    this.provider = ActionProviderTest.getProvider(this.processor);
+    this.action = createAction(this.processor, this.provider);
 
     this.txtComponent = GuiActionRunner.execute(new GuiQuery<JTextComponent>() {
       @Override
@@ -79,11 +82,11 @@ public class StepActionTest extends DefaultGUITestCase {
     this.txtFixture = new JTextComponentFixture(robot(), this.txtComponent);
   }
 
-  public static StepAction createAction(final Mic1 proc) {
+  public static StepAction createAction(final Mic1 proc, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<StepAction>() {
       @Override
       protected StepAction executeInEDT() throws Throwable {
-        return new StepAction(proc, DefaultGUITestCase.getWorker());
+        return new StepAction(proc, DefaultGUITestCase.getWorker(), provider);
       }
     });
   }
@@ -97,26 +100,26 @@ public class StepActionTest extends DefaultGUITestCase {
 
     assertThat(Register.PC.getValue()).isEqualTo(Settings.MIC1_REGISTER_PC_DEFVAL.getValue());
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(0);
     assertTicksDoneAndResetPrintStream(3);
 
     this.action.setTextComponent(this.txtComponent);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(3);
     assertTicksDoneAndResetPrintStream(7);
 
     this.txtFixture.requireText("2");
     this.txtFixture.deleteText();
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(5);
     assertTicksDoneAndResetPrintStream(7);
 
     this.txtFixture.enterText("1");
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(7);
     assertTicksDoneAndResetPrintStream(7);
 
@@ -124,31 +127,31 @@ public class StepActionTest extends DefaultGUITestCase {
     this.txtFixture.deleteText();
     this.txtFixture.enterText("null");
 
-    perform(this.action);
+    perform(this.provider, this.action);
     this.txtFixture.requireEmpty();
     assertThat(out.toString()).isEqualTo(Text.ERROR.text(Text.INVALID_NUMBER.text("null")) + getLineSeparator());
     out.reset();
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(9);
     assertTicksDoneAndResetPrintStream(4);
 
     this.txtFixture.enterText("0");
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(9);
     assertThat(out.toString()).isEmpty();
 
     this.txtFixture.deleteText();
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(10);
     assertTicksDoneAndResetPrintStream(9);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(13);
     assertTicksDoneAndResetPrintStream(8);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(71);
     assertTicksDoneAndResetPrintStream(23);
   }

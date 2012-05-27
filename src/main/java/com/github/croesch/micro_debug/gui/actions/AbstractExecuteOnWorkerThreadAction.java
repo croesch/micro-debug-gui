@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
@@ -39,16 +40,24 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   /** the thread executing actions */
   private final WorkerThread workerThread;
 
+  /** the {@link ActionProvider} holding references to all actions */
+  private final ActionProvider actionProvider;
+
   /**
    * Constructs the Action that shouldn't be executed on the EDT because of long running methods.
    * 
    * @since Date: May 26, 2012
    * @param text {@link GuiText} that contains the name of the action
    * @param thread the thread to use for executing the action instead of the EDT.
+   * @param provider the {@link ActionProvider} holding references to all actions, especially to the
+   *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
-  public AbstractExecuteOnWorkerThreadAction(final GuiText text, final WorkerThread thread) {
+  public AbstractExecuteOnWorkerThreadAction(final GuiText text,
+                                             final WorkerThread thread,
+                                             final ActionProvider provider) {
     super(text.text());
     this.workerThread = thread;
+    this.actionProvider = provider;
   }
 
   /**
@@ -58,9 +67,28 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
     final Runnable run = new Runnable() {
       public void run() {
         perform(e);
+        enableWorkerActions(true);
       }
     };
+    enableWorkerActions(false);
     this.workerThread.invokeLater(run);
+  }
+
+  /**
+   * Enables or disables all {@link AbstractExecuteOnWorkerThreadAction}s the {@link ActionProvider} provides.
+   * 
+   * @since Date: May 27, 2012
+   * @param enable <code>true</code>, if the {@link Action}s should be enabled,<br>
+   *        or <code>false</code> if they should be disabled.
+   * @see Action#setEnabled(boolean)
+   */
+  private void enableWorkerActions(final boolean enable) {
+    for (final Actions act : Actions.values()) {
+      final Action action = this.actionProvider.getAction(act);
+      if (action != null && action instanceof AbstractExecuteOnWorkerThreadAction) {
+        action.setEnabled(enable);
+      }
+    }
   }
 
   /**

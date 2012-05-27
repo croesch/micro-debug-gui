@@ -55,9 +55,11 @@ public abstract class AbstractStepAction extends AbstractExecuteOnWorkerThreadAc
    * @since Date: May 13, 2012
    * @param txt {@link GuiText} that contains the name of the action
    * @param thread the thread to use for executing the action instead of the EDT.
+   * @param provider the {@link ActionProvider} holding references to all actions, especially to the
+   *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
-  public AbstractStepAction(final GuiText txt, final WorkerThread thread) {
-    super(txt, thread);
+  public AbstractStepAction(final GuiText txt, final WorkerThread thread, final ActionProvider provider) {
+    super(txt, thread, provider);
   }
 
   @Override

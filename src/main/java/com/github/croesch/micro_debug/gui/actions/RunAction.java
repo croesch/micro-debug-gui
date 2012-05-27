@@ -44,9 +44,11 @@ public final class RunAction extends AbstractExecuteOnWorkerThreadAction {
    * @since Date: May 13, 2012
    * @param proc the {@link Mic1} processor being debugged
    * @param thread the thread to use for executing the action instead of the EDT.
+   * @param provider the {@link ActionProvider} holding references to all actions, especially to the
+   *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
-  public RunAction(final Mic1 proc, final WorkerThread thread) {
-    super(GuiText.GUI_ACTIONS_RUN, thread);
+  public RunAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
+    super(GuiText.GUI_ACTIONS_RUN, thread, provider);
     this.processor = proc;
   }
 

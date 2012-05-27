@@ -52,14 +52,14 @@ public class ResetActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = createAction(this.processor);
+    this.action = createAction(this.processor, ActionProviderTest.getProvider(this.processor));
   }
 
-  public static ResetAction createAction(final Mic1 proc) {
+  public static ResetAction createAction(final Mic1 proc, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<ResetAction>() {
       @Override
       protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(proc, DefaultGUITestCase.getWorker());
+        return new ResetAction(proc, DefaultGUITestCase.getWorker(), provider);
       }
     });
   }

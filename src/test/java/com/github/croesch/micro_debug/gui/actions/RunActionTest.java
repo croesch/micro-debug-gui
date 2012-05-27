@@ -48,6 +48,8 @@ public class RunActionTest extends DefaultGUITestCase {
 
   private Mic1 processor;
 
+  private ActionProvider provider;
+
   @Override
   protected void setUpTestCase() throws Exception {
     final String micFile = getClass().getClassLoader().getResource("mic1/hi.mic1").getPath();
@@ -55,15 +57,16 @@ public class RunActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = createAction(this.processor);
-    this.resetAction = ResetActionTest.createAction(this.processor);
+    this.provider = ActionProviderTest.getProvider(this.processor);
+    this.action = createAction(this.processor, this.provider);
+    this.resetAction = ResetActionTest.createAction(this.processor, this.provider);
   }
 
-  public static RunAction createAction(final Mic1 proc) {
+  public static RunAction createAction(final Mic1 proc, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<RunAction>() {
       @Override
       protected RunAction executeInEDT() throws Throwable {
-        return new RunAction(proc, DefaultGUITestCase.getWorker());
+        return new RunAction(proc, DefaultGUITestCase.getWorker(), provider);
       }
     });
   }
@@ -74,16 +77,16 @@ public class RunActionTest extends DefaultGUITestCase {
 
     assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_RUN.text());
 
-    perform(this.action);
+    perform(this.provider, this.action);
     out.reset();
 
-    perform(this.resetAction);
+    perform(this.provider, this.resetAction);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(out.toString()).isEqualTo(Text.TICKS.text(14) + getLineSeparator());
 
     out.reset();
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(out.toString()).isEmpty();
   }
 }

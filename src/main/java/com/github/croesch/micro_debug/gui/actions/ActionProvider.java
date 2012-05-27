@@ -51,10 +51,10 @@ public final class ActionProvider {
     this.actions.put(Actions.ABOUT, new AboutAction());
     this.actions.put(Actions.EXIT, new ExitAction(frame, thread, processor));
     this.actions.put(Actions.HELP, new HelpAction());
-    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor, thread));
-    this.actions.put(Actions.RESET, new ResetAction(processor, thread));
-    this.actions.put(Actions.RUN, new RunAction(processor, thread));
-    this.actions.put(Actions.STEP, new StepAction(processor, thread));
+    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor, thread, this));
+    this.actions.put(Actions.RESET, new ResetAction(processor, thread, this));
+    this.actions.put(Actions.RUN, new RunAction(processor, thread, this));
+    this.actions.put(Actions.STEP, new StepAction(processor, thread, this));
   }
 
   /**

@@ -18,6 +18,8 @@
  */
 package com.github.croesch.micro_debug.gui;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 
 import com.github.croesch.micro_debug.gui.actions.AbstractExecuteOnWorkerThreadAction;
+import com.github.croesch.micro_debug.gui.actions.ActionProvider;
+import com.github.croesch.micro_debug.gui.actions.Actions;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 
 /**
@@ -162,14 +166,47 @@ public class DefaultGUITestCase extends DefaultTestCase {
   }
 
   protected void perform(final Action act) {
+    perform(null, act);
+  }
+
+  protected void perform(final ActionProvider provider, final Action act) {
+    // let the worker wait a bit before executing the action, that we can test the state of actions
+    invokeSleepActionOnWorker(10);
+
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
         act.actionPerformed(null);
       }
     });
+
     if (act instanceof AbstractExecuteOnWorkerThreadAction) {
+      assertWorkerActionsEnabled(provider, false);
       waitForWorkerThreadBeingIdle();
+    }
+    assertWorkerActionsEnabled(provider, true);
+  }
+
+  private void invokeSleepActionOnWorker(final long millis) {
+    worker.invokeLater(new Runnable() {
+      public void run() {
+        try {
+          Thread.sleep(millis);
+        } catch (final InterruptedException e) {
+          DefaultGUITestCase.this.thrownInOtherThreads.add(e);
+        }
+      }
+    });
+  }
+
+  private void assertWorkerActionsEnabled(final ActionProvider provider, final boolean enabled) {
+    if (provider != null) {
+      for (final Actions act : Actions.values()) {
+        final Action action = provider.getAction(act);
+        if (action != null && action instanceof AbstractExecuteOnWorkerThreadAction) {
+          assertThat(action.isEnabled()).isEqualTo(enabled);
+        }
+      }
     }
   }
 

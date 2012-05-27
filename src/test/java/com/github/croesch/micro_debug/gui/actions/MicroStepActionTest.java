@@ -57,6 +57,8 @@ public class MicroStepActionTest extends DefaultGUITestCase {
 
   private JTextComponentFixture txtFixture;
 
+  private ActionProvider provider;
+
   @Override
   protected void setUpTestCase() throws Exception {
     final String micFile = getClass().getClassLoader().getResource("mic1/hi.mic1").getPath();
@@ -64,8 +66,9 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = createAction(this.processor);
-    this.resetAction = ResetActionTest.createAction(this.processor);
+    this.provider = ActionProviderTest.getProvider(this.processor);
+    this.action = createAction(this.processor, this.provider);
+    this.resetAction = ResetActionTest.createAction(this.processor, this.provider);
 
     this.txtComponent = GuiActionRunner.execute(new GuiQuery<JTextComponent>() {
       @Override
@@ -81,11 +84,11 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.txtFixture = new JTextComponentFixture(robot(), this.txtComponent);
   }
 
-  public static MicroStepAction createAction(final Mic1 proc) {
+  public static MicroStepAction createAction(final Mic1 proc, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<MicroStepAction>() {
       @Override
       protected MicroStepAction executeInEDT() throws Throwable {
-        return new MicroStepAction(proc, DefaultGUITestCase.getWorker());
+        return new MicroStepAction(proc, DefaultGUITestCase.getWorker(), provider);
       }
     });
   }
@@ -98,16 +101,16 @@ public class MicroStepActionTest extends DefaultGUITestCase {
 
     this.txtFixture.enterText("20");
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.MAR.getValue()).isZero();
     assertThat(Register.PC.getValue()).isZero();
     assertThat(this.processor.isHaltInstruction()).isFalse();
     assertThat(out.toString()).isEqualTo(Text.TICKS.text(1) + getLineSeparator());
     out.reset();
 
-    perform(this.resetAction);
+    perform(this.provider, this.resetAction);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.MAR.getValue()).isZero();
     assertThat(Register.PC.getValue()).isZero();
     assertThat(this.processor.isHaltInstruction()).isFalse();
@@ -117,7 +120,7 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.action.setTextComponent(this.txtComponent);
     this.txtFixture.deleteText();
     this.txtFixture.enterText("zwei");
-    perform(this.action);
+    perform(this.provider, this.action);
     this.txtFixture.requireEmpty();
     assertThat(Register.MAR.getValue()).isZero();
     assertThat(Register.PC.getValue()).isZero();
@@ -125,7 +128,7 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     assertThat(out.toString()).isEqualTo(Text.ERROR.text(Text.INVALID_NUMBER.text("zwei")) + getLineSeparator());
     out.reset();
 
-    perform(this.action);
+    perform(this.provider, this.action);
     this.txtFixture.requireEmpty();
     assertThat(Register.MAR.getValue()).isZero();
     assertThat(Register.PC.getValue()).isZero();
@@ -138,9 +141,9 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.txtFixture.deleteText();
     this.txtFixture.enterText("20");
 
-    perform(this.resetAction);
+    perform(this.provider, this.resetAction);
 
-    perform(this.action);
+    perform(this.provider, this.action);
     this.txtFixture.requireText("20");
     assertThat(Register.MDR.getValue()).isEqualTo('\n');
     assertThat(Register.MAR.getValue()).isEqualTo(-3);
@@ -152,7 +155,7 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     out.reset();
 
     this.action.setTextComponent(null);
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.MDR.getValue()).isEqualTo('\n');
     assertThat(Register.MAR.getValue()).isEqualTo(-3);
     assertThat(Register.PC.getValue()).isEqualTo(3);
@@ -162,12 +165,12 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     assertThat(out.toString()).isEmpty();
     out.reset();
 
-    perform(this.resetAction);
+    perform(this.provider, this.resetAction);
 
     this.action.setTextComponent(this.txtComponent);
     this.txtFixture.deleteText();
     this.txtFixture.enterText("2");
-    perform(this.action);
+    perform(this.provider, this.action);
     assertThat(Register.MAR.getValue()).isZero();
     assertThat(Register.PC.getValue()).isZero();
     assertThat(Register.LV.getValue()).isEqualTo(-1);
