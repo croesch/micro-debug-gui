@@ -33,9 +33,6 @@ public final class MicroStepAction extends AbstractStepAction {
   /** generated serial version UID */
   private static final long serialVersionUID = 3119114931438478253L;
 
-  /** the processor being debugged */
-  private final transient Mic1 processor;
-
   /**
    * Constructs the action to perform a micro step of the processor.
    * 
@@ -46,17 +43,16 @@ public final class MicroStepAction extends AbstractStepAction {
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
   public MicroStepAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
-    super(GuiText.GUI_ACTIONS_MICRO_STEP, thread, provider);
-    this.processor = proc;
+    super(GuiText.GUI_ACTIONS_MICRO_STEP, proc, thread, provider);
   }
 
   @Override
   protected void doStep() {
-    this.processor.microStep();
+    getProcessor().microStep();
   }
 
   @Override
   protected void doStep(final int count) {
-    this.processor.microStep(count);
+    getProcessor().microStep(count);
   }
 }

@@ -26,6 +26,7 @@ import javax.swing.Action;
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
  * Action that shouldn't be executed on the EDT because of long running methods.
@@ -46,22 +47,29 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   @NotNull
   private final ActionProvider actionProvider;
 
+  /** the processor being debugged */
+  @NotNull
+  private final transient Mic1 processor;
+
   /**
    * Constructs the Action that shouldn't be executed on the EDT because of long running methods.
    * 
    * @since Date: May 26, 2012
    * @param text {@link GuiText} that contains the name of the action
+   * @param proc the {@link Mic1} processor being debugged
    * @param thread the thread to use for executing the action instead of the EDT.
    * @param provider the {@link ActionProvider} holding references to all actions, especially to the
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
   public AbstractExecuteOnWorkerThreadAction(final GuiText text,
+                                             final Mic1 proc,
                                              final WorkerThread thread,
                                              final ActionProvider provider) {
     super(text.text());
-    if (thread == null || provider == null) {
+    if (proc == null || thread == null || provider == null) {
       throw new IllegalArgumentException();
     }
+    this.processor = proc;
     this.workerThread = thread;
     this.actionProvider = provider;
   }
@@ -104,4 +112,14 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
    * @param e the event that caused the action to be performed
    */
   protected abstract void perform(ActionEvent e);
+
+  /**
+   * Returns the processor being debugged.
+   * 
+   * @since Date: May 27, 2012
+   * @return the processor that is being debugged by this debugger.
+   */
+  protected final Mic1 getProcessor() {
+    return this.processor;
+  }
 }

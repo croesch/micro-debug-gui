@@ -20,6 +20,8 @@ package com.github.croesch.micro_debug.gui.actions;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.FileInputStream;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
@@ -39,7 +41,11 @@ public class ActionProviderTest extends DefaultGUITestCase {
 
   @Override
   protected void setUpTestCase() throws Exception {
-    this.provider = getProvider(null);
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    this.provider = getProvider(processor);
   }
 
   public static ActionProvider getProvider(final Mic1 proc) {

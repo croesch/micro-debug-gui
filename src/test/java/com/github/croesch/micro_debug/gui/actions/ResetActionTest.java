@@ -84,4 +84,9 @@ public class ResetActionTest extends DefaultGUITestCase {
   public void testAction_NullProvider() {
     createAction(this.processor, getWorker(), null);
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAction_NullProcessor() {
+    createAction(null, getWorker(), this.provider);
+  }
 }

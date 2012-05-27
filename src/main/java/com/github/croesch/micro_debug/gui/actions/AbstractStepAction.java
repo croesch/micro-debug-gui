@@ -29,6 +29,7 @@ import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.i18n.Text;
+import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.parser.IntegerParser;
 
 /**
@@ -54,12 +55,13 @@ public abstract class AbstractStepAction extends AbstractExecuteOnWorkerThreadAc
    * 
    * @since Date: May 13, 2012
    * @param txt {@link GuiText} that contains the name of the action
+   * @param proc the {@link Mic1} processor being debugged
    * @param thread the thread to use for executing the action instead of the EDT.
    * @param provider the {@link ActionProvider} holding references to all actions, especially to the
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
-  public AbstractStepAction(final GuiText txt, final WorkerThread thread, final ActionProvider provider) {
-    super(txt, thread, provider);
+  public AbstractStepAction(final GuiText txt, final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
+    super(txt, proc, thread, provider);
   }
 
   @Override

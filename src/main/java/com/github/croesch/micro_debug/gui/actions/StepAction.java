@@ -33,9 +33,6 @@ public final class StepAction extends AbstractStepAction {
   /** generated serial version UID */
   private static final long serialVersionUID = -3384615453935946627L;
 
-  /** the processor being debugged */
-  private final transient Mic1 processor;
-
   /**
    * Constructs the action to perform a step of the processor.
    * 
@@ -46,17 +43,16 @@ public final class StepAction extends AbstractStepAction {
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
   public StepAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
-    super(GuiText.GUI_ACTIONS_STEP, thread, provider);
-    this.processor = proc;
+    super(GuiText.GUI_ACTIONS_STEP, proc, thread, provider);
   }
 
   @Override
   protected void doStep() {
-    this.processor.step();
+    getProcessor().step();
   }
 
   @Override
   protected void doStep(final int count) {
-    this.processor.step(count);
+    getProcessor().step(count);
   }
 }

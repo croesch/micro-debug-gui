@@ -35,9 +35,6 @@ public final class RunAction extends AbstractExecuteOnWorkerThreadAction {
   /** generated serial version UID */
   private static final long serialVersionUID = 9082637554492739783L;
 
-  /** the processor being debugged */
-  private final transient Mic1 processor;
-
   /**
    * Constructs the action to run the program of the processor.
    * 
@@ -48,12 +45,11 @@ public final class RunAction extends AbstractExecuteOnWorkerThreadAction {
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
   public RunAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
-    super(GuiText.GUI_ACTIONS_RUN, thread, provider);
-    this.processor = proc;
+    super(GuiText.GUI_ACTIONS_RUN, proc, thread, provider);
   }
 
   @Override
   public void perform(final ActionEvent e) {
-    this.processor.run();
+    getProcessor().run();
   }
 }
