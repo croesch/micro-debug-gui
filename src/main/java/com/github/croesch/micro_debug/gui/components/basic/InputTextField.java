@@ -62,11 +62,11 @@ public class InputTextField extends MDTextField {
 
   /** {@link Runnable} clearing the state that the text field requests input */
   @NotNull
-  private final Runnable resetRequestInput;
+  private final transient Runnable resetRequestInput;
 
   /** {@link Runnable} visualizing the state that the text field requests input */
   @NotNull
-  private final Runnable markRequestInput;
+  private final transient Runnable markRequestInput;
 
   /**
    * Constructs a new text field that is able to give input for the processor. To let the processor read the data
