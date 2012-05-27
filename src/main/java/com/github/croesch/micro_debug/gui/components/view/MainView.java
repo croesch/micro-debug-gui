@@ -77,8 +77,10 @@ public final class MainView {
 
     final JSplitPane codePane = new MDSplitPane("code",
                                                 JSplitPane.HORIZONTAL_SPLIT,
-                                                this.macroCodeView,
-                                                this.microCodeView);
+                                                new MDScrollPane(this.macroCodeView.getName() + "-scroller",
+                                                                 this.macroCodeView),
+                                                new MDScrollPane(this.microCodeView.getName() + "-scroller",
+                                                                 this.microCodeView));
     codePane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));

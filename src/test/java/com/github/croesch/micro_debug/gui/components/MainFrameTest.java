@@ -37,6 +37,7 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
 import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
@@ -107,10 +108,14 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("code-tas").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
     assertThat(frame.splitPane("code").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
-    assertThat(frame.splitPane("code").component().getLeftComponent()).isInstanceOf(MacroCodeView.class);
-    assertThat(frame.splitPane("code").component().getLeftComponent().getName()).isEqualTo("macroCode");
-    assertThat(frame.splitPane("code").component().getRightComponent()).isInstanceOf(MicroCodeView.class);
-    assertThat(frame.splitPane("code").component().getRightComponent().getName()).isEqualTo("microCode");
+    final MDScrollPane leftComponent = (MDScrollPane) frame.splitPane("code").component().getLeftComponent();
+    assertThat(leftComponent.getName()).isEqualTo("macroCode-scroller");
+    assertThat(leftComponent.getViewport().getView()).isInstanceOf(MacroCodeView.class);
+    assertThat(leftComponent.getViewport().getView().getName()).isEqualTo("macroCode");
+    final MDScrollPane rightComponent = (MDScrollPane) frame.splitPane("code").component().getRightComponent();
+    assertThat(rightComponent.getName()).isEqualTo("microCode-scroller");
+    assertThat(rightComponent.getViewport().getView()).isInstanceOf(MicroCodeView.class);
+    assertThat(rightComponent.getViewport().getView().getName()).isEqualTo("microCode");
     assertThat(frame.splitPane("code").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final String pane = "processorTas-debuggerTa";
