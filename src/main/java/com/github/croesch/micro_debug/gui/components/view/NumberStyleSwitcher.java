@@ -76,6 +76,7 @@ public class NumberStyleSwitcher extends MDPanel {
    * @since Date: May 27, 2012
    * @return the button that switches the style format to binary.
    */
+  @NotNull
   public final MDRadioButton getBinaryBtn() {
     return this.binaryBtn;
   }
@@ -86,6 +87,7 @@ public class NumberStyleSwitcher extends MDPanel {
    * @since Date: May 27, 2012
    * @return the button that switches the style format to decimal.
    */
+  @NotNull
   public final MDRadioButton getDecimalBtn() {
     return this.decimalBtn;
   }
@@ -96,6 +98,7 @@ public class NumberStyleSwitcher extends MDPanel {
    * @since Date: May 27, 2012
    * @return the button that switches the style format to hexadecimmal.
    */
+  @NotNull
   public final MDRadioButton getHexadecimalBtn() {
     return this.hexBtn;
   }
