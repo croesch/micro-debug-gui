@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.commons.Printer;
 import com.github.croesch.micro_debug.commons.Utils;
@@ -48,6 +49,7 @@ public abstract class AbstractStepAction extends AbstractExecuteOnWorkerThreadAc
   private JTextComponent textComponent = null;
 
   /** the {@link IntegerParser} to parse the number from the text component */
+  @NotNull
   private final IntegerParser parser = new IntegerParser();
 
   /**

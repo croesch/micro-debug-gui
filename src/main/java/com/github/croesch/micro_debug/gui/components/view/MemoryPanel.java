@@ -58,6 +58,7 @@ public class MemoryPanel extends MDPanel {
   private final transient Mic1 processor;
 
   /** the scroll bar to scroll through the values of the memory */
+  @NotNull
   private JScrollBar scrollBar;
 
   /**

@@ -23,6 +23,7 @@ import java.util.EnumMap;
 import javax.swing.Action;
 import javax.swing.JFrame;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -36,6 +37,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
 public final class ActionProvider {
 
   /** the map that holds the action for each key */
+  @NotNull
   private final EnumMap<Actions, Action> actions = new EnumMap<Actions, Action>(Actions.class);
 
   /**

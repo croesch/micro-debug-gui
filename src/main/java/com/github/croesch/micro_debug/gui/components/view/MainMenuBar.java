@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.view;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
 import com.github.croesch.micro_debug.gui.actions.Actions;
 import com.github.croesch.micro_debug.gui.components.basic.MDMenu;
@@ -58,6 +59,7 @@ public final class MainMenuBar extends JMenuBar {
    * @param provider the {@link ActionProvider} providing the actions for the menu.
    * @return the constructed help menu
    */
+  @NotNull
   private JMenu createHelpMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("help", GuiText.GUI_MENU_HELP.text());
 
@@ -79,6 +81,7 @@ public final class MainMenuBar extends JMenuBar {
    * @param provider the {@link ActionProvider} providing the actions for the menu.
    * @return the constructed processor menu
    */
+  @NotNull
   private JMenu createProcessorMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("processor", GuiText.GUI_MENU_PROCESSOR.text());
 
@@ -106,6 +109,7 @@ public final class MainMenuBar extends JMenuBar {
    * @param provider the {@link ActionProvider} providing the actions for the menu.
    * @return the constructed micro-debug menu
    */
+  @NotNull
   private JMenu createMicroDebugMenu(final ActionProvider provider) {
     final MDMenu menu = new MDMenu("micro-debug", GuiText.GUI_MENU_MICRODEBUG.text());
 

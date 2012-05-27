@@ -119,6 +119,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
    * @since Date: May 27, 2012
    * @return the processor that is being debugged by this debugger.
    */
+  @NotNull
   protected final Mic1 getProcessor() {
     return this.processor;
   }

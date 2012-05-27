@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
@@ -38,6 +39,7 @@ public final class AboutAction extends AbstractAction {
   private static final long serialVersionUID = 7934852167202508201L;
 
   /** the about frame */
+  @NotNull
   private final AboutFrame frame;
 
   /**

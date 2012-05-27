@@ -20,6 +20,7 @@ package com.github.croesch.micro_debug.gui.settings;
 
 import javax.swing.KeyStroke;
 
+import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.properties.PropertiesProvider;
 
 /**
@@ -52,6 +53,7 @@ public enum KeyStrokes {
   STEP ("F6");
 
   /** the keystroke */
+  @Nullable
   private final KeyStroke keystroke;
 
   /**
@@ -78,6 +80,7 @@ public enum KeyStrokes {
    * @since Date: May 25, 2012
    * @return the keystroke of this setting, created from the value in the properties file.
    */
+  @Nullable
   public KeyStroke stroke() {
     return this.keystroke;
   }
