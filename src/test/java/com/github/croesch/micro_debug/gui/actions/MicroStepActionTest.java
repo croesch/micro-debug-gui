@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -67,8 +68,8 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     new Mic1Interpreter(this.processor);
 
     this.provider = ActionProviderTest.getProvider(this.processor);
-    this.action = createAction(this.processor, this.provider);
-    this.resetAction = ResetActionTest.createAction(this.processor, this.provider);
+    this.action = createAction(this.processor, getWorker(), this.provider);
+    this.resetAction = ResetActionTest.createAction(this.processor, getWorker(), this.provider);
 
     this.txtComponent = GuiActionRunner.execute(new GuiQuery<JTextComponent>() {
       @Override
@@ -84,11 +85,11 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     this.txtFixture = new JTextComponentFixture(robot(), this.txtComponent);
   }
 
-  public static MicroStepAction createAction(final Mic1 proc, final ActionProvider provider) {
+  public static MicroStepAction createAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<MicroStepAction>() {
       @Override
       protected MicroStepAction executeInEDT() throws Throwable {
-        return new MicroStepAction(proc, DefaultGUITestCase.getWorker(), provider);
+        return new MicroStepAction(proc, thread, provider);
       }
     });
   }
@@ -177,5 +178,10 @@ public class MicroStepActionTest extends DefaultGUITestCase {
     assertThat(Register.H.getValue()).isEqualTo(-1);
     assertThat(this.processor.isHaltInstruction()).isFalse();
     assertThat(out.toString()).isEqualTo(Text.TICKS.text(2) + getLineSeparator());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAction_NullThread() {
+    createAction(this.processor, null, this.provider);
   }
 }

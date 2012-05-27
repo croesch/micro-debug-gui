@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -66,7 +67,7 @@ public class StepActionTest extends DefaultGUITestCase {
     new Mic1Interpreter(this.processor);
 
     this.provider = ActionProviderTest.getProvider(this.processor);
-    this.action = createAction(this.processor, this.provider);
+    this.action = createAction(this.processor, getWorker(), this.provider);
 
     this.txtComponent = GuiActionRunner.execute(new GuiQuery<JTextComponent>() {
       @Override
@@ -82,11 +83,11 @@ public class StepActionTest extends DefaultGUITestCase {
     this.txtFixture = new JTextComponentFixture(robot(), this.txtComponent);
   }
 
-  public static StepAction createAction(final Mic1 proc, final ActionProvider provider) {
+  public static StepAction createAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<StepAction>() {
       @Override
       protected StepAction executeInEDT() throws Throwable {
-        return new StepAction(proc, DefaultGUITestCase.getWorker(), provider);
+        return new StepAction(proc, thread, provider);
       }
     });
   }
@@ -154,5 +155,10 @@ public class StepActionTest extends DefaultGUITestCase {
     perform(this.provider, this.action);
     assertThat(Register.PC.getValue()).isEqualTo(71);
     assertTicksDoneAndResetPrintStream(23);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAction_NullThread() {
+    createAction(this.processor, null, this.provider);
   }
 }

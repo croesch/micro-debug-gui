@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -45,6 +46,8 @@ public class ResetActionTest extends DefaultGUITestCase {
 
   private Mic1 processor;
 
+  private ActionProvider provider;
+
   @Override
   protected void setUpTestCase() throws Exception {
     final String micFile = getClass().getClassLoader().getResource("mic1/hi.mic1").getPath();
@@ -52,14 +55,15 @@ public class ResetActionTest extends DefaultGUITestCase {
     this.processor = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
     new Mic1Interpreter(this.processor);
 
-    this.action = createAction(this.processor, ActionProviderTest.getProvider(this.processor));
+    this.provider = ActionProviderTest.getProvider(this.processor);
+    this.action = createAction(this.processor, getWorker(), this.provider);
   }
 
-  public static ResetAction createAction(final Mic1 proc, final ActionProvider provider) {
+  public static ResetAction createAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
     return GuiActionRunner.execute(new GuiQuery<ResetAction>() {
       @Override
       protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(proc, DefaultGUITestCase.getWorker(), provider);
+        return new ResetAction(proc, thread, provider);
       }
     });
   }
@@ -69,5 +73,10 @@ public class ResetActionTest extends DefaultGUITestCase {
     printlnMethodName();
 
     assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_RESET.text());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAction_NullThread() {
+    createAction(this.processor, null, this.provider);
   }
 }

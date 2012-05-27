@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
@@ -38,6 +39,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   private static final long serialVersionUID = -8749069618913022096L;
 
   /** the thread executing actions */
+  @NotNull
   private final WorkerThread workerThread;
 
   /** the {@link ActionProvider} holding references to all actions */
@@ -56,6 +58,9 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
                                              final WorkerThread thread,
                                              final ActionProvider provider) {
     super(text.text());
+    if (thread == null) {
+      throw new IllegalArgumentException();
+    }
     this.workerThread = thread;
     this.actionProvider = provider;
   }
