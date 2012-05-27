@@ -87,6 +87,7 @@ public class MemoryPanel extends MDPanel {
       final NumberLabel label = new NumberLabel("memValue-" + i, this.processor.getMemoryValue(i));
       final NumberLabel descLabel = new NumberLabel("memDesc-" + i, "{0}:");
       descLabel.setNumber(i);
+      descLabel.viewHexadecimal();
 
       this.labels[i] = label;
       this.descLabels[i] = descLabel;

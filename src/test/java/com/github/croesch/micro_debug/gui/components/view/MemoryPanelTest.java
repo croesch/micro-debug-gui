@@ -34,6 +34,7 @@ import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
+import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -73,6 +74,9 @@ public class MemoryPanelTest extends DefaultGUITestCase {
         final int adr = offs + i;
         final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
         assertThat(label.getNumber()).isEqualTo(proc.getMemoryValue(adr));
+        final NumberLabel descLabel = panel.label("memDesc-" + i).targetCastedTo(NumberLabel.class);
+        assertThat(descLabel.getNumber()).isEqualTo(adr);
+        assertThat(descLabel.getNumberStyle()).isEqualTo(STYLE.HEXADECIMAL);
       }
     }
   }
@@ -94,6 +98,8 @@ public class MemoryPanelTest extends DefaultGUITestCase {
       for (int i = 0; i < 20; ++i) {
         final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
         assertThat(label.getNumber()).isEqualTo(proc.getMemoryValue(offs + i));
+        final NumberLabel descLabel = panel.label("memDesc-" + i).targetCastedTo(NumberLabel.class);
+        assertThat(descLabel.getNumber()).isEqualTo(offs + i);
       }
       panel.scrollBar().scrollBlockDown();
     }
@@ -109,6 +115,8 @@ public class MemoryPanelTest extends DefaultGUITestCase {
         final int adr = offs + i;
         final NumberLabel label = panel.label("memValue-" + i).targetCastedTo(NumberLabel.class);
         assertThat(label.getNumber()).isEqualTo(proc.getMemoryValue(adr));
+        final NumberLabel descLabel = panel.label("memDesc-" + i).targetCastedTo(NumberLabel.class);
+        assertThat(descLabel.getNumber()).isEqualTo(adr);
       }
       panel.scrollBar().scrollBlockDown();
     }
@@ -119,23 +127,31 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     NumberLabel label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
     assertThat(label.getNumber()).isEqualTo(42);
     assertThat(label.getNumber()).isNotEqualTo(17);
+    NumberLabel descLabel = panel.label("memDesc-0").targetCastedTo(NumberLabel.class);
+    assertThat(descLabel.getNumber()).isEqualTo(17);
 
     update(p);
 
     label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
     assertThat(label.getNumber()).isNotEqualTo(42);
     assertThat(label.getNumber()).isEqualTo(17);
+    descLabel = panel.label("memDesc-0").targetCastedTo(NumberLabel.class);
+    assertThat(descLabel.getNumber()).isEqualTo(17);
 
     proc.setMemoryValue(18, -42);
     label = panel.label("memValue-1").targetCastedTo(NumberLabel.class);
     assertThat(label.getNumber()).isEqualTo(18);
     assertThat(label.getNumber()).isNotEqualTo(-42);
+    descLabel = panel.label("memDesc-1").targetCastedTo(NumberLabel.class);
+    assertThat(descLabel.getNumber()).isEqualTo(18);
 
     panel.scrollBar().scrollUnitDown();
 
     label = panel.label("memValue-0").targetCastedTo(NumberLabel.class);
     assertThat(label.getNumber()).isNotEqualTo(18);
     assertThat(label.getNumber()).isEqualTo(-42);
+    descLabel = panel.label("memDesc-0").targetCastedTo(NumberLabel.class);
+    assertThat(descLabel.getNumber()).isEqualTo(18);
   }
 
   private void update(final MemoryPanel p) {

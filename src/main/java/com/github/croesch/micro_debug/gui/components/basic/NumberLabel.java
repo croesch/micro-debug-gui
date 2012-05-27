@@ -50,7 +50,7 @@ public class NumberLabel extends MDLabel {
    * @author croesch
    * @since Date: Mar 14, 2012
    */
-  private enum STYLE {
+  public enum STYLE {
     /** decimal number format */
     DECIMAL {
       @Override
@@ -187,5 +187,15 @@ public class NumberLabel extends MDLabel {
   public final void viewBinary() {
     this.numberStyle = STYLE.BINARY;
     updateNumber();
+  }
+
+  /**
+   * Returns the style that is used to display numbers.
+   * 
+   * @since Date: May 27, 2012
+   * @return the style that is used to display numbers.
+   */
+  public final STYLE getNumberStyle() {
+    return this.numberStyle;
   }
 }

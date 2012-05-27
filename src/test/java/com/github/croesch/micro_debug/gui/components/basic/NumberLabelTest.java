@@ -322,6 +322,7 @@ public class NumberLabelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         labelFixture.targetCastedTo(NumberLabel.class).viewDecimal();
+        assertThat(labelFixture.targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(NumberLabel.STYLE.DECIMAL);
       }
     });
   }
@@ -331,6 +332,7 @@ public class NumberLabelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         labelFixture.targetCastedTo(NumberLabel.class).viewHexadecimal();
+        assertThat(labelFixture.targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(NumberLabel.STYLE.HEXADECIMAL);
       }
     });
   }
@@ -340,6 +342,7 @@ public class NumberLabelTest extends DefaultGUITestCase {
       @Override
       protected void executeInEDT() throws Throwable {
         labelFixture.targetCastedTo(NumberLabel.class).viewBinary();
+        assertThat(labelFixture.targetCastedTo(NumberLabel.class).getNumberStyle()).isEqualTo(NumberLabel.STYLE.BINARY);
       }
     });
   }
