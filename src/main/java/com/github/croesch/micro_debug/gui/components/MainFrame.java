@@ -66,6 +66,7 @@ public final class MainFrame extends SizedFrame {
   public MainFrame(final Mic1 proc) {
     super(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME, InternalSettings.VERSION),
           new Dimension(IntegerSettings.MAIN_FRAME_WIDTH.getValue(), IntegerSettings.MAIN_FRAME_HEIGHT.getValue()));
+    setResizable(true);
 
     this.processor = proc;
 

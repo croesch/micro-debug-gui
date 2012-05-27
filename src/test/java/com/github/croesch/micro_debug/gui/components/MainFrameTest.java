@@ -78,6 +78,7 @@ public class MainFrameTest extends DefaultGUITestCase {
 
     final FrameFixture frame = new FrameFixture(robot(), getFrame(proc));
     frame.show();
+    assertThat(frame.component().isResizable()).isTrue();
     assertThat(frame.component().getTitle()).isEqualTo(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME,
                                                                                    InternalSettings.VERSION));
 
