@@ -6,12 +6,12 @@
 
 	<!-- This file is part of micro-debug-gui. -->
 
-	<!-- micro-debug is free software: you can redistribute it and/or modify -->
+	<!-- micro-debug-gui is free software: you can redistribute it and/or modify -->
 	<!-- it under the terms of the GNU General Public License as published by -->
 	<!-- the Free Software Foundation, either version 3 of the License, or -->
 	<!-- (at your option) any later version. -->
 
-	<!-- micro-debug is distributed in the hope that it will be useful, -->
+	<!-- micro-debug-gui is distributed in the hope that it will be useful, -->
 	<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
 	<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the -->
 	<!-- GNU General Public License for more details. -->
@@ -68,6 +68,20 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<excludes>
+						<exclude>lang/**</exclude>
+						<exclude>logging.properties</exclude>
+						<exclude>micro-debug.properties</exclude>
+						<exclude>*.sh</exclude>
+						<exclude>*.bat</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.2.2</version>
 			</plugin>
@@ -83,6 +97,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -109,7 +124,7 @@
 		<dependency>
 			<groupId>com.github.croesch</groupId>
 			<artifactId>micro-debug</artifactId>
-			<version>0.3.0-SNAPSHOT</version>
+			<version>0.3.0</version>
 		</dependency>
 	</dependencies>
 </project>
