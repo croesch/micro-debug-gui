@@ -22,5 +22,5 @@
 DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 java -Djava.util.logging.config.file="$DIR/config/logging.properties" \
-     -cp .:"$DIR/config":"$DIR/micro-debug-gui-${version}.jar":"$DIR/lib" \
+     -cp .:"$DIR/config":"$DIR/micro-debug-gui-${version}.jar":"$DIR/lib/*" \
      com.github.croesch.micro_debug.gui.MicroDebug $@
