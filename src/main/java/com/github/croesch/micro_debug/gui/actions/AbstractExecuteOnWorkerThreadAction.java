@@ -19,11 +19,14 @@
 package com.github.croesch.micro_debug.gui.actions;
 
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -80,8 +83,21 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   public final void actionPerformed(final ActionEvent e) {
     final Runnable run = new Runnable() {
       public void run() {
+        // perform the action
         perform(e);
-        enableWorkerActions(true);
+
+        // enable the actions again
+        try {
+          SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+              enableWorkerActions(true);
+            }
+          });
+        } catch (final InterruptedException t) {
+          Utils.logThrownThrowable(t);
+        } catch (final InvocationTargetException t) {
+          Utils.logThrownThrowable(t);
+        }
       }
     };
     enableWorkerActions(false);
