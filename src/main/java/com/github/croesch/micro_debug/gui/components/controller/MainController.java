@@ -88,8 +88,7 @@ public final class MainController implements IProcessorInterpreter {
                              final int macroLine,
                              final MicroInstruction currentInstruction,
                              final MicroInstruction nextInstruction) {
-    // TODO Auto-generated method stub
-    return true;
+    return !this.breakpointManager.isBreakpoint(microLine, macroLine, currentInstruction, nextInstruction);
   }
 
   /**

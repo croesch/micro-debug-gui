@@ -309,7 +309,7 @@ public class RulerTest extends DefaultGUITestCase {
                                                                this.lineMapper.getLineForNumber(6)));
   }
 
-  private int getYOfLine(final ACodeArea ta, final int line) throws BadLocationException {
+  public static int getYOfLine(final ACodeArea ta, final int line) throws BadLocationException {
     return ta.modelToView(ta.getLineStartOffset(line)).y;
   }
 
