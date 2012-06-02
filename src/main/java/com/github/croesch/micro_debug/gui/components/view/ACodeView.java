@@ -46,10 +46,6 @@ public abstract class ACodeView extends MDPanel {
   @NotNull
   private final ACodeArea codeArea;
 
-  /** the label containing the line numbers */
-  @NotNull
-  private final LineNumberLabel lineNumberView;
-
   /** the mapper for mapping line numbers to users interpretion of line numbers */
   @NotNull
   private final transient LineNumberMapper mapper = new LineNumberMapper();
@@ -77,14 +73,13 @@ public abstract class ACodeView extends MDPanel {
 
     this.codeArea = ta;
     addCode();
-    this.lineNumberView = new LineNumberLabel(this.codeArea, this.mapper);
 
     final MDScrollPane pane = new MDScrollPane(name + "-code-scrollpane", this.codeArea);
 
     final MDPanel rowHeader = new MDPanel(name + "-code-rowheader");
     rowHeader.setLayout(new MigLayout("fill", "0![]0![]0!", "0![]0!"));
     rowHeader.add(new Ruler(name + "-ruler", this.codeArea, bph, this.mapper), "grow");
-    rowHeader.add(this.lineNumberView);
+    rowHeader.add(new LineNumberLabel(this.codeArea, this.mapper));
 
     pane.setRowHeaderView(rowHeader);
 
