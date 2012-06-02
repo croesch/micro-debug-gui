@@ -26,7 +26,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -51,9 +50,7 @@ import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
  */
 public class LineNumberLabelTest extends DefaultGUITestCase {
 
-  private static final String HIGHLIGHT = Integer
-
-  .toHexString(UIManager.getColor("Label.background").darker().getRGB() & 0xFFFFFF);
+  //  private static final String HIGHLIGHT = Integer.toHexString(UIManager.getColor("Label.background").darker().getRGB() & 0xFFFFFF);
 
   private LineNumberMapper lineMapper;
 
@@ -226,6 +223,7 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   }
 
   @Test
+  @Ignore("highlight doesn't matter until it's performant enough")
   public void testHighlight() {
     printlnMethodName();
     final JTextComponentFixture ta = new JTextComponentFixture(robot(), getTA("light", "Dies ist ein Text ..."));
@@ -327,14 +325,14 @@ public class LineNumberLabelTest extends DefaultGUITestCase {
   }
 
   private static String getTextAsserted(final int lines, final int highlighted, final LineNumberMapper mapper) {
-    final String toReplaceSuffix = Utils.toHexString(highlighted) + "<br>";
-    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted)
-                                     + "</font><br>";
+    //    final String toReplaceSuffix = Utils.toHexString(highlighted) + "<br>";
+    //    final String replacementSuffix = "<font bgcolor='#" + HIGHLIGHT + "'>" + Utils.toHexString(highlighted)
+    //                                     + "</font><br>";
     switch (highlighted) {
       case 0:
-        return getTextAsserted(lines, mapper).replace("<html>" + toReplaceSuffix, "<html>" + replacementSuffix);
+        return getTextAsserted(lines, mapper);//.replace("<html>" + toReplaceSuffix, "<html>" + replacementSuffix);
       default:
-        return getTextAsserted(lines, mapper).replace("<br>" + toReplaceSuffix, "<br>" + replacementSuffix);
+        return getTextAsserted(lines, mapper);//.replace("<br>" + toReplaceSuffix, "<br>" + replacementSuffix);
     }
   }
 

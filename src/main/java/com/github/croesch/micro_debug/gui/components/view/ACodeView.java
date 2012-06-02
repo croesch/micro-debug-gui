@@ -125,7 +125,8 @@ public abstract class ACodeView extends MDPanel {
    */
   public final void highlight(final int line) {
     this.codeArea.highlight(this.mapper.getNumberForLine(line));
-    this.lineNumberView.highlight(this.mapper.getNumberForLine(line));
+    // #35 highlight of line number view is too slow
+    //    this.lineNumberView.highlight(this.mapper.getNumberForLine(line));
   }
 
   /**
