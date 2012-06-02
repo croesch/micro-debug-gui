@@ -24,11 +24,10 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JPanel;
-
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 import com.github.croesch.micro_debug.gui.components.basic.ComponentRepaintListener;
+import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
 
 /**
@@ -37,7 +36,7 @@ import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
  * @author croesch
  * @since Date: Mar 20, 2012
  */
-public class Ruler extends JPanel {
+public class Ruler extends MDPanel {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 237974555720522800L;
@@ -70,12 +69,15 @@ public class Ruler extends JPanel {
    * Constructs the ruler for the given text component that uses the given breakpoint manager to handle breakpoints.
    * 
    * @since Date: Mar 21, 2012
+   * @param name the name of this {@link Ruler}
    * @param tc the text component to fetch information from, such as line numbers, line height, etc.
    * @param bpm the manager for breakpoints that stores them and provides information, if a line contains a breakpoint
    * @param mapper instance of a mapper for line numbers that maps real internal line numbers to the representation for
    *        the user
    */
-  public Ruler(final ACodeArea tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+  public Ruler(final String name, final ACodeArea tc, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+    super(name);
+
     if (tc == null || bpm == null || mapper == null) {
       throw new IllegalArgumentException();
     }

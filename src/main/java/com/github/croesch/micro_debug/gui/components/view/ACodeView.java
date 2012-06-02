@@ -83,7 +83,7 @@ public abstract class ACodeView extends MDPanel {
 
     final MDPanel rowHeader = new MDPanel(name + "-code-rowheader");
     rowHeader.setLayout(new MigLayout("fill", "0![]0![]0!", "0![]0!"));
-    rowHeader.add(new Ruler(this.codeArea, bph, this.mapper), "grow");
+    rowHeader.add(new Ruler(name + "-ruler", this.codeArea, bph, this.mapper), "grow");
     rowHeader.add(this.lineNumberView);
 
     pane.setRowHeaderView(rowHeader);

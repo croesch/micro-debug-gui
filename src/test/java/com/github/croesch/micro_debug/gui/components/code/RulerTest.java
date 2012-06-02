@@ -95,19 +95,42 @@ public class RulerTest extends DefaultGUITestCase {
 
       @Override
       protected Ruler executeInEDT() {
-        return new Ruler(area, bpm, RulerTest.this.lineMapper);
+        return new Ruler("ruler", area, bpm, RulerTest.this.lineMapper);
       }
     });
   }
 
-  private Ruler getRuler(final ACodeArea area, final ILineBreakPointManager bpm, final LineNumberMapper mapper) {
+  private Ruler getRuler(final String name,
+                         final ACodeArea area,
+                         final ILineBreakPointManager bpm,
+                         final LineNumberMapper mapper) {
     return GuiActionRunner.execute(new GuiQuery<Ruler>() {
 
       @Override
       protected Ruler executeInEDT() {
-        return new Ruler(area, bpm, mapper);
+        return new Ruler(name, area, bpm, mapper);
       }
     });
+  }
+
+  @Test
+  public void testName() {
+    printlnMethodName();
+
+    final LineBreakPointHandler bpm = new LineBreakPointHandler();
+    final ACodeArea ta = getTA("ta", "a\nb\nc\nd\ne\nf\ng\nh\ni\n\n\n");
+
+    Ruler r = getRuler("ruler", ta, bpm, this.lineMapper);
+    assertThat(r.getName()).isEqualTo("ruler");
+
+    r = getRuler("", ta, bpm, this.lineMapper);
+    assertThat(r.getName()).isEqualTo("");
+
+    r = getRuler(" ", ta, bpm, this.lineMapper);
+    assertThat(r.getName()).isEqualTo(" ");
+
+    r = getRuler(null, ta, bpm, this.lineMapper);
+    assertThat(r.getName()).isEqualTo(null);
   }
 
   @Test
@@ -327,6 +350,6 @@ public class RulerTest extends DefaultGUITestCase {
   @Test(expected = IllegalArgumentException.class)
   public void testNull_Mapper() {
     final LineBreakPointHandler bpm = new LineBreakPointHandler();
-    getRuler(getTA("ta", "hi"), bpm, null);
+    getRuler("ruler", getTA("ta", "hi"), bpm, null);
   }
 }
