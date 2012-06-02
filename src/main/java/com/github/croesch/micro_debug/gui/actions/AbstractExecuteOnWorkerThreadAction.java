@@ -27,7 +27,9 @@ import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -50,29 +52,29 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
   @NotNull
   private final ActionProvider actionProvider;
 
-  /** the processor being debugged */
+  /** the controller of the debugger, having access to the processor and the view */
   @NotNull
-  private final transient Mic1 processor;
+  private final transient MainController controller;
 
   /**
    * Constructs the Action that shouldn't be executed on the EDT because of long running methods.
    * 
    * @since Date: May 26, 2012
    * @param text {@link GuiText} that contains the name of the action
-   * @param proc the {@link Mic1} processor being debugged
    * @param thread the thread to use for executing the action instead of the EDT.
+   * @param cont the controller of the debugger, having access to the processor and the view
    * @param provider the {@link ActionProvider} holding references to all actions, especially to the
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
   public AbstractExecuteOnWorkerThreadAction(final GuiText text,
-                                             final Mic1 proc,
+                                             final MainController cont,
                                              final WorkerThread thread,
                                              final ActionProvider provider) {
     super(text.text());
-    if (proc == null || thread == null || provider == null) {
+    if (cont == null || thread == null || provider == null) {
       throw new IllegalArgumentException();
     }
-    this.processor = proc;
+    this.controller = cont;
     this.workerThread = thread;
     this.actionProvider = provider;
   }
@@ -85,6 +87,8 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
       public void run() {
         // perform the action
         perform(e);
+
+        AbstractExecuteOnWorkerThreadAction.this.controller.updateView();
 
         // enable the actions again
         try {
@@ -137,6 +141,6 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
    */
   @NotNull
   protected final Mic1 getProcessor() {
-    return this.processor;
+    return this.controller.getProcessor();
   }
 }

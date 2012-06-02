@@ -44,7 +44,7 @@ import org.junit.Ignore;
 
 import com.github.croesch.micro_debug.gui.actions.AbstractExecuteOnWorkerThreadAction;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
-import com.github.croesch.micro_debug.gui.actions.Actions;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
 
 /**

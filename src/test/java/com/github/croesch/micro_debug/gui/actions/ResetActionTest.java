@@ -31,6 +31,8 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
+import com.github.croesch.micro_debug.gui.components.controller.MainControllerTest;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -63,7 +65,8 @@ public class ResetActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<ResetAction>() {
       @Override
       protected ResetAction executeInEDT() throws Throwable {
-        return new ResetAction(proc, thread, provider);
+        final MainController cont = MainControllerTest.createController(proc);
+        return new ResetAction(cont, thread, provider);
       }
     });
   }

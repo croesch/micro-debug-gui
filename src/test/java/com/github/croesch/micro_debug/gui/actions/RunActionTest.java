@@ -31,6 +31,8 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.console.Mic1Interpreter;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
+import com.github.croesch.micro_debug.gui.components.controller.MainControllerTest;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -67,7 +69,8 @@ public class RunActionTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<RunAction>() {
       @Override
       protected RunAction executeInEDT() throws Throwable {
-        return new RunAction(proc, thread, provider);
+        final MainController cont = MainControllerTest.createController(proc);
+        return new RunAction(cont, thread, provider);
       }
     });
   }

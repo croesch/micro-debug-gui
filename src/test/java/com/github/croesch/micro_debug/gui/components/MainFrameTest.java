@@ -162,25 +162,29 @@ public class MainFrameTest extends DefaultGUITestCase {
     final FrameFixture frame = new FrameFixture(robot(), mainFrame);
     frame.show();
 
-    slowDownRobot();
-
     assertMicroHighlight(frame.panel("microCode"), 0);
 
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 2);
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 0);
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 2);
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 16);
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 22);
+
     proc.microStep();
+    mainFrame.getController().updateView();
     assertMicroHighlight(frame.panel("microCode"), 23);
+
     proc.microStep();
+    mainFrame.getController().updateView();
     assertMicroHighlight(frame.panel("microCode"), 2);
+
     proc.microStep();
+    mainFrame.getController().updateView();
     assertMicroHighlight(frame.panel("microCode"), 89);
   }
 
@@ -197,23 +201,32 @@ public class MainFrameTest extends DefaultGUITestCase {
     frame.show();
 
     assertMacroNoHighlight(frame.panel("macroCode"));
-    proc.microStep();
+    frame.menuItem("micro-step").click();
     assertMacroNoHighlight(frame.panel("macroCode"));
     proc.microStep(2);
+    mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 0);
     proc.microStep(2);
+    mainFrame.getController().updateView();
     assertMacroNoHighlight(frame.panel("macroCode"));
     proc.microStep(2);
+    mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 2);
-    proc.step();
+    frame.menuItem("step").click();
     assertMacroHighlight(frame.panel("macroCode"), 3);
-    proc.step();
+    frame.menuItem("step").click();
     assertMacroHighlight(frame.panel("macroCode"), 5);
+
     proc.step();
+    mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 7);
+
     proc.step();
+    mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 9);
+
     proc.step();
+    mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 10);
   }
 

@@ -66,6 +66,10 @@ public final class MainView {
    * @param bpm the model for breakpoints of this debugger
    */
   public MainView(final String name, final Mic1 proc, final BreakpointManager bpm) {
+    if (proc == null) {
+      throw new IllegalArgumentException();
+    }
+
     this.memoryView = new MemoryPanel("memory", proc);
     this.macroCodeView = new MacroCodeView("macroCode", proc, bpm);
     this.microCodeView = new MicroCodeView("microCode", proc, bpm);

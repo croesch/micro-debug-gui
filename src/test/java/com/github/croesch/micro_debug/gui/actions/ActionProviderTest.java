@@ -27,6 +27,9 @@ import org.fest.swing.edt.GuiQuery;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
+import com.github.croesch.micro_debug.gui.components.controller.MainControllerTest;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -52,7 +55,8 @@ public class ActionProviderTest extends DefaultGUITestCase {
     return GuiActionRunner.execute(new GuiQuery<ActionProvider>() {
       @Override
       protected ActionProvider executeInEDT() throws Throwable {
-        return new ActionProvider(proc, null);
+        final MainController cont = MainControllerTest.createController(proc);
+        return new ActionProvider(cont, null);
       }
     });
   }

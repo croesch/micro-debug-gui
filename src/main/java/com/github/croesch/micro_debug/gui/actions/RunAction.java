@@ -21,8 +21,8 @@ package com.github.croesch.micro_debug.gui.actions;
 import java.awt.event.ActionEvent;
 
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
-import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
  * Action to run the program of the processor.
@@ -39,13 +39,13 @@ public final class RunAction extends AbstractExecuteOnWorkerThreadAction {
    * Constructs the action to run the program of the processor.
    * 
    * @since Date: May 13, 2012
-   * @param proc the {@link Mic1} processor being debugged
+   * @param cont the controller of the debugger, having access to the processor and the view
    * @param thread the thread to use for executing the action instead of the EDT.
    * @param provider the {@link ActionProvider} holding references to all actions, especially to the
    *        {@link AbstractExecuteOnWorkerThreadAction}s.
    */
-  public RunAction(final Mic1 proc, final WorkerThread thread, final ActionProvider provider) {
-    super(GuiText.GUI_ACTIONS_RUN, proc, thread, provider);
+  public RunAction(final MainController cont, final WorkerThread thread, final ActionProvider provider) {
+    super(GuiText.GUI_ACTIONS_RUN, cont, thread, provider);
   }
 
   @Override

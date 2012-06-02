@@ -22,21 +22,28 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Point;
 import java.io.FileInputStream;
+import java.io.PrintStream;
 
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
 
 import org.fest.swing.core.MouseButton;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.commons.Printer;
+import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.MainFrame;
 import com.github.croesch.micro_debug.gui.components.MainFrameTest;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
 import com.github.croesch.micro_debug.gui.components.code.RulerTest;
 import com.github.croesch.micro_debug.gui.components.view.ACodeView;
+import com.github.croesch.micro_debug.gui.components.view.MainView;
+import com.github.croesch.micro_debug.gui.settings.BooleanSettings;
 import com.github.croesch.micro_debug.i18n.Text;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.register.Register;
@@ -52,6 +59,18 @@ public class MainControllerTest extends DefaultGUITestCase {
   private FrameFixture frame;
 
   private MainController controller;
+
+  public static MainController createController(final Mic1 processor) {
+    return GuiActionRunner.execute(new GuiQuery<MainController>() {
+      @Override
+      protected MainController executeInEDT() throws Throwable {
+        final BreakpointManager bpm = new BreakpointManager();
+        final MainView view = new MainView("view", processor, bpm);
+        Printer.setPrintStream(new PrintStream(out));
+        return new MainController(processor, view, bpm, BooleanSettings.UPDATE_AFTER_EACH_TICK.value());
+      }
+    });
+  }
 
   @Override
   protected void setUpTestCase() throws Exception {

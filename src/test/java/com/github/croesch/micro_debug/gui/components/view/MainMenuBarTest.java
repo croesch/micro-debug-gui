@@ -36,7 +36,7 @@ import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
 import com.github.croesch.micro_debug.gui.actions.ActionProviderTest;
-import com.github.croesch.micro_debug.gui.actions.Actions;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.KeyStrokes;
 import com.github.croesch.micro_debug.mic1.Mic1;

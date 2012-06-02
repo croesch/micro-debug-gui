@@ -24,9 +24,9 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
-import com.github.croesch.micro_debug.annotation.Nullable;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
-import com.github.croesch.micro_debug.mic1.Mic1;
+import com.github.croesch.micro_debug.gui.components.controller.MainController;
 
 /**
  * Provides the actions used by the debugger.
@@ -34,7 +34,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: May 13, 2012
  */
-public final class ActionProvider {
+public final class ActionProvider implements IActionProvider {
 
   /** the map that holds the action for each key */
   @NotNull
@@ -44,29 +44,24 @@ public final class ActionProvider {
    * Constructs this provider that holds references for the actions used by the debugger.
    * 
    * @since Date: May 13, 2012
+   * @param cont the controller of the debugger, having access to the processor and the view
    * @param frame the main frame
-   * @param processor the {@link Mic1} processor being debugged
    */
-  public ActionProvider(final Mic1 processor, final JFrame frame) {
+  public ActionProvider(final MainController cont, final JFrame frame) {
     final WorkerThread thread = new WorkerThread("action-worker");
 
     this.actions.put(Actions.ABOUT, new AboutAction());
-    this.actions.put(Actions.EXIT, new ExitAction(frame, thread, processor));
+    this.actions.put(Actions.EXIT, new ExitAction(frame, thread, cont.getProcessor()));
     this.actions.put(Actions.HELP, new HelpAction());
-    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(processor, thread, this));
-    this.actions.put(Actions.RESET, new ResetAction(processor, thread, this));
-    this.actions.put(Actions.RUN, new RunAction(processor, thread, this));
-    this.actions.put(Actions.STEP, new StepAction(processor, thread, this));
+    this.actions.put(Actions.MICRO_STEP, new MicroStepAction(cont, thread, this));
+    this.actions.put(Actions.RESET, new ResetAction(cont, thread, this));
+    this.actions.put(Actions.RUN, new RunAction(cont, thread, this));
+    this.actions.put(Actions.STEP, new StepAction(cont, thread, this));
   }
 
   /**
-   * Returns the {@link Action} that is stored for this key.
-   * 
-   * @since Date: May 13, 2012
-   * @param key the key that identifies the action to fetch
-   * @return the stored {@link Action} for the given key
+   * {@inheritDoc}
    */
-  @Nullable
   public Action getAction(final Actions key) {
     return this.actions.get(key);
   }

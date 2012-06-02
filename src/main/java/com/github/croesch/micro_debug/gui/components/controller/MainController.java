@@ -49,6 +49,13 @@ public final class MainController implements IProcessorInterpreter {
   @NotNull
   private final List<IController> controllers = new ArrayList<IController>();
 
+  /** the processor being debugged by the debugger */
+  @NotNull
+  private final Mic1 processor;
+
+  /** whether the view should be updated after each single tick of the processor */
+  private final boolean updateAfterEachTick;
+
   /**
    * Constructs the main controller for the given main view.
    * 
@@ -56,13 +63,16 @@ public final class MainController implements IProcessorInterpreter {
    * @param proc the processor to interprete
    * @param view the view this controller controlls and interacts with
    * @param bpm the model for breakpoints of this debugger
+   * @param updateAfterTick whether the view should be updated after each single tick of the processor
    */
-  public MainController(final Mic1 proc, final MainView view, final BreakpointManager bpm) {
+  public MainController(final Mic1 proc, final MainView view, final BreakpointManager bpm, final boolean updateAfterTick) {
     if (proc == null || bpm == null || view == null) {
       throw new IllegalArgumentException();
     }
+    this.updateAfterEachTick = updateAfterTick;
     this.breakpointManager = bpm;
-    proc.setProcessorInterpreter(this);
+    this.processor = proc;
+    this.processor.setProcessorInterpreter(this);
 
     this.controllers.add(new RegisterController(view.getRegisterView(), this.breakpointManager));
     this.controllers.add(new MemoryController(view.getMemoryView()));
@@ -95,6 +105,17 @@ public final class MainController implements IProcessorInterpreter {
    * {@inheritDoc}
    */
   public void tickDone(final MicroInstruction instruction, final boolean macroCodeFetching) {
+    if (this.updateAfterEachTick) {
+      updateView();
+    }
+  }
+
+  /**
+   * Performs an update of the view components. Use with care - might be slow.
+   * 
+   * @since Date: Jun 2, 2012
+   */
+  public void updateView() {
     try {
       final Runnable viewUpdate = new Runnable() {
         public void run() {
@@ -113,5 +134,16 @@ public final class MainController implements IProcessorInterpreter {
     } catch (final InvocationTargetException e) {
       Utils.logThrownThrowable(e);
     }
+  }
+
+  /**
+   * Returns the {@link Mic1} processor being debugged by this debugger.
+   * 
+   * @since Date: Jun 2, 2012
+   * @return the processor being debugged.
+   */
+  @NotNull
+  public Mic1 getProcessor() {
+    return this.processor;
   }
 }

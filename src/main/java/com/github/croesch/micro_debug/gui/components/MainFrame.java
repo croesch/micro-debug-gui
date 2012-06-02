@@ -28,12 +28,13 @@ import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
-import com.github.croesch.micro_debug.gui.actions.Actions;
+import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
 import com.github.croesch.micro_debug.gui.components.basic.SizedFrame;
 import com.github.croesch.micro_debug.gui.components.controller.MainController;
 import com.github.croesch.micro_debug.gui.components.view.MainMenuBar;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.BooleanSettings;
 import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -74,11 +75,11 @@ public final class MainFrame extends SizedFrame {
 
     final BreakpointManager bpm = new BreakpointManager();
     final MainView view = new MainView("main-view", this.processor, bpm);
-    this.controller = new MainController(this.processor, view, bpm);
+    this.controller = new MainController(this.processor, view, bpm, BooleanSettings.UPDATE_AFTER_EACH_TICK.value());
 
     add(view.getViewComponent(), "grow");
 
-    final ActionProvider actionProvider = new ActionProvider(this.processor, this);
+    final ActionProvider actionProvider = new ActionProvider(this.controller, this);
     setJMenuBar(new MainMenuBar(actionProvider));
 
     addWindowListener(new WindowClosingListener(actionProvider));
