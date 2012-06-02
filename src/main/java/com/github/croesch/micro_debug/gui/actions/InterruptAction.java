@@ -39,7 +39,7 @@ public final class InterruptAction extends AbstractAction {
 
   /** the controller of the debugger, having access to the processor and the view */
   @NotNull
-  private final MainController controller;
+  private final transient MainController controller;
 
   /**
    * Constructs the action to interrupt the runnint processor.
