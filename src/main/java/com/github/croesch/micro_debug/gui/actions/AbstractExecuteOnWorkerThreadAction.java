@@ -91,21 +91,31 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
         AbstractExecuteOnWorkerThreadAction.this.controller.updateView();
 
         // enable the actions again
-        try {
-          SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-              enableWorkerActions(true);
-            }
-          });
-        } catch (final InterruptedException t) {
-          Utils.logThrownThrowable(t);
-        } catch (final InvocationTargetException t) {
-          Utils.logThrownThrowable(t);
-        }
+        enableWorkerActionsOnEDTAndWait();
       }
     };
     enableWorkerActions(false);
     this.workerThread.invokeLater(run);
+  }
+
+  /**
+   * Enables all {@link AbstractExecuteOnWorkerThreadAction}s the {@link ActionProvider} provides on the EDT and waits
+   * until this has been done.
+   * 
+   * @since Date: Jun 2, 2012
+   */
+  private void enableWorkerActionsOnEDTAndWait() {
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        public void run() {
+          enableWorkerActions(true);
+        }
+      });
+    } catch (final InterruptedException t) {
+      Utils.logThrownThrowable(t);
+    } catch (final InvocationTargetException t) {
+      Utils.logThrownThrowable(t);
+    }
   }
 
   /**
