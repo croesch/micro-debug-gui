@@ -56,6 +56,9 @@ public final class MainController implements IProcessorInterpreter {
   /** whether the view should be updated after each single tick of the processor */
   private final boolean updateAfterEachTick;
 
+  /** whether the running processor should be interrupted / has been interrupted */
+  private boolean interrupted = false;
+
   /**
    * Constructs the main controller for the given main view.
    * 
@@ -98,7 +101,8 @@ public final class MainController implements IProcessorInterpreter {
                              final int macroLine,
                              final MicroInstruction currentInstruction,
                              final MicroInstruction nextInstruction) {
-    return !this.breakpointManager.isBreakpoint(microLine, macroLine, currentInstruction, nextInstruction);
+    return !this.breakpointManager.isBreakpoint(microLine, macroLine, currentInstruction, nextInstruction)
+           && !this.interrupted;
   }
 
   /**
@@ -145,5 +149,15 @@ public final class MainController implements IProcessorInterpreter {
   @NotNull
   public Mic1 getProcessor() {
     return this.processor;
+  }
+
+  /**
+   * Sets if the running processor should be interrupted.
+   * 
+   * @since Date: Jun 2, 2012
+   * @param interrupt <code>true</code>, if the running processor should be interrupted.
+   */
+  public void setInterrupted(final boolean interrupt) {
+    this.interrupted = interrupt;
   }
 }

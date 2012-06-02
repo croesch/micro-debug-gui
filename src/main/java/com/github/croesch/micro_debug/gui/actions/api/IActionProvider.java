@@ -67,6 +67,9 @@ public interface IActionProvider {
     RUN,
 
     /** the action to perform a macro step */
-    STEP;
+    STEP,
+
+    /** the action to interrupt the running processor */
+    INTERRUPT;
   }
 }

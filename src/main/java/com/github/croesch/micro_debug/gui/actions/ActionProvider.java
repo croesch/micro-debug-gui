@@ -57,6 +57,7 @@ public final class ActionProvider implements IActionProvider {
     this.actions.put(Actions.RESET, new ResetAction(cont, thread, this));
     this.actions.put(Actions.RUN, new RunAction(cont, thread, this));
     this.actions.put(Actions.STEP, new StepAction(cont, thread, this));
+    this.actions.put(Actions.INTERRUPT, new InterruptAction(cont));
   }
 
   /**

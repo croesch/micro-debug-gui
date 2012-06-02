@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.controller;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.PrintStream;
 
@@ -160,5 +161,30 @@ public class MainControllerTest extends DefaultGUITestCase {
 
     assertThat(this.controller.getBpm().isRegisterBreakpoint(Register.MAR)).isTrue();
     assertThat(this.controller.getBpm().isRegisterBreakpoint(Register.SP)).isTrue();
+  }
+
+  @Test
+  public void testInterrupt() throws BadLocationException {
+    printlnMethodName();
+
+    this.frame.menuItem("interrupt").requireDisabled();
+    this.frame.menuItem("run").click();
+    this.frame.menuItem("interrupt").requireEnabled();
+
+    this.frame.textBox("input-tf").enterText("17");
+    this.frame.textBox("printer-ta").requireEmpty();
+
+    this.frame.menuItem("interrupt").click();
+    this.frame.menuItem("interrupt").requireDisabled();
+    this.frame.textBox("input-tf").pressAndReleaseKeys(KeyEvent.VK_ENTER);
+
+    this.frame.textBox("printer-ta").requireText(Text.TICKS.text(83) + getLineSeparator());
+    this.frame.textBox("input-tf").requireEmpty();
+
+    this.frame.menuItem("reset").click();
+    this.frame.menuItem("run").click();
+    this.frame.menuItem("interrupt").click();
+    this.frame.textBox("input-tf").enterText("17");
+    this.frame.textBox("input-tf").pressAndReleaseKeys(KeyEvent.VK_ENTER);
   }
 }

@@ -83,6 +83,8 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
    * {@inheritDoc}
    */
   public final void actionPerformed(final ActionEvent e) {
+    this.controller.setInterrupted(false);
+
     final Runnable run = new Runnable() {
       public void run() {
         // perform the action
@@ -133,6 +135,7 @@ public abstract class AbstractExecuteOnWorkerThreadAction extends AbstractAction
         action.setEnabled(enable);
       }
     }
+    this.actionProvider.getAction(Actions.INTERRUPT).setEnabled(!enable);
   }
 
   /**

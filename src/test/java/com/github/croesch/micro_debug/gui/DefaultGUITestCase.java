@@ -207,6 +207,7 @@ public class DefaultGUITestCase extends DefaultTestCase {
           assertThat(action.isEnabled()).isEqualTo(enabled);
         }
       }
+      assertThat(provider.getAction(Actions.INTERRUPT).isEnabled()).isEqualTo(!enabled);
     }
   }
 

@@ -57,6 +57,7 @@
 	<entry key="gui-actions-step">Step</entry>
 	<entry key="gui-actions-exit">Quit</entry>
 	<entry key="gui-actions-help">Help</entry>
+	<entry key="gui-actions-interrupt">Interrupt</entry>
 
 	<entry key="gui-menu-help">Help</entry>
 	<entry key="gui-menu-processor">Processor</entry>

@@ -50,7 +50,10 @@ public enum KeyStrokes {
   RUN ("F8"),
 
   /** keystroke to perform a macro step */
-  STEP ("F6");
+  STEP ("F6"),
+
+  /** the keystroke to interrupt the running processor */
+  INTERRUPT (null);
 
   /** the keystroke */
   @Nullable

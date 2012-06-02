@@ -78,6 +78,8 @@ public enum GuiText {
   GUI_ACTIONS_EXIT,
   /** the text for the help action */
   GUI_ACTIONS_HELP,
+  /** the text for the interrupt action */
+  GUI_ACTIONS_INTERRUPT,
 
   /** the text for the help menu */
   GUI_MENU_HELP,

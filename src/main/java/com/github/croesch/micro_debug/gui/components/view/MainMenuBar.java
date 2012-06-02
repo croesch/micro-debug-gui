@@ -91,6 +91,8 @@ public final class MainMenuBar extends JMenuBar {
     step.setAccelerator(KeyStrokes.STEP.stroke());
     final MDMenuItem run = new MDMenuItem("run", provider.getAction(Actions.RUN));
     run.setAccelerator(KeyStrokes.RUN.stroke());
+    final MDMenuItem interrupt = new MDMenuItem("interrupt", provider.getAction(Actions.INTERRUPT));
+    interrupt.setAccelerator(KeyStrokes.INTERRUPT.stroke());
     final MDMenuItem reset = new MDMenuItem("reset", provider.getAction(Actions.RESET));
     reset.setAccelerator(KeyStrokes.RESET.stroke());
 
@@ -98,6 +100,7 @@ public final class MainMenuBar extends JMenuBar {
     menu.add(step);
     menu.add(run);
     menu.addSeparator();
+    menu.add(interrupt);
     menu.add(reset);
     return menu;
   }
