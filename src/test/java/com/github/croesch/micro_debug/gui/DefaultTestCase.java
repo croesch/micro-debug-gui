@@ -147,6 +147,14 @@ public class DefaultTestCase {
     return Utils.getLineSeparator();
   }
 
+  protected final String getFileSeparator() {
+    return System.getProperty("file.separator");
+  }
+
+  protected final String getUserHome() {
+    return System.getProperty("user.home");
+  }
+
   protected void assertTicksDoneAndResetPrintStream(final int ticks) {
     assertThat(out.toString()).isEqualTo(Text.TICKS.text(ticks) + getLineSeparator());
     out.reset();

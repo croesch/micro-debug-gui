@@ -248,11 +248,10 @@ public class StartFrameTest extends DefaultGUITestCase {
 
     this.startFrame.button("micro-assembler-file-browse").click();
     fileChooser = new JFileChooserFixture(robot());
-    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    fileChooser.setCurrentDirectory(new File(getUserHome()));
     fileChooser.selectFile(new File("anything.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(System.getProperty("user.home")
-                                                                             + System.getProperty("file.separator")
+    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator()
                                                                              + "anything.mic1");
     this.startFrame.textBox("micro-assembler-file-path").requireEditable();
     this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
@@ -263,14 +262,12 @@ public class StartFrameTest extends DefaultGUITestCase {
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.ijvm"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path")
-      .requireText(System.getProperty("user.home") + "/anything.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator()
+                                                                             + "anything.mic1");
     this.startFrame.textBox("micro-assembler-file-path").requireEditable();
     this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
 
-    this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home")
-                                                                             + System.getProperty("file.separator")
-                                                                             + "some.ijvm");
+    this.startFrame.textBox("macro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.ijvm");
     this.startFrame.textBox("macro-assembler-file-path").requireEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
     this.startFrame.button("okay").requireEnabled();
@@ -279,15 +276,11 @@ public class StartFrameTest extends DefaultGUITestCase {
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(System.getProperty("user.home")
-                                                                             + System.getProperty("file.separator")
-                                                                             + "some.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.mic1");
     this.startFrame.textBox("micro-assembler-file-path").requireEditable();
     this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
 
-    this.startFrame.textBox("macro-assembler-file-path").requireText(System.getProperty("user.home")
-                                                                             + System.getProperty("file.separator")
-                                                                             + "some.ijvm");
+    this.startFrame.textBox("macro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.ijvm");
     this.startFrame.textBox("macro-assembler-file-path").requireEditable();
     this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
     this.startFrame.button("okay").requireEnabled();
@@ -305,9 +298,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(System.getProperty("user.home")
-                                                                             + System.getProperty("file.separator")
-                                                                             + "some.mic1");
+    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.mic1");
     this.startFrame.textBox("micro-assembler-file-path").requireEditable();
     this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
 

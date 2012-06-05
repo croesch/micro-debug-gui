@@ -77,7 +77,7 @@ public class StepActionTest extends DefaultGUITestCase {
         final JFrame f = new JFrame();
         final JTextField jTextField = new JTextField(20);
         f.add(jTextField);
-        f.setSize(100, 50);
+        f.setSize(200, 100);
         f.setVisible(true);
         return jTextField;
       }
