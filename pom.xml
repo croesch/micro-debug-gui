@@ -23,7 +23,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.croesch</groupId>
 	<artifactId>micro-debug-gui</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.1.1</version>
 	<name>MicroDebug GUI</name>
 	<url>https://github.com/croesch/micro-debug-gui</url>
 
@@ -124,7 +124,7 @@
 		<dependency>
 			<groupId>com.github.croesch</groupId>
 			<artifactId>micro-debug</artifactId>
-			<version>0.3.1-SNAPSHOT</version>
+			<version>0.3.1</version>
 		</dependency>
 	</dependencies>
 </project>
