@@ -31,6 +31,7 @@ import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -46,7 +47,7 @@ public class ExitActionTest extends DefaultGUITestCase {
 
   private Thread thread;
 
-  private Action action;
+  private ExitAction action;
 
   private Mic1 processor;
 
@@ -111,6 +112,7 @@ public class ExitActionTest extends DefaultGUITestCase {
     Thread.sleep(100);
 
     this.frameFixture.requireNotVisible();
+    assertThat(this.frameFixture.component().isDisplayable()).isFalse();
     assertThat(this.thread.isAlive()).isFalse();
     assertThat(this.processor.isInterrupted()).isTrue();
     assertThat(this.thrown).isTrue();
@@ -175,5 +177,34 @@ public class ExitActionTest extends DefaultGUITestCase {
     this.frameFixture.requireNotVisible();
     assertThat(this.thread.isAlive()).isFalse();
     assertThat(this.thrown).isTrue();
+  }
+
+  @Test
+  public void testActionSomeFrames() throws InterruptedException {
+    printlnMethodName();
+
+    final JFrame f = GuiActionRunner.execute(new GuiQuery<AboutFrame>() {
+      @Override
+      protected AboutFrame executeInEDT() throws Throwable {
+        final AboutFrame aboutFrame = new AboutFrame();
+        aboutFrame.setSize(300, 300);
+        aboutFrame.setVisible(true);
+        return aboutFrame;
+      }
+    });
+    this.action.addWindow(f);
+
+    assertThat(f.isDisplayable()).isTrue();
+
+    perform(this.action);
+    assertThat(f.isDisplayable()).isFalse();
+
+    perform(this.action);
+    assertThat(f.isDisplayable()).isFalse();
+
+    f.setVisible(true);
+    assertThat(f.isDisplayable()).isTrue();
+    perform(this.action);
+    assertThat(f.isDisplayable()).isFalse();
   }
 }

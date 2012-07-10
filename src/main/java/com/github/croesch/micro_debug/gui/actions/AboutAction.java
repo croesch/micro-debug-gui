@@ -59,4 +59,15 @@ public final class AboutAction extends AbstractAction {
   public void actionPerformed(final ActionEvent e) {
     this.frame.setVisible(true);
   }
+
+  /**
+   * Returns the frame this action visualises when being executed.
+   * 
+   * @since Date: Jul 10, 2012
+   * @return the {@link AboutFrame} to show when being executed.
+   */
+  @NotNull
+  public AboutFrame getAboutFrame() {
+    return this.frame;
+  }
 }

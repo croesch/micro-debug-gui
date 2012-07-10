@@ -53,6 +53,16 @@ public class AboutActionTest extends DefaultGUITestCase {
   }
 
   @Test
+  public void testGetAboutFrame() {
+    printlnMethodName();
+
+    perform(this.action);
+    final FrameFixture frame = WindowFinder.findFrame(AboutFrame.class).using(robot());
+
+    assertThat(frame.component()).isSameAs(this.action.getAboutFrame());
+  }
+
+  @Test
   public void testAction() {
     printlnMethodName();
 
@@ -60,11 +70,14 @@ public class AboutActionTest extends DefaultGUITestCase {
 
     perform(this.action);
     final FrameFixture frame = WindowFinder.findFrame(AboutFrame.class).using(robot());
+
     frame.close();
     perform(this.action);
     frame.requireVisible();
+
     perform(this.action);
     frame.requireVisible();
+
     frame.close();
     frame.requireNotVisible();
   }
