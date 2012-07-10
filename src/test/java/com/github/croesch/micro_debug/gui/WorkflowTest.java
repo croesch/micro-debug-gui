@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JFileChooserFixture;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.error.FileFormatException;
@@ -44,7 +43,6 @@ import com.github.croesch.micro_debug.mic1.Mic1;
 public class WorkflowTest extends DefaultGUITestCase {
 
   @Test
-  @Ignore("problem with FEST showing the frame containing 65K JLabels")
   public void testWorkflow() throws FileFormatException, FileNotFoundException, InterruptedException {
     printlnMethodName();
 
@@ -57,13 +55,13 @@ public class WorkflowTest extends DefaultGUITestCase {
     frame.requireVisible();
     frame.button("okay").requireDisabled();
 
-    frame.textBox("micro-assembler-file-path").enterText("this will hopefully replaced :-)");
+    enterText(frame.textBox("micro-assembler-file-path"), "this will hopefully replaced :-)");
     frame.button("micro-assembler-file-browse").click();
     final JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File(micFile));
     fileChooser.approve();
     frame.textBox("micro-assembler-file-path").requireText(micFile);
-    frame.textBox("macro-assembler-file-path").enterText(macFile);
+    enterText(frame.textBox("macro-assembler-file-path"), macFile);
     frame.textBox("macro-assembler-file-path").requireText(macFile);
 
     frame.button("okay").click();
