@@ -50,8 +50,12 @@ public final class ActionProvider implements IActionProvider {
   public ActionProvider(final MainController cont, final JFrame frame) {
     final WorkerThread thread = new WorkerThread("action-worker");
 
-    this.actions.put(Actions.ABOUT, new AboutAction());
-    this.actions.put(Actions.EXIT, new ExitAction(frame, thread, cont.getProcessor()));
+    final AboutAction aboutAction = new AboutAction();
+    final ExitAction exitAction = new ExitAction(frame, thread, cont.getProcessor());
+    exitAction.addWindow(aboutAction.getAboutFrame());
+
+    this.actions.put(Actions.ABOUT, aboutAction);
+    this.actions.put(Actions.EXIT, exitAction);
     this.actions.put(Actions.HELP, new HelpAction());
     this.actions.put(Actions.MICRO_STEP, new MicroStepAction(cont, thread, this));
     this.actions.put(Actions.RESET, new ResetAction(cont, thread, this));

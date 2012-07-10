@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
@@ -36,6 +37,9 @@ import org.fest.swing.core.Robot;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
+import org.fest.swing.finder.WindowFinder;
+import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JFileChooserFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.After;
 import org.junit.Assert;
@@ -46,6 +50,8 @@ import com.github.croesch.micro_debug.gui.actions.AbstractExecuteOnWorkerThreadA
 import com.github.croesch.micro_debug.gui.actions.ActionProvider;
 import com.github.croesch.micro_debug.gui.actions.api.IActionProvider.Actions;
 import com.github.croesch.micro_debug.gui.commons.WorkerThread;
+import com.github.croesch.micro_debug.gui.components.MainFrame;
+import com.github.croesch.micro_debug.gui.components.start.Mic1Starter;
 
 /**
  * Default test case to be extended by all gui test classes.
@@ -242,5 +248,27 @@ public class DefaultGUITestCase extends DefaultTestCase {
 
   public List<Throwable> getThrownInOtherThreads() {
     return this.thrownInOtherThreads;
+  }
+
+  protected FrameFixture getMainFrame(final String micFile, final String macFile) {
+    new Mic1Starter().start();
+
+    FrameFixture frame = WindowFinder.findFrame("start-frame").using(robot());
+    frame.requireVisible();
+    frame.button("okay").requireDisabled();
+
+    frame.button("micro-assembler-file-browse").click();
+    final JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
+    fileChooser.selectFile(new File(micFile));
+    fileChooser.approve();
+    frame.textBox("micro-assembler-file-path").requireText(micFile);
+    enterText(frame.textBox("macro-assembler-file-path"), macFile);
+    frame.textBox("macro-assembler-file-path").requireText(macFile);
+
+    frame.button("okay").click();
+
+    frame = WindowFinder.findFrame(MainFrame.class).using(robot());
+    frame.requireVisible();
+    return frame;
   }
 }
