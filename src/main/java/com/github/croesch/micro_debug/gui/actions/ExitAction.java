@@ -18,11 +18,15 @@
  */
 package com.github.croesch.micro_debug.gui.actions;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.annotation.Nullable;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -38,9 +42,9 @@ public final class ExitAction extends AbstractAction {
   /** generated serial version UID */
   private static final long serialVersionUID = -6692659010876966645L;
 
-  /** the main frame to be disposed on exit */
-  @Nullable
-  private final JFrame frame;
+  /** the windows to dispose when executing this action */
+  @NotNull
+  private final List<Window> windows = new ArrayList<Window>();
 
   /** the thread running actions outside the EDT */
   @Nullable
@@ -60,17 +64,29 @@ public final class ExitAction extends AbstractAction {
    */
   public ExitAction(final JFrame f, final Thread t, final Mic1 proc) {
     super(GuiText.GUI_ACTIONS_EXIT.text());
-    this.frame = f;
+    addWindow(f);
     this.thread = t;
     this.processor = proc;
+  }
+
+  /**
+   * Adds the given {@link Window} to be disposed in case this action is executed.
+   * 
+   * @since Date: Jul 10, 2012
+   * @param w the window to dispose when executing this action.
+   */
+  public void addWindow(final Window w) {
+    if (w != null) {
+      this.windows.add(w);
+    }
   }
 
   /**
    * {@inheritDoc}
    */
   public void actionPerformed(final ActionEvent e) {
-    if (this.frame != null) {
-      this.frame.dispose();
+    for (final Window w : this.windows) {
+      w.dispose();
     }
     if (this.thread != null) {
       this.thread.interrupt();
