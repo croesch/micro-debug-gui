@@ -20,6 +20,7 @@ package com.github.croesch.micro_debug.gui.components.start;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
@@ -85,6 +86,13 @@ public final class Mic1Starter implements IMic1Creator {
     try {
       macFis = new FileInputStream(macroFilePath);
     } catch (final FileNotFoundException e) {
+      if (micFis != null) {
+        try {
+          micFis.close();
+        } catch (final IOException e1) {
+          Utils.logThrownThrowable(e1);
+        }
+      }
       throw new MacroFileFormatException(e.getMessage(), e);
     }
 
