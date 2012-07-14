@@ -77,8 +77,8 @@ public abstract class ACodeView extends MDPanel {
     final MDScrollPane pane = new MDScrollPane(name + "-code-scrollpane", this.codeArea);
 
     final MDPanel rowHeader = new MDPanel(name + "-code-rowheader");
-    rowHeader.setLayout(new MigLayout("fill", "0![]0![]0!", "0![]0!"));
-    rowHeader.add(new Ruler(name + "-ruler", this.codeArea, bph, this.mapper), "grow");
+    rowHeader.setLayout(new MigLayout("fill", "0![]0![]0!", "0![grow,fill]0!"));
+    rowHeader.add(new Ruler(name + "-ruler", this.codeArea, bph, this.mapper));
     rowHeader.add(new LineNumberLabel(this.codeArea, this.mapper));
 
     pane.setRowHeaderView(rowHeader);
