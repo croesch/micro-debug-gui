@@ -18,6 +18,9 @@
  */
 package com.github.croesch.micro_debug.gui.components.code;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -36,15 +39,8 @@ import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
  */
 public class LineNumberLabel extends MDLabel implements DocumentListener {
 
-  /** mask to select the bits for representing a html-code color */
-  private static final int HTML_COLOR_CODE_MASK = 0xFFFFFF;
-
   /** generated serial version UID */
   private static final long serialVersionUID = -5234458420083482975L;
-
-  /** the string that represents the HTML-Code for the color to highlight a specific line */
-  @NotNull
-  private final String highColor;
 
   /** the number of the line that is highlighted */
   private int highlightedLine = -1;
@@ -71,41 +67,60 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
     setVerticalAlignment(SwingConstants.TOP);
 
     this.lineNumberMapper = mapper;
-    this.highColor = "#"
-                     + Integer.toHexString(UIManager.getColor("Label.background").darker().getRGB()
-                                           & HTML_COLOR_CODE_MASK);
 
     this.textArea = ta;
     this.textArea.getDocument().addDocumentListener(this);
-    update();
+
+    manageSize();
+
+    repaint();
   }
 
   /**
-   * Updates the line numbers.<br>
-   * <i>Caution:</i> Do use carefully! Will rebuild the line numbers completely, which is not performant - especially
-   * for high line count.
+   * Sets the size of this component, since we choose custom painting, we have to control the minimum and preferred size
+   * ourselves.
    * 
-   * @since Date: Mar 20, 2012
+   * @since Date: Jul 14, 2012
    */
-  private void update() {
-    final StringBuilder sb = new StringBuilder("<html>");
+  private void manageSize() {
+    final String highestLN = Utils.toHexString(this.lineNumberMapper.getLineForNumber(this.textArea.getLineCount() - 1));
 
-    for (int line = 0; line < this.textArea.getLineCount(); ++line) {
-      if (line == this.highlightedLine) {
-        // insert color information for highlighted line
-        sb.append("<font bgcolor='").append(this.highColor).append("'>");
-      }
-
-      sb.append(Utils.toHexString(this.lineNumberMapper.getLineForNumber(line)));
-
-      if (line == this.highlightedLine) {
-        // end color information for highlighted line
-        sb.append("</font>");
-      }
-      sb.append("<br>");
+    final StringBuilder sb = new StringBuilder(highestLN.length());
+    sb.append("0x");
+    for (int i = 0; i < highestLN.length() - 2; ++i) {
+      sb.append('A');
     }
 
-    setText(sb.toString());
+    setMinimumSize(new Dimension(getFontMetrics(getFont()).stringWidth(sb.toString()),
+                                 this.textArea.getMinimumSize().height));
+
+    // preferred - add some extra space
+    sb.append('.');
+
+    setPreferredSize(new Dimension(getFontMetrics(getFont()).stringWidth(sb.toString()),
+                                   this.textArea.getPreferredSize().height));
+  }
+
+  @Override
+  protected final void paintComponent(final Graphics g) {
+    final float fontHeight = g.getFontMetrics().getLineMetrics("0", null).getHeight();
+    final float lineOffset = (this.textArea.getLineHeight() - fontHeight);
+
+    for (int line = 0; line < this.textArea.getLineCount(); ++line) {
+      final int x = 0;
+      final int y = this.textArea.getLineHeight() * (line + 1);
+      final int width = getWidth();
+
+      if (line == this.highlightedLine) {
+        // insert color information for highlighted line
+        g.setColor(UIManager.getColor("Label.background").darker());
+        g.fillRect(x, y, width, this.textArea.getLineHeight());
+      }
+
+      g.setColor(UIManager.getColor("Label.foreground"));
+      final String lineNumber = Utils.toHexString(this.lineNumberMapper.getLineForNumber(line));
+      g.drawString(lineNumber, x, (int) (y - lineOffset) - 1);
+    }
   }
 
   /**
@@ -118,17 +133,17 @@ public class LineNumberLabel extends MDLabel implements DocumentListener {
    */
   public final void highlight(final int line) {
     this.highlightedLine = line;
-    update();
+    repaint();
   }
 
   /** {@inheritDoc} */
   public final void insertUpdate(final DocumentEvent e) {
-    update();
+    repaint();
   }
 
   /** {@inheritDoc} */
   public final void removeUpdate(final DocumentEvent e) {
-    update();
+    repaint();
   }
 
   /** {@inheritDoc} */
