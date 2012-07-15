@@ -81,9 +81,9 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
 
     this.mic1Creator = creator;
 
-    final String space = "20lp";
-    getContentPane().setLayout(new MigLayout("wrap 2, fill", "[grow,fill][fill]", "[grow][][]" + space + "[][]" + space
-                                                                                  + "[grow][]"));
+    setLayout(new MigLayout("wrap 2, fill",
+                            "[grow,fill][fill]",
+                            "[grow][sg spc][sg tf][sg spc][sg tf][sg spc][sg tf][sg spc][]"));
 
     addMicroAssemblerSection();
     addAssemblerSection();
