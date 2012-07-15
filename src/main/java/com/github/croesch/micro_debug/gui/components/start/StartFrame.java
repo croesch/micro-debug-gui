@@ -85,6 +85,7 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
                             "[grow,fill][fill]",
                             "[grow][sg spc][sg tf][sg spc][sg tf][sg spc][sg tf][sg spc][]"));
 
+    addDescriptionLabels();
     addMicroAssemblerSection();
     addAssemblerSection();
     addButtons();
@@ -120,6 +121,17 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
       field.setEnabled(false);
       field.setEditable(false);
     }
+  }
+
+  /**
+   * Creates descriptive labels and adds them to the frame.
+   * 
+   * @since Date: Jul 15, 2012
+   */
+  private void addDescriptionLabels() {
+    final MDLabel label = new MDLabel("description", GuiText.GUI_START_DESCRIPTION);
+
+    add(label, "skip 2, wrap");
   }
 
   /**

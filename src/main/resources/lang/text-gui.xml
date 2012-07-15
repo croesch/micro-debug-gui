@@ -41,6 +41,7 @@
 	</entry>
 	
 	<entry key="gui-start-title">{0} - Choose binary files</entry>
+	<entry key="gui-start-description">Please choose the binary files you want to debug</entry>
 	<entry key="gui-start-okay">Start</entry>
 	<entry key="gui-start-micro">micro assembler file</entry>
 	<entry key="gui-start-macro">macro assembler file</entry>

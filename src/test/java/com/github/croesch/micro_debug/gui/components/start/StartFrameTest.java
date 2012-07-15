@@ -115,6 +115,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     printlnMethodName();
     this.startFrame.label("micro-assembler-file").requireText(GuiText.GUI_START_MICRO.text());
     this.startFrame.label("macro-assembler-file").requireText(GuiText.GUI_START_MACRO.text());
+    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
   }
 
   @Test
