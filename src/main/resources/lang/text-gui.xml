@@ -23,14 +23,24 @@
 
 <properties>
 
+	<!-- the text for the version of the program. -->
+	<!-- parameter {0}: the name of the micro-debug-gui -->
+	<!-- parameter {1}: the version number -->
 	<entry key="version">{0}: Version {1}</entry>
+	<!-- the text to visualize a border on the command line -->
 	<entry key="border">----------------------------------------</entry>
+	<!-- the text that is printed when the program is started, before any error message -->
+	<!-- parameter {0}: the name of the micro-debug-gui -->
 	<entry key="greeting">{0} - Copyright (C) 2011-2012 Christian Rösch (christianroesch@gmx.net)</entry>
 		
+	<!-- the text for the command to browse for a file -->
 	<entry key="gui-command-browse">Browse...</entry>
 
+	<!-- the title of the about information -->
 	<entry key="gui-about-title">About</entry>
+	<!-- the title of license information in about file -->
 	<entry key="gui-about-license">&lt;html&gt;&lt;b&gt;License information&lt;/b&gt;</entry>
+	<!-- the description of the debugger - as shown in the about section -->
 	<entry key="gui-about-description">&lt;html&gt;
 		{0} is a debugger with a GUI for the Mic-1
 		processor invented by &lt;i&gt;Andrew S. Tannenbaum&lt;/i&gt;,
@@ -40,30 +50,55 @@
 		Please see: &lt;a href="http://git.io/croesch-md-gui"&gt;http://git.io/croesch-md-gui&lt;/a&gt;
 	</entry>
 	
+	<!-- the title of the start frame -->
+	<!-- parameter {0}: the name of the micro-debug-gui -->
 	<entry key="gui-start-title">{0} - Choose binary files</entry>
+	<!-- the description of the start frame for the user -->
 	<entry key="gui-start-description">Please choose the binary files you want to debug</entry>
+	<!-- the text to represent the action to start the debugger -->
 	<entry key="gui-start-okay">Start</entry>
+	<!-- the text to identify the components for macro assembler binary code -->
 	<entry key="gui-start-micro">micro assembler file</entry>
+	<!-- the text to identify the components for micro assembler binary code -->
 	<entry key="gui-start-macro">macro assembler file</entry>
+	<!-- the message to explain that the micro file is wrong -->
 	<entry key="gui-start-micro-wff">Wrong format of micro assembler file, did you assemble it?</entry>
+	<!-- the message to explain that the macro file is wrong -->
 	<entry key="gui-start-macro-wff">Wrong format of macro assembler file, did you assemble it?</entry>
 	
+	<!-- the title of the main frame -->
+	<!-- parameter {0}: the name of the micro-debug-gui -->
+	<!-- parameter {1}: the version of the micro-debug-gui -->
 	<entry key="gui-main-title">{0} - Version {1}</entry>
+	<!-- the description for the number format: binary -->
 	<entry key="gui-main-binary">bin.</entry>
+	<!-- the description for the number format: decimal -->
 	<entry key="gui-main-decimal">dec.</entry>
+	<!-- the description for the number format: hexadecimal -->
 	<entry key="gui-main-hexadecimal">hex.</entry>
 	
+	<!-- the text for the about action -->
 	<entry key="gui-actions-about">About</entry>
+	<!-- the text for the micro step action -->
 	<entry key="gui-actions-micro-step">Micro step</entry>
+	<!-- the text for the reset action -->
 	<entry key="gui-actions-reset">Reset</entry>
+	<!-- the text for the run action -->
 	<entry key="gui-actions-run">Run</entry>
+	<!-- the text for the step action -->
 	<entry key="gui-actions-step">Step</entry>
+	<!-- the text for the exit action -->
 	<entry key="gui-actions-exit">Quit</entry>
+	<!-- the text for the help action -->
 	<entry key="gui-actions-help">Help</entry>
+	<!-- the text for the interrupt action -->
 	<entry key="gui-actions-interrupt">Interrupt</entry>
 
+	<!-- the text for the help menu -->
 	<entry key="gui-menu-help">Help</entry>
+	<!-- the text for the processor menu -->
 	<entry key="gui-menu-processor">Processor</entry>
+	<!-- the text for the micro-debug menu -->
 	<entry key="gui-menu-microdebug">MicroDebug</entry>
 
 </properties>
