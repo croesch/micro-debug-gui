@@ -50,16 +50,16 @@ public enum GuiText {
   GUI_START_TITLE,
   /** the description of the start frame for the user */
   GUI_START_DESCRIPTION,
-  /** the message to explain that the macro file is wrong */
-  GUI_START_MACRO_WFF,
-  /** the message to explain that the micro file is wrong */
-  GUI_START_MICRO_WFF,
   /** the text to represent the action to start the debugger */
   GUI_START_OKAY,
   /** the text to identify the components for macro assembler binary code */
   GUI_START_MACRO,
   /** the text to identify the components for micro assembler binary code */
   GUI_START_MICRO,
+  /** the message to explain that the micro file is wrong */
+  GUI_START_MICRO_WFF,
+  /** the message to explain that the macro file is wrong */
+  GUI_START_MACRO_WFF,
 
   /** the title of the main frame */
   GUI_MAIN_TITLE,
