@@ -160,6 +160,8 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     new TextFieldsDocumentListener(this.microPathField, this.macroPathField, okayAction);
     btn.addActionListener(new WindowDisposer(this));
     add(btn, "skip 3");
+
+    getRootPane().setDefaultButton(btn);
   }
 
   /**

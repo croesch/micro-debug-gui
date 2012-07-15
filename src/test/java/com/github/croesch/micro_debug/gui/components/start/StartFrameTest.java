@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -142,6 +143,10 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.button("macro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("okay").requireText(GuiText.GUI_START_OKAY.text());
     this.startFrame.button("okay").requireDisabled();
+
+    assertThat(this.startFrame.button("micro-assembler-file-browse").component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button("macro-assembler-file-browse").component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button("okay").component().isDefaultButton()).isTrue();
   }
 
   @Test
@@ -229,7 +234,7 @@ public class StartFrameTest extends DefaultGUITestCase {
 
     assertThat(this.mic1Creator.isWritten()).isFalse();
     this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
+    this.startFrame.pressAndReleaseKeys(KeyEvent.VK_ENTER);
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/here.txt");
     assertThat(this.mic1Creator.isWritten()).isTrue();
