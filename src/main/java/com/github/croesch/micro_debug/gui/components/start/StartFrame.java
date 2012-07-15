@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.start;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.Action;
@@ -68,6 +69,10 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   @NotNull
   private final transient IMic1Creator mic1Creator;
 
+  /** the label containing a description for the user */
+  @NotNull
+  private final MDLabel descriptionLabel = new MDLabel("description");;
+
   /**
    * Constructs a frame to select the binary files for creating a {@link com.github.croesch.micro_debug.mic1.Mic1}.
    * 
@@ -104,6 +109,16 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     this(creator);
     setTextToTextFieldAndEnableIt(this.microPathField, microAssemblerPath);
     setTextToTextFieldAndEnableIt(this.macroPathField, assemblerPath);
+
+    if (!Utils.isNullOrEmpty(microAssemblerPath) ^ !Utils.isNullOrEmpty(assemblerPath)) {
+      this.descriptionLabel.setForeground(Color.RED);
+
+      if (Utils.isNullOrEmpty(microAssemblerPath)) {
+        this.descriptionLabel.setText(GuiText.GUI_START_MICRO_WFF.text());
+      } else {
+        this.descriptionLabel.setText(GuiText.GUI_START_MACRO_WFF.text());
+      }
+    }
   }
 
   /**
@@ -129,9 +144,9 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    * @since Date: Jul 15, 2012
    */
   private void addDescriptionLabels() {
-    final MDLabel label = new MDLabel("description", GuiText.GUI_START_DESCRIPTION);
+    this.descriptionLabel.setText(GuiText.GUI_START_DESCRIPTION.text());
 
-    add(label, "skip 2, wrap");
+    add(this.descriptionLabel, "skip 2, wrap");
   }
 
   /**

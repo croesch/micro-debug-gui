@@ -45,6 +45,8 @@
 	<entry key="gui-start-okay">Start</entry>
 	<entry key="gui-start-micro">micro assembler file</entry>
 	<entry key="gui-start-macro">macro assembler file</entry>
+	<entry key="gui-start-micro-wff">Wrong format of micro assembler file, did you assemble it?</entry>
+	<entry key="gui-start-macro-wff">Wrong format of macro assembler file, did you assemble it?</entry>
 	
 	<entry key="gui-main-title">{0} - Version {1}</entry>
 	<entry key="gui-main-binary">bin.</entry>
