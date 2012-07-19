@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.start;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.Action;
@@ -68,6 +69,10 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   @NotNull
   private final transient IMic1Creator mic1Creator;
 
+  /** the label containing a description for the user */
+  @NotNull
+  private final MDLabel descriptionLabel = new MDLabel("description");;
+
   /**
    * Constructs a frame to select the binary files for creating a {@link com.github.croesch.micro_debug.mic1.Mic1}.
    * 
@@ -76,14 +81,16 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
    */
   public StartFrame(final IMic1Creator creator) {
     super(GuiText.GUI_START_TITLE.text(InternalSettings.NAME), new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+    setResizable(true); // fix for unexplainable painting behavior..
     setName("start-frame");
 
     this.mic1Creator = creator;
 
-    final String space = "20lp";
-    getContentPane().setLayout(new MigLayout("wrap 2, fill", "[grow,fill][fill]", "[grow][][]" + space + "[][]" + space
-                                                                                  + "[grow][]"));
+    setLayout(new MigLayout("wrap 2, fill",
+                            "[grow,fill][fill]",
+                            "[grow][sg spc][sg tf][sg spc][sg tf][sg spc][sg tf][sg spc][]"));
 
+    addDescriptionLabels();
     addMicroAssemblerSection();
     addAssemblerSection();
     addButtons();
@@ -102,6 +109,16 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     this(creator);
     setTextToTextFieldAndEnableIt(this.microPathField, microAssemblerPath);
     setTextToTextFieldAndEnableIt(this.macroPathField, assemblerPath);
+
+    if (!Utils.isNullOrEmpty(microAssemblerPath) ^ !Utils.isNullOrEmpty(assemblerPath)) {
+      this.descriptionLabel.setForeground(Color.RED);
+
+      if (Utils.isNullOrEmpty(microAssemblerPath)) {
+        this.descriptionLabel.setText(GuiText.GUI_START_MICRO_WFF.text());
+      } else {
+        this.descriptionLabel.setText(GuiText.GUI_START_MACRO_WFF.text());
+      }
+    }
   }
 
   /**
@@ -122,6 +139,17 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
   }
 
   /**
+   * Creates descriptive labels and adds them to the frame.
+   * 
+   * @since Date: Jul 15, 2012
+   */
+  private void addDescriptionLabels() {
+    this.descriptionLabel.setText(GuiText.GUI_START_DESCRIPTION.text());
+
+    add(this.descriptionLabel, "skip 2, wrap");
+  }
+
+  /**
    * Creates the buttons that are important for this frame and adds them to the frame.
    * 
    * @since Date: Mar 9, 2012
@@ -132,6 +160,8 @@ final class StartFrame extends SizedFrame implements IBinaryFilePathProvider {
     new TextFieldsDocumentListener(this.microPathField, this.macroPathField, okayAction);
     btn.addActionListener(new WindowDisposer(this));
     add(btn, "skip 3");
+
+    getRootPane().setDefaultButton(btn);
   }
 
   /**

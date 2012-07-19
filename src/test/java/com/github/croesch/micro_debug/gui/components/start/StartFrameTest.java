@@ -20,11 +20,14 @@ package com.github.croesch.micro_debug.gui.components.start;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.fest.swing.core.MouseButton;
@@ -105,7 +108,7 @@ public class StartFrameTest extends DefaultGUITestCase {
   public void testFrame() {
     printlnMethodName();
     this.startFrame.requireSize(new Dimension(485, 300));
-    assertThat(this.startFrame.component().isResizable()).isFalse();
+    assertThat(this.startFrame.component().isResizable()).isTrue();
     assertThat(this.startFrame.component().getName()).isEqualTo("start-frame");
     assertThat(this.startFrame.component().getTitle()).isEqualTo(GuiText.GUI_START_TITLE.text(InternalSettings.NAME));
   }
@@ -115,6 +118,9 @@ public class StartFrameTest extends DefaultGUITestCase {
     printlnMethodName();
     this.startFrame.label("micro-assembler-file").requireText(GuiText.GUI_START_MICRO.text());
     this.startFrame.label("macro-assembler-file").requireText(GuiText.GUI_START_MACRO.text());
+
+    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
   }
 
   @Test
@@ -137,6 +143,10 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.button("macro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
     this.startFrame.button("okay").requireText(GuiText.GUI_START_OKAY.text());
     this.startFrame.button("okay").requireDisabled();
+
+    assertThat(this.startFrame.button("micro-assembler-file-browse").component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button("macro-assembler-file-browse").component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button("okay").component().isDefaultButton()).isTrue();
   }
 
   @Test
@@ -146,26 +156,36 @@ public class StartFrameTest extends DefaultGUITestCase {
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
     this.startFrame.button("okay").requireDisabled();
+    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
 
     createStartFrame(" \t\n   \t  ", "");
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
     this.startFrame.button("okay").requireDisabled();
+    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
 
     createStartFrame(" path to nirvana ", "");
     assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
     assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
     this.startFrame.button("okay").requireDisabled();
+    this.startFrame.label("description").requireText(GuiText.GUI_START_MACRO_WFF.text());
+    this.startFrame.label("description").foreground().requireEqualTo(Color.RED);
 
     createStartFrame(null, " path to nirvana ");
     assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
     assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "path to nirvana");
     this.startFrame.button("okay").requireDisabled();
+    this.startFrame.label("description").requireText(GuiText.GUI_START_MICRO_WFF.text());
+    this.startFrame.label("description").foreground().requireEqualTo(Color.RED);
 
     createStartFrame(" path to nirvana ", "something");
     assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
     assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "something");
     this.startFrame.button("okay").requireEnabled();
+    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
   }
 
   private void assertNotEditableAndContainsText(final JTextComponentFixture textBox, final String text) {
@@ -214,7 +234,7 @@ public class StartFrameTest extends DefaultGUITestCase {
 
     assertThat(this.mic1Creator.isWritten()).isFalse();
     this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
+    this.startFrame.pressAndReleaseKeys(KeyEvent.VK_ENTER);
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/here.txt");
     assertThat(this.mic1Creator.isWritten()).isTrue();
