@@ -47,7 +47,7 @@ public final class MainView {
 
   /** the view that visualises the {@link com.github.croesch.micro_debug.mic1.mem.Memory} */
   @NotNull
-  private final MemoryPanel memoryView;
+  private final MemoryView memoryView;
 
   /** the view that visualises the micro code */
   @NotNull
@@ -70,7 +70,7 @@ public final class MainView {
       throw new IllegalArgumentException();
     }
 
-    this.memoryView = new MemoryPanel("memory", proc);
+    this.memoryView = new MemoryView("memory", proc);
     this.macroCodeView = new MacroCodeView("macroCode", proc, bpm);
     this.microCodeView = new MicroCodeView("microCode", proc, bpm);
 
@@ -136,7 +136,7 @@ public final class MainView {
    *         {@link com.github.croesch.micro_debug.mic1.mem.Memory}s values.
    */
   @NotNull
-  public MemoryPanel getMemoryView() {
+  public MemoryView getMemoryView() {
     return this.memoryView;
   }
 

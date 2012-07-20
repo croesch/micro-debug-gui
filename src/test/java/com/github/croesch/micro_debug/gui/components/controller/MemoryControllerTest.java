@@ -34,7 +34,7 @@ import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
-import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
+import com.github.croesch.micro_debug.gui.components.view.MemoryView;
 import com.github.croesch.micro_debug.gui.components.view.MemoryPanelTest;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
@@ -59,7 +59,7 @@ public class MemoryControllerTest extends DefaultGUITestCase {
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
-    final MemoryPanel p = MemoryPanelTest.getPanel("mem", proc);
+    final MemoryView p = MemoryPanelTest.getPanel("mem", proc);
     final MemoryController controller = getController(p);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
@@ -130,7 +130,7 @@ public class MemoryControllerTest extends DefaultGUITestCase {
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
-    final MemoryPanel p = MemoryPanelTest.getPanel("mem", proc);
+    final MemoryView p = MemoryPanelTest.getPanel("mem", proc);
     getController(p);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
@@ -159,7 +159,7 @@ public class MemoryControllerTest extends DefaultGUITestCase {
     }
   }
 
-  private MemoryController getController(final MemoryPanel p) {
+  private MemoryController getController(final MemoryView p) {
     return GuiActionRunner.execute(new GuiQuery<MemoryController>() {
       @Override
       protected MemoryController executeInEDT() throws Throwable {

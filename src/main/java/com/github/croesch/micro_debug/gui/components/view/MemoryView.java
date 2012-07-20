@@ -38,7 +38,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: Apr 11, 2012
  */
-public class MemoryPanel extends MDPanel {
+public class MemoryView extends MDPanel {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -3144367254666894663L;
@@ -66,13 +66,13 @@ public class MemoryPanel extends MDPanel {
   private NumberStyleSwitcher switcher;
 
   /**
-   * Constructs a new {@link MemoryPanel} with a line for each word in the memory.
+   * Constructs a new {@link MemoryView} with a line for each word in the memory.
    * 
    * @since Date: Apr 11, 2012
-   * @param name the name of this {@link MemoryPanel}.
+   * @param name the name of this {@link MemoryView}.
    * @param proc the processor being debugged
    */
-  public MemoryPanel(final String name, final Mic1 proc) {
+  public MemoryView(final String name, final Mic1 proc) {
     super(name);
     this.processor = proc;
     buildUI();

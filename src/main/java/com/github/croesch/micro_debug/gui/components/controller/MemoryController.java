@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
-import com.github.croesch.micro_debug.gui.components.view.MemoryPanel;
+import com.github.croesch.micro_debug.gui.components.view.MemoryView;
 
 /**
  * The controller that coordinates user input for the memory view.
@@ -34,7 +34,7 @@ final class MemoryController implements IController, ActionListener {
 
   /** the memory view */
   @NotNull
-  private final MemoryPanel view;
+  private final MemoryView view;
 
   /**
    * Constructs the controller for the given memory view.
@@ -42,7 +42,7 @@ final class MemoryController implements IController, ActionListener {
    * @since Date: Apr 16, 2012
    * @param v the view to build the controller upon
    */
-  public MemoryController(final MemoryPanel v) {
+  public MemoryController(final MemoryView v) {
     if (v == null) {
       throw new IllegalArgumentException();
     }

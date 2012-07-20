@@ -38,19 +38,19 @@ import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
- * Provides test cases for {@link MemoryPanel}.
+ * Provides test cases for {@link MemoryView}.
  * 
  * @author croesch
  * @since Date: Apr 12, 2012
  */
 public class MemoryPanelTest extends DefaultGUITestCase {
 
-  public static MemoryPanel getPanel(final String name, final Mic1 proc) {
-    return GuiActionRunner.execute(new GuiQuery<MemoryPanel>() {
+  public static MemoryView getPanel(final String name, final Mic1 proc) {
+    return GuiActionRunner.execute(new GuiQuery<MemoryView>() {
 
       @Override
-      protected MemoryPanel executeInEDT() throws Throwable {
-        return new MemoryPanel(name, proc);
+      protected MemoryView executeInEDT() throws Throwable {
+        return new MemoryView(name, proc);
       }
     });
   }
@@ -63,7 +63,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
-    final MemoryPanel p = getPanel("mem", proc);
+    final MemoryView p = getPanel("mem", proc);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
     assertThat(panel.component().getName()).isEqualTo("mem");
@@ -89,7 +89,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
-    final MemoryPanel p = getPanel("mem", proc);
+    final MemoryView p = getPanel("mem", proc);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
 
@@ -162,7 +162,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
     final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
 
-    final MemoryPanel p = getPanel("mem", proc);
+    final MemoryView p = getPanel("mem", proc);
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
 
@@ -186,7 +186,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
 
   }
 
-  private void update(final MemoryPanel p) {
+  private void update(final MemoryView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
@@ -195,7 +195,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     });
   }
 
-  private void viewHexadecimal(final MemoryPanel p) {
+  private void viewHexadecimal(final MemoryView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
@@ -204,7 +204,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     });
   }
 
-  private void viewDecimal(final MemoryPanel p) {
+  private void viewDecimal(final MemoryView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
@@ -213,7 +213,7 @@ public class MemoryPanelTest extends DefaultGUITestCase {
     });
   }
 
-  private void viewBinary(final MemoryPanel p) {
+  private void viewBinary(final MemoryView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
