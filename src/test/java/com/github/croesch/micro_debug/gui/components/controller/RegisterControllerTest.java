@@ -43,7 +43,7 @@ import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.gui.components.view.RegisterView;
-import com.github.croesch.micro_debug.gui.components.view.RegisterPanelTest;
+import com.github.croesch.micro_debug.gui.components.view.RegisterViewTest;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstructionReader;
 import com.github.croesch.micro_debug.mic1.register.Register;
@@ -78,7 +78,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
   @Override
   protected void setUpTestCase() throws Exception {
     this.bpm = new BreakpointManager();
-    final RegisterView p = RegisterPanelTest.getPanel("panel");
+    final RegisterView p = RegisterViewTest.getPanel("panel");
     new FrameFixture(robot(), showInFrame(p)).show(new Dimension(300, 500));
     this.controller = getController(p);
     this.panel = new JPanelFixture(robot(), p);
@@ -173,7 +173,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
 
   @Test(expected = IllegalArgumentException.class)
   public void testCstr_NullBpm() {
-    new RegisterController(RegisterPanelTest.getPanel("panel"), null);
+    new RegisterController(RegisterViewTest.getPanel("panel"), null);
   }
 
   @Test

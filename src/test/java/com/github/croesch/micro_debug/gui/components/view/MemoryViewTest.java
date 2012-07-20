@@ -43,7 +43,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: Apr 12, 2012
  */
-public class MemoryPanelTest extends DefaultGUITestCase {
+public class MemoryViewTest extends DefaultGUITestCase {
 
   public static MemoryView getPanel(final String name, final Mic1 proc) {
     return GuiActionRunner.execute(new GuiQuery<MemoryView>() {

@@ -42,7 +42,7 @@ import com.github.croesch.micro_debug.mic1.register.Register;
  * @author croesch
  * @since Date: Apr 9, 2012
  */
-public class RegisterPanelTest extends DefaultGUITestCase {
+public class RegisterViewTest extends DefaultGUITestCase {
 
   public static RegisterView getPanel(final String name) {
     return GuiActionRunner.execute(new GuiQuery<RegisterView>() {
