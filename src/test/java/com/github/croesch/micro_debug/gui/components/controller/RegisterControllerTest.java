@@ -42,7 +42,7 @@ import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel;
 import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
-import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
+import com.github.croesch.micro_debug.gui.components.view.RegisterView;
 import com.github.croesch.micro_debug.gui.components.view.RegisterPanelTest;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstruction;
 import com.github.croesch.micro_debug.mic1.controlstore.MicroInstructionReader;
@@ -62,7 +62,7 @@ public class RegisterControllerTest extends DefaultGUITestCase {
 
   private RegisterController controller;
 
-  public static JFrame showInFrame(final RegisterPanel panel) {
+  public static JFrame showInFrame(final RegisterView panel) {
     return GuiActionRunner.execute(new GuiQuery<JFrame>() {
 
       @Override
@@ -78,13 +78,13 @@ public class RegisterControllerTest extends DefaultGUITestCase {
   @Override
   protected void setUpTestCase() throws Exception {
     this.bpm = new BreakpointManager();
-    final RegisterPanel p = RegisterPanelTest.getPanel("panel");
+    final RegisterView p = RegisterPanelTest.getPanel("panel");
     new FrameFixture(robot(), showInFrame(p)).show(new Dimension(300, 500));
     this.controller = getController(p);
     this.panel = new JPanelFixture(robot(), p);
   }
 
-  private RegisterController getController(final RegisterPanel p) {
+  private RegisterController getController(final RegisterView p) {
     return GuiActionRunner.execute(new GuiQuery<RegisterController>() {
       @Override
       protected RegisterController executeInEDT() throws Throwable {

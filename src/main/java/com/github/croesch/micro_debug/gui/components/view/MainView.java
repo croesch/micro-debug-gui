@@ -43,7 +43,7 @@ public final class MainView {
 
   /** the view that visualises the {@link com.github.croesch.micro_debug.mic1.register.Register}s */
   @NotNull
-  private final RegisterPanel registerView = new RegisterPanel("register");
+  private final RegisterView registerView = new RegisterView("register");
 
   /** the view that visualises the {@link com.github.croesch.micro_debug.mic1.mem.Memory} */
   @NotNull
@@ -123,7 +123,7 @@ public final class MainView {
    *         {@link com.github.croesch.micro_debug.mic1.register.Register}s.
    */
   @NotNull
-  public RegisterPanel getRegisterView() {
+  public RegisterView getRegisterView() {
     return this.registerView;
   }
 

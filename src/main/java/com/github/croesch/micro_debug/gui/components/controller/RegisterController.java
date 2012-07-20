@@ -27,7 +27,7 @@ import javax.swing.event.ChangeListener;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
-import com.github.croesch.micro_debug.gui.components.view.RegisterPanel;
+import com.github.croesch.micro_debug.gui.components.view.RegisterView;
 import com.github.croesch.micro_debug.mic1.register.Register;
 
 /**
@@ -44,7 +44,7 @@ final class RegisterController implements ChangeListener, IController, ActionLis
 
   /** the register view */
   @NotNull
-  private final RegisterPanel view;
+  private final RegisterView view;
 
   /**
    * Constructs the controller for the given register view. And passes information based on user input to the given
@@ -54,7 +54,7 @@ final class RegisterController implements ChangeListener, IController, ActionLis
    * @param v the view to build the controller upon
    * @param bpm th {@link BreakpointManager} that should receive breakpoints set/unset by the user
    */
-  public RegisterController(final RegisterPanel v, final BreakpointManager bpm) {
+  public RegisterController(final RegisterView v, final BreakpointManager bpm) {
     if (v == null || bpm == null) {
       throw new IllegalArgumentException();
     }

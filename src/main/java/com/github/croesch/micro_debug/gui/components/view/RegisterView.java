@@ -37,7 +37,7 @@ import com.github.croesch.micro_debug.mic1.register.Register;
  * @author croesch
  * @since Date: Apr 9, 2012
  */
-public class RegisterPanel extends MDPanel {
+public class RegisterView extends MDPanel {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 5614777767524193566L;
@@ -55,12 +55,12 @@ public class RegisterPanel extends MDPanel {
   private NumberStyleSwitcher switcher;
 
   /**
-   * Constructs a new {@link RegisterPanel} with a line for each register presenting its name and value.
+   * Constructs a new {@link RegisterView} with a line for each register presenting its name and value.
    * 
    * @since Date: Apr 9, 2012
-   * @param name the name of this {@link RegisterPanel}.
+   * @param name the name of this {@link RegisterView}.
    */
-  public RegisterPanel(final String name) {
+  public RegisterView(final String name) {
     super(name);
     buildUI();
   }

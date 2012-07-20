@@ -37,18 +37,18 @@ import com.github.croesch.micro_debug.gui.components.basic.NumberLabel.STYLE;
 import com.github.croesch.micro_debug.mic1.register.Register;
 
 /**
- * Provides test cases for {@link RegisterPanel}.
+ * Provides test cases for {@link RegisterView}.
  * 
  * @author croesch
  * @since Date: Apr 9, 2012
  */
 public class RegisterPanelTest extends DefaultGUITestCase {
 
-  public static RegisterPanel getPanel(final String name) {
-    return GuiActionRunner.execute(new GuiQuery<RegisterPanel>() {
+  public static RegisterView getPanel(final String name) {
+    return GuiActionRunner.execute(new GuiQuery<RegisterView>() {
       @Override
-      protected RegisterPanel executeInEDT() throws Throwable {
-        return new RegisterPanel(name);
+      protected RegisterView executeInEDT() throws Throwable {
+        return new RegisterView(name);
       }
     });
   }
@@ -57,7 +57,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
   public void testGetCheckBox() {
     printlnMethodName();
 
-    final RegisterPanel p = getPanel("r");
+    final RegisterView p = getPanel("r");
     showInFrame(p);
 
     final JPanelFixture panel = new JPanelFixture(robot(), p);
@@ -78,7 +78,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
   public void testPanel() {
     printlnMethodName();
 
-    final RegisterPanel p = getPanel("r");
+    final RegisterView p = getPanel("r");
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
     assertThat(panel.component().getName()).isEqualTo("r");
@@ -131,7 +131,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
   public void testUpdate() {
     printlnMethodName();
 
-    final RegisterPanel p = getPanel("r");
+    final RegisterView p = getPanel("r");
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
 
@@ -202,7 +202,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
-        panel.targetCastedTo(RegisterPanel.class).update();
+        panel.targetCastedTo(RegisterView.class).update();
       }
     });
   }
@@ -211,7 +211,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
   public void testNumericalStyle() throws MacroFileFormatException, MicroFileFormatException, FileNotFoundException {
     printlnMethodName();
 
-    final RegisterPanel p = getPanel("r");
+    final RegisterView p = getPanel("r");
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
 
@@ -231,7 +231,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     }
   }
 
-  private void viewHexadecimal(final RegisterPanel p) {
+  private void viewHexadecimal(final RegisterView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
@@ -240,7 +240,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     });
   }
 
-  private void viewDecimal(final RegisterPanel p) {
+  private void viewDecimal(final RegisterView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
@@ -249,7 +249,7 @@ public class RegisterPanelTest extends DefaultGUITestCase {
     });
   }
 
-  private void viewBinary(final RegisterPanel p) {
+  private void viewBinary(final RegisterView p) {
     GuiActionRunner.execute(new GuiTask() {
       @Override
       protected void executeInEDT() throws Throwable {
