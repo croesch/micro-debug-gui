@@ -26,9 +26,9 @@ import java.awt.event.MouseEvent;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
-import com.github.croesch.micro_debug.gui.components.basic.ComponentRepaintListener;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
+import com.github.croesch.micro_debug.gui.listener.ComponentRepaintListener;
 
 /**
  * This is a ruler that is able to view some information (such as breakpoints) for a given text component.
