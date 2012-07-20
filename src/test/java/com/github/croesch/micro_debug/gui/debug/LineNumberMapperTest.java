@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with micro-debug-gui.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.croesch.micro_debug.gui;
+package com.github.croesch.micro_debug.gui.debug;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
+import com.github.croesch.micro_debug.gui.DefaultTestCase;
 
 /**
  * Provides test cases for {@link LineNumberMapper}.
