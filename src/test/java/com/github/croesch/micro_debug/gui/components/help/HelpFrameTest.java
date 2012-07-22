@@ -60,7 +60,7 @@ public class HelpFrameTest extends DefaultGUITestCase {
 
   @Override
   protected void onTearDown() {
-    this.helpFrame.close();
+    this.helpFrame.cleanUp();
   }
 
   @Test
