@@ -101,4 +101,57 @@
 	<!-- the text for the micro-debug menu -->
 	<entry key="gui-menu-microdebug">MicroDebug</entry>
 
+	<!-- the title of the help frame -->
+	<entry key="gui-help-title">Help</entry>
+	<!-- the content of the component description -->
+	<entry key="gui-help-comp-descr">&lt;html&gt;&lt;h2&gt;The parts of the main
+		frame&lt;/h2&gt;
+		The main frame consists of different parts:
+		&lt;ul&gt;
+		&lt;li&gt;First of all there is the disassembled code in the center.
+		You can see the macro and the micro code with line numbers. The line
+		numbers in micro code are ongoing whereas the line numbers in the
+		macro code represent the address of the command in the
+		memory.&lt;/li&gt;
+		&lt;li&gt;On the upper left there are the registers,
+		you can change the number format of their values by selecting a
+		different radio button. By clicking the checkbox in a line of the
+		register you set a breakpoint for that register
+		&lt;i&gt;without&lt;/i&gt; a value.&lt;/li&gt;
+		&lt;li&gt;Under the view of registers you see the content of the
+		memory. Each word in memory has its own line. As in the
+		register view you can select the number format
+		for representing the word values of the memory.
+		You see the whole memory, so you can also see
+		the binary bits of the macro code or the stack for
+		instance.&lt;/li&gt;
+		&lt;li&gt;At the bottom right there is a text area
+		which contains output that would have gone to the command line and
+		hasn't yet been put into a GUI component. So this component might be
+		removed in future.&lt;/li&gt;
+		&lt;li&gt;Left of that there is a text field. If its
+		background is painted in a special color, the Mic1 is
+		requesting input. You should enter the input
+		for the processor and press ENTER. The text
+		area above contains the output of the processor - of your
+		program.&lt;/li&gt;
+		&lt;/ul&gt;</entry>
+	<!-- the content of the issue tracking system description -->
+	<entry key="gui-help-issue-descr">&lt;html&gt;&lt;h2&gt;Issue-Tracking-System&lt;/h2&gt;
+		I tried my best, but unfortunately there still might be some bugs and problems
+		with using this program. If you are facing any issue with using it, don't hesitate
+		to let me know! You also might have a brilliant idea what the program should be
+		able to handle. If so, let me know!&lt;br&gt;
+		Just visit &lt;a href="https://github.com/croesch/micro-debug-gui/issues"&gt;
+		https://github.com/croesch/micro-debug-gui/issues&lt;/a&gt; and create
+		an issue.
+    </entry>
+	<!-- the content of the development description -->
+	<entry key="gui-help-dev-descr">&lt;html&gt;&lt;h2&gt;Development&lt;/h2&gt;
+  	    If you would like to contribute to this program I'm looking forward to
+  	    hearing from you! You can write me a mail or fork the project directly
+  	    from github: &lt;a href="https://github.com/croesch/micro-debug-gui/"&gt;
+		https://github.com/croesch/micro-debug-gui/&lt;/a&gt;
+		I would be pleased if you let me know if you start working on the project.
+    </entry>
 </properties>

@@ -92,7 +92,16 @@ public enum GuiText {
   /** the text for the processor menu */
   GUI_MENU_PROCESSOR,
   /** the text for the micro-debug menu */
-  GUI_MENU_MICRODEBUG;
+  GUI_MENU_MICRODEBUG,
+
+  /** the title of the help frame */
+  GUI_HELP_TITLE,
+  /** the content of the component description */
+  GUI_HELP_COMP_DESCR,
+  /** the content of the issue tracking system description */
+  GUI_HELP_ISSUE_DESCR,
+  /** the content of the development description */
+  GUI_HELP_DEV_DESCR;
 
   /** the value of this instance */
   @NotNull

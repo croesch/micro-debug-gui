@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.error.FileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.about.AboutFrame;
+import com.github.croesch.micro_debug.gui.components.help.HelpFrame;
 
 /**
  * Provides test cases for item #38.
@@ -76,11 +77,49 @@ public class Item38Test extends DefaultGUITestCase {
     assertThat(aboutFrame.component().isDisplayable()).isFalse();
   }
 
-  private void showAgain(final FrameFixture frame, final FrameFixture aboutFrame) {
-    frame.show();
-    aboutFrame.show();
+  @Test
+  public void testHelpFrameDisposed() throws FileFormatException, FileNotFoundException, InterruptedException {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final FrameFixture frame = getMainFrame(micFile, macFile);
+
+    frame.menuItem("help-item").click();
+    final FrameFixture helpFrame = WindowFinder.findFrame(HelpFrame.class).using(robot());
+
+    // behavior when exiting via menu item
+    frame.menuItem("exit").click();
+    helpFrame.requireNotVisible();
+    assertThat(helpFrame.component().isDisplayable()).isFalse();
+
+    showAgain(frame, helpFrame);
+
+    // behavior when exiting via close
+    frame.close();
+    frame.requireNotVisible();
+    helpFrame.requireNotVisible();
+    assertThat(helpFrame.component().isDisplayable()).isFalse();
+
+    showAgain(frame, helpFrame);
+
+    // behavior when closing about frame and then the normal frame
+    helpFrame.close();
     frame.requireVisible();
-    aboutFrame.requireVisible();
-    assertThat(aboutFrame.component().isDisplayable()).isTrue();
+    helpFrame.requireNotVisible();
+    assertThat(helpFrame.component().isDisplayable()).isTrue();
+
+    frame.close();
+    frame.requireNotVisible();
+    helpFrame.requireNotVisible();
+    assertThat(helpFrame.component().isDisplayable()).isFalse();
+  }
+
+  private void showAgain(final FrameFixture frame, final FrameFixture dependendFrame) {
+    frame.show();
+    dependendFrame.show();
+    frame.requireVisible();
+    dependendFrame.requireVisible();
+    assertThat(dependendFrame.component().isDisplayable()).isTrue();
   }
 }

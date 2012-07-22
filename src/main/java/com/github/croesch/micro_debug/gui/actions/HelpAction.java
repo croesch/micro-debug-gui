@@ -21,7 +21,10 @@ package com.github.croesch.micro_debug.gui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFrame;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.micro_debug.gui.components.help.HelpFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
@@ -33,7 +36,11 @@ import com.github.croesch.micro_debug.gui.i18n.GuiText;
 public final class HelpAction extends AbstractAction {
 
   /** generated serial version UID */
-  private static final long serialVersionUID = 7327804564850346938L;
+  private static final long serialVersionUID = 6485977055982330277L;
+
+  /** the help frame */
+  @NotNull
+  private final HelpFrame frame;
 
   /**
    * Constructs the action to view the help.
@@ -42,12 +49,25 @@ public final class HelpAction extends AbstractAction {
    */
   public HelpAction() {
     super(GuiText.GUI_ACTIONS_HELP.text());
+    this.frame = new HelpFrame();
+    this.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
   }
 
   /**
    * {@inheritDoc}
    */
   public void actionPerformed(final ActionEvent e) {
-    // TODO implement
+    this.frame.setVisible(true);
+  }
+
+  /**
+   * Returns the frame this action visualises when being executed.
+   * 
+   * @since Date: Jul 22, 2012
+   * @return the {@link HelpFrame} to show when being executed.
+   */
+  @NotNull
+  public HelpFrame getHelpFrame() {
+    return this.frame;
   }
 }

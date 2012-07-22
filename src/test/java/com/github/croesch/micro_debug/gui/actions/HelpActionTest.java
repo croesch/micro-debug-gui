@@ -24,9 +24,12 @@ import javax.swing.Action;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.finder.WindowFinder;
+import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
+import com.github.croesch.micro_debug.gui.components.help.HelpFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 
 /**
@@ -37,15 +40,11 @@ import com.github.croesch.micro_debug.gui.i18n.GuiText;
  */
 public class HelpActionTest extends DefaultGUITestCase {
 
-  private Action action;
+  private HelpAction action;
 
   @Override
   protected void setUpTestCase() throws Exception {
-    this.action = createAction();
-  }
-
-  public static HelpAction createAction() {
-    return GuiActionRunner.execute(new GuiQuery<HelpAction>() {
+    this.action = GuiActionRunner.execute(new GuiQuery<HelpAction>() {
       @Override
       protected HelpAction executeInEDT() throws Throwable {
         return new HelpAction();
@@ -54,9 +53,32 @@ public class HelpActionTest extends DefaultGUITestCase {
   }
 
   @Test
+  public void testGetHelpFrame() {
+    printlnMethodName();
+
+    perform(this.action);
+    final FrameFixture frame = WindowFinder.findFrame(HelpFrame.class).using(robot());
+
+    assertThat(frame.component()).isSameAs(this.action.getHelpFrame());
+  }
+
+  @Test
   public void testAction() {
     printlnMethodName();
 
     assertThat(this.action.getValue(Action.NAME)).isEqualTo(GuiText.GUI_ACTIONS_HELP.text());
+
+    perform(this.action);
+    final FrameFixture frame = WindowFinder.findFrame(HelpFrame.class).using(robot());
+
+    frame.close();
+    perform(this.action);
+    frame.requireVisible();
+
+    perform(this.action);
+    frame.requireVisible();
+
+    frame.close();
+    frame.requireNotVisible();
   }
 }
