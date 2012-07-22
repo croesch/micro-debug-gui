@@ -38,7 +38,7 @@ import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 
 /**
- * A frame that visualises information about micro-debug.
+ * A frame that visualises information about micro-debug-gui.
  * 
  * @author croesch
  * @since Date: Mar 2, 2012
@@ -169,7 +169,7 @@ public class AboutFrame extends SizedFrame {
   }
 
   /**
-   * Builds the component visualising the descriptioin of the program.
+   * Builds the component visualising the description of the program.
    * 
    * @since Date: Mar 3, 2012
    * @return the component that visualises the programs description.
