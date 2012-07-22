@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
@@ -47,8 +46,7 @@ public class AboutFrameTest extends DefaultGUITestCase {
   private FrameFixture aboutFrame;
 
   @Override
-  protected void setUpTestCase() throws IOException, ClassNotFoundException, InstantiationException,
-                                IllegalAccessException, UnsupportedLookAndFeelException {
+  protected void setUpTestCase() {
     final AboutFrame frame = GuiActionRunner.execute(new GuiQuery<AboutFrame>() {
       @Override
       protected AboutFrame executeInEDT() {
