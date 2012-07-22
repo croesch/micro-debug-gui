@@ -51,12 +51,14 @@ public final class ActionProvider implements IActionProvider {
     final WorkerThread thread = new WorkerThread("action-worker");
 
     final AboutAction aboutAction = new AboutAction();
+    final HelpAction helpAction = new HelpAction();
     final ExitAction exitAction = new ExitAction(frame, thread, cont.getProcessor());
     exitAction.addWindow(aboutAction.getAboutFrame());
+    exitAction.addWindow(helpAction.getHelpFrame());
 
     this.actions.put(Actions.ABOUT, aboutAction);
     this.actions.put(Actions.EXIT, exitAction);
-    this.actions.put(Actions.HELP, new HelpAction());
+    this.actions.put(Actions.HELP, helpAction);
     this.actions.put(Actions.MICRO_STEP, new MicroStepAction(cont, thread, this));
     this.actions.put(Actions.RESET, new ResetAction(cont, thread, this));
     this.actions.put(Actions.RUN, new RunAction(cont, thread, this));
