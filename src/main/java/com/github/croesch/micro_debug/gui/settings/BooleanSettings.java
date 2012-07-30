@@ -30,7 +30,10 @@ import com.github.croesch.micro_debug.properties.PropertiesProvider;
 public enum BooleanSettings {
 
   /** setting if the view should be updated after each tick */
-  UPDATE_AFTER_EACH_TICK (false);
+  UPDATE_AFTER_EACH_TICK (false),
+
+  /** option to override the keystroke entries of the laf */
+  OVERRIDE_LAF_KEYSTROKES (true);
 
   /** the value */
   private final boolean value;

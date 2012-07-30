@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.view;
 
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -26,7 +27,9 @@ import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
+import com.github.croesch.micro_debug.gui.settings.BooleanSettings;
 import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
+import com.github.croesch.micro_debug.gui.settings.KeyStrokes;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -101,6 +104,24 @@ public final class MainView {
 
     this.view = new MDSplitPane(name, JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
     ((MDSplitPane) this.view).setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_REGISTERMEMORY_REST.getValue());
+
+    overrideLAFKeystrokes();
+  }
+
+  /**
+   * Overrides the laf keystroke entries with the keystrokes defined by the user. The user can deactivate this behavior
+   * with the {@link BooleanSettings#OVERRIDE_LAF_KEYSTROKES} option.
+   * 
+   * @since Date: Jul 30, 2012
+   * @see BooleanSettings#OVERRIDE_LAF_KEYSTROKES
+   */
+  private void overrideLAFKeystrokes() {
+    if (BooleanSettings.OVERRIDE_LAF_KEYSTROKES.value()) {
+      final InputMap im = this.view.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).getParent();
+      for (final KeyStrokes ks : KeyStrokes.values()) {
+        im.put(ks.stroke(), null);
+      }
+    }
   }
 
   /**
