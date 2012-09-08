@@ -271,4 +271,10 @@ public class DefaultGUITestCase extends DefaultTestCase {
     frame.requireVisible();
     return frame;
   }
+
+  protected void closeStartFrame(final FrameFixture frame) {
+    if (frame != null && frame.component().isShowing() && frame.component().isVisible()) {
+      frame.close();
+    }
+  }
 }

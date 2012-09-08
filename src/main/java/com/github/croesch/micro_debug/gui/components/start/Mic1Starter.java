@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
@@ -41,6 +42,14 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @since Date: Mar 10, 2012
  */
 public final class Mic1Starter implements IMic1Creator {
+
+  /** the initial file path of the macro code file */
+  @NotNull
+  private String macPath = "";
+
+  /** the initial file path of the micro code file */
+  @NotNull
+  private String micPath = "";
 
   /**
    * Tries to create the processor and the main view. Will open the a {@link StartFrame} again, if the creation of the
@@ -120,14 +129,48 @@ public final class Mic1Starter implements IMic1Creator {
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
-          final JFrame frame = new StartFrame(Mic1Starter.this);
-          showFrame(frame);
+          if (!Mic1Starter.this.micPath.trim().equals("") || !Mic1Starter.this.macPath.trim().equals("")) {
+            create(Mic1Starter.this.micPath, Mic1Starter.this.macPath);
+          } else {
+            final JFrame frame = new StartFrame(Mic1Starter.this);
+            showFrame(frame);
+          }
         }
       });
     } catch (final InterruptedException e) {
       Utils.logThrownThrowable(e);
     } catch (final InvocationTargetException e) {
       Utils.logThrownThrowable(e);
+    }
+  }
+
+  /**
+   * Sets the initial file path of the micro code file. If both files (macro and micro code) are specified, the
+   * {@link StartFrame} won't appear.
+   * 
+   * @since Date: Sep 8, 2012
+   * @param micFile the file path of the micro code
+   */
+  public void setMicroFilePath(final String micFile) {
+    if (micFile == null) {
+      this.micPath = "";
+    } else {
+      this.micPath = micFile;
+    }
+  }
+
+  /**
+   * Sets the initial file path of the macro code file. If both files (macro and micro code) are specified, the
+   * {@link StartFrame} won't appear.
+   * 
+   * @since Date: Sep 8, 2012
+   * @param macFile the file path of the macro code
+   */
+  public void setMacroFilePath(final String macFile) {
+    if (macFile == null) {
+      this.macPath = "";
+    } else {
+      this.macPath = macFile;
     }
   }
 }

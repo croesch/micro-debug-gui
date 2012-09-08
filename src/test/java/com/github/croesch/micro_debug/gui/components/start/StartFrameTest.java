@@ -31,6 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.fest.swing.core.MouseButton;
+import org.fest.swing.core.Robot;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -50,6 +51,18 @@ import com.github.croesch.micro_debug.gui.settings.InternalSettings;
  * @since Date: Mar 9, 2012
  */
 public class StartFrameTest extends DefaultGUITestCase {
+
+  public static final String DESCRIPTION_LB_NAME = "description";
+
+  public static final String OKAY_BT_NAME = "okay";
+
+  public static final String MACRO_BROWSE_BT_NAME = "macro-assembler-file-browse";
+
+  public static final String MICRO_BROWSE_BT_NAME = "micro-assembler-file-browse";
+
+  public static final String MACRO_PATH_TF_NAME = "macro-assembler-file-path";
+
+  public static final String MICRO_PATH_TF_NAME = "micro-assembler-file-path";
 
   private FrameFixture startFrame;
 
@@ -90,18 +103,12 @@ public class StartFrameTest extends DefaultGUITestCase {
 
   private void cleanUpObjects() {
     this.mic1Creator.reset();
-    closeStartFrame();
+    closeStartFrame(this.startFrame);
   }
 
   @Override
   protected void onTearDown() {
-    closeStartFrame();
-  }
-
-  private void closeStartFrame() {
-    if (this.startFrame != null && this.startFrame.component().isShowing() && this.startFrame.component().isVisible()) {
-      this.startFrame.close();
-    }
+    closeStartFrame(this.startFrame);
   }
 
   @Test
@@ -119,18 +126,18 @@ public class StartFrameTest extends DefaultGUITestCase {
     this.startFrame.label("micro-assembler-file").requireText(GuiText.GUI_START_MICRO.text());
     this.startFrame.label("macro-assembler-file").requireText(GuiText.GUI_START_MACRO.text());
 
-    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
-    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
   }
 
   @Test
   public void testTextFields() {
     printlnMethodName();
-    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
+    assertEnabledAndEmpty(this.startFrame.textBox(MICRO_PATH_TF_NAME));
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
   }
 
-  private void assertEnabledAndEmpty(final JTextComponentFixture textBox) {
+  public static void assertEnabledAndEmpty(final JTextComponentFixture textBox) {
     textBox.requireEmpty();
     textBox.requireEditable();
     textBox.requireEnabled();
@@ -139,77 +146,79 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testButtons() {
     printlnMethodName();
-    this.startFrame.button("micro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
-    this.startFrame.button("macro-assembler-file-browse").requireText(GuiText.GUI_COMMAND_BROWSE.text());
-    this.startFrame.button("okay").requireText(GuiText.GUI_START_OKAY.text());
-    this.startFrame.button("okay").requireDisabled();
+    this.startFrame.button(MICRO_BROWSE_BT_NAME).requireText(GuiText.GUI_COMMAND_BROWSE.text());
+    this.startFrame.button(MACRO_BROWSE_BT_NAME).requireText(GuiText.GUI_COMMAND_BROWSE.text());
+    this.startFrame.button(OKAY_BT_NAME).requireText(GuiText.GUI_START_OKAY.text());
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
 
-    assertThat(this.startFrame.button("micro-assembler-file-browse").component().isDefaultButton()).isFalse();
-    assertThat(this.startFrame.button("macro-assembler-file-browse").component().isDefaultButton()).isFalse();
-    assertThat(this.startFrame.button("okay").component().isDefaultButton()).isTrue();
+    assertThat(this.startFrame.button(MICRO_BROWSE_BT_NAME).component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button(MACRO_BROWSE_BT_NAME).component().isDefaultButton()).isFalse();
+    assertThat(this.startFrame.button(OKAY_BT_NAME).component().isDefaultButton()).isTrue();
   }
 
   @Test
   public void testStartFrameStringString() {
     printlnMethodName();
     createStartFrame(null, null);
-    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.button("okay").requireDisabled();
-    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
-    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
+    assertEnabledAndEmpty(this.startFrame.textBox(MICRO_PATH_TF_NAME));
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
 
     createStartFrame(" \t\n   \t  ", "");
-    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.button("okay").requireDisabled();
-    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
-    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
+    assertEnabledAndEmpty(this.startFrame.textBox(MICRO_PATH_TF_NAME));
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
 
     createStartFrame(" path to nirvana ", "");
-    assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.button("okay").requireDisabled();
-    this.startFrame.label("description").requireText(GuiText.GUI_START_MACRO_WFF.text());
-    this.startFrame.label("description").foreground().requireEqualTo(Color.RED);
+    assertNotEditableAndContainsText(this.startFrame.textBox(MICRO_PATH_TF_NAME), "path to nirvana", robot());
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_MACRO_WFF.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(Color.RED);
 
     createStartFrame(null, " path to nirvana ");
-    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
-    assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "path to nirvana");
-    this.startFrame.button("okay").requireDisabled();
-    this.startFrame.label("description").requireText(GuiText.GUI_START_MICRO_WFF.text());
-    this.startFrame.label("description").foreground().requireEqualTo(Color.RED);
+    assertEnabledAndEmpty(this.startFrame.textBox(MICRO_PATH_TF_NAME));
+    assertNotEditableAndContainsText(this.startFrame.textBox(MACRO_PATH_TF_NAME), "path to nirvana", robot());
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_MICRO_WFF.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(Color.RED);
 
     createStartFrame(" path to nirvana ", "something");
-    assertNotEditableAndContainsText(this.startFrame.textBox("micro-assembler-file-path"), "path to nirvana");
-    assertNotEditableAndContainsText(this.startFrame.textBox("macro-assembler-file-path"), "something");
-    this.startFrame.button("okay").requireEnabled();
-    this.startFrame.label("description").requireText(GuiText.GUI_START_DESCRIPTION.text());
-    this.startFrame.label("description").foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
+    assertNotEditableAndContainsText(this.startFrame.textBox(MICRO_PATH_TF_NAME), "path to nirvana", robot());
+    assertNotEditableAndContainsText(this.startFrame.textBox(MACRO_PATH_TF_NAME), "something", robot());
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
+    this.startFrame.label(DESCRIPTION_LB_NAME).requireText(GuiText.GUI_START_DESCRIPTION.text());
+    this.startFrame.label(DESCRIPTION_LB_NAME).foreground().requireEqualTo(UIManager.getColor("Label.foreground"));
   }
 
-  private void assertNotEditableAndContainsText(final JTextComponentFixture textBox, final String text) {
+  public static void assertNotEditableAndContainsText(final JTextComponentFixture textBox,
+                                                      final String text,
+                                                      final Robot robot) {
     textBox.requireText(text);
     textBox.requireDisabled();
     textBox.requireNotEditable();
 
-    robot().click(textBox.component());
+    robot.click(textBox.component());
     textBox.requireDisabled();
     textBox.requireNotEditable();
 
-    robot().click(textBox.component(), MouseButton.RIGHT_BUTTON, 3);
+    robot.click(textBox.component(), MouseButton.RIGHT_BUTTON, 3);
     textBox.requireDisabled();
     textBox.requireNotEditable();
 
-    robot().click(textBox.component(), MouseButton.RIGHT_BUTTON, 2);
+    robot.click(textBox.component(), MouseButton.RIGHT_BUTTON, 2);
     textBox.requireDisabled();
     textBox.requireNotEditable();
 
-    robot().doubleClick(textBox.component());
+    robot.doubleClick(textBox.component());
     textBox.requireEnabled();
     textBox.requireEditable();
 
-    robot().doubleClick(textBox.component());
+    robot.doubleClick(textBox.component());
     textBox.requireEnabled();
     textBox.requireEditable();
   }
@@ -217,14 +226,14 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testOkayButton() throws Exception {
     printlnMethodName();
-    enterText(this.startFrame.textBox("micro-assembler-file-path"), "/macro/path.txt");
-    this.startFrame.textBox("micro-assembler-file-path").deleteText();
-    this.startFrame.button("okay").requireDisabled();
-    enterText(this.startFrame.textBox("micro-assembler-file-path"), "/micro/path.txt");
-    enterText(this.startFrame.textBox("macro-assembler-file-path"), "/macro/path.txt");
+    enterText(this.startFrame.textBox(MICRO_PATH_TF_NAME), "/macro/path.txt");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).deleteText();
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    enterText(this.startFrame.textBox(MICRO_PATH_TF_NAME), "/micro/path.txt");
+    enterText(this.startFrame.textBox(MACRO_PATH_TF_NAME), "/macro/path.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
-    this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
+    this.startFrame.button(OKAY_BT_NAME).click();
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/micro/path.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/macro/path.txt");
     assertThat(this.mic1Creator.isWritten()).isTrue();
@@ -233,7 +242,7 @@ public class StartFrameTest extends DefaultGUITestCase {
     createStartFrame("/some/path/to/there.txt", "/some/path/to/here.txt");
 
     assertThat(this.mic1Creator.isWritten()).isFalse();
-    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
     this.startFrame.pressAndReleaseKeys(KeyEvent.VK_ENTER);
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/here.txt");
@@ -242,14 +251,14 @@ public class StartFrameTest extends DefaultGUITestCase {
 
     createStartFrame("/some/path/to/there.txt", "/some/path/to/here.txt");
 
-    robot().doubleClick(this.startFrame.textBox("macro-assembler-file-path").component());
-    this.startFrame.textBox("macro-assembler-file-path").deleteText();
-    this.startFrame.button("okay").requireDisabled();
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    enterText(this.startFrame.textBox("macro-assembler-file-path"), "/some/path/to/there.txt");
+    robot().doubleClick(this.startFrame.textBox(MACRO_PATH_TF_NAME).component());
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).deleteText();
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    enterText(this.startFrame.textBox(MACRO_PATH_TF_NAME), "/some/path/to/there.txt");
     assertThat(this.mic1Creator.isWritten()).isFalse();
-    this.startFrame.button("okay").requireEnabled();
-    this.startFrame.button("okay").click();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
+    this.startFrame.button(OKAY_BT_NAME).click();
     assertThat(this.mic1Creator.getMicroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.getMacroPath()).isEqualTo("/some/path/to/there.txt");
     assertThat(this.mic1Creator.isWritten()).isTrue();
@@ -259,73 +268,71 @@ public class StartFrameTest extends DefaultGUITestCase {
   @Test
   public void testBrowse_Micro() {
     printlnMethodName();
-    this.startFrame.button("micro-assembler-file-browse").click();
+    this.startFrame.button(MICRO_BROWSE_BT_NAME).click();
     JFileChooserFixture fileChooser = new JFileChooserFixture(robot());
     fileChooser.cancel();
-    assertEnabledAndEmpty(this.startFrame.textBox("micro-assembler-file-path"));
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.button("okay").requireDisabled();
+    assertEnabledAndEmpty(this.startFrame.textBox(MICRO_PATH_TF_NAME));
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
 
-    this.startFrame.button("micro-assembler-file-browse").click();
+    this.startFrame.button(MICRO_BROWSE_BT_NAME).click();
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.setCurrentDirectory(new File(getUserHome()));
     fileChooser.selectFile(new File("anything.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator()
-                                                                             + "anything.mic1");
-    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
-    assertEnabledAndEmpty(this.startFrame.textBox("macro-assembler-file-path"));
-    this.startFrame.button("okay").requireDisabled();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "anything.mic1");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEnabled();
+    assertEnabledAndEmpty(this.startFrame.textBox(MACRO_PATH_TF_NAME));
+    this.startFrame.button(OKAY_BT_NAME).requireDisabled();
 
-    this.startFrame.button("macro-assembler-file-browse").click();
+    this.startFrame.button(MACRO_BROWSE_BT_NAME).click();
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.ijvm"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator()
-                                                                             + "anything.mic1");
-    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "anything.mic1");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEnabled();
 
-    this.startFrame.textBox("macro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.ijvm");
-    this.startFrame.textBox("macro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
-    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "some.ijvm");
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireEnabled();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
 
-    this.startFrame.button("micro-assembler-file-browse").click();
+    this.startFrame.button(MICRO_BROWSE_BT_NAME).click();
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.mic1");
-    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "some.mic1");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEnabled();
 
-    this.startFrame.textBox("macro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.ijvm");
-    this.startFrame.textBox("macro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("macro-assembler-file-path").requireEnabled();
-    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "some.ijvm");
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireEnabled();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
 
     createStartFrame("/path/one", "/path/two");
-    this.startFrame.textBox("micro-assembler-file-path").requireText("/path/one");
-    this.startFrame.textBox("micro-assembler-file-path").requireNotEditable();
-    this.startFrame.textBox("micro-assembler-file-path").requireDisabled();
-    this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
-    this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
-    this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
-    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireText("/path/one");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireNotEditable();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireDisabled();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireText("/path/two");
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireNotEditable();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireDisabled();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
 
-    this.startFrame.button("micro-assembler-file-browse").click();
+    this.startFrame.button(MICRO_BROWSE_BT_NAME).click();
     fileChooser = new JFileChooserFixture(robot());
     fileChooser.selectFile(new File("some.mic1"));
     fileChooser.approve();
-    this.startFrame.textBox("micro-assembler-file-path").requireText(getUserHome() + getFileSeparator() + "some.mic1");
-    this.startFrame.textBox("micro-assembler-file-path").requireEditable();
-    this.startFrame.textBox("micro-assembler-file-path").requireEnabled();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireText(getUserHome() + getFileSeparator() + "some.mic1");
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEditable();
+    this.startFrame.textBox(MICRO_PATH_TF_NAME).requireEnabled();
 
-    this.startFrame.textBox("macro-assembler-file-path").requireText("/path/two");
-    this.startFrame.textBox("macro-assembler-file-path").requireNotEditable();
-    this.startFrame.textBox("macro-assembler-file-path").requireDisabled();
-    this.startFrame.button("okay").requireEnabled();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireText("/path/two");
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireNotEditable();
+    this.startFrame.textBox(MACRO_PATH_TF_NAME).requireDisabled();
+    this.startFrame.button(OKAY_BT_NAME).requireEnabled();
   }
 
   @Test(expected = IllegalArgumentException.class)
