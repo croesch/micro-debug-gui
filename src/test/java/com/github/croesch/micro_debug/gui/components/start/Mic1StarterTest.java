@@ -132,6 +132,8 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     final Mic1Starter starter = new Mic1Starter();
     starter.setMicroFilePath(this.micFile);
     starter.setMacroFilePath(this.macFile);
+    assertThat(starter.getMicroFilePath()).isEqualTo(this.micFile);
+    assertThat(starter.getMacroFilePath()).isEqualTo(this.macFile);
 
     starter.start();
 
@@ -148,6 +150,8 @@ public class Mic1StarterTest extends DefaultGUITestCase {
 
     final Mic1Starter starter = new Mic1Starter();
     starter.setMacroFilePath(null);
+    assertThat(starter.getMicroFilePath()).isEmpty();
+    assertThat(starter.getMacroFilePath()).isEmpty();
     starter.start();
     final FrameFixture startFrame = WindowFinder.findFrame(StartFrame.class).using(robot());
 
@@ -163,6 +167,8 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     final Mic1Starter starter = new Mic1Starter();
     starter.setMacroFilePath(null);
     starter.setMicroFilePath(this.micFile);
+    assertThat(starter.getMicroFilePath()).isEqualTo(this.micFile);
+    assertThat(starter.getMacroFilePath()).isEmpty();
     starter.start();
     final FrameFixture startFrame = WindowFinder.findFrame(StartFrame.class).using(robot());
 
@@ -178,6 +184,8 @@ public class Mic1StarterTest extends DefaultGUITestCase {
     final Mic1Starter starter = new Mic1Starter();
     starter.setMicroFilePath(null);
     starter.setMacroFilePath(this.macFile);
+    assertThat(starter.getMicroFilePath()).isEmpty();
+    assertThat(starter.getMacroFilePath()).isEqualTo(this.macFile);
     starter.start();
     final FrameFixture startFrame = WindowFinder.findFrame(StartFrame.class).using(robot());
 

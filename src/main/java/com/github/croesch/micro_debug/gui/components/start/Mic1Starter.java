@@ -45,11 +45,11 @@ public final class Mic1Starter implements IMic1Creator {
 
   /** the initial file path of the macro code file */
   @NotNull
-  private String macPath = "";
+  private String initialMacroPath = "";
 
   /** the initial file path of the micro code file */
   @NotNull
-  private String micPath = "";
+  private String initialMicroPath = "";
 
   /**
    * Tries to create the processor and the main view. Will open the a {@link StartFrame} again, if the creation of the
@@ -129,8 +129,9 @@ public final class Mic1Starter implements IMic1Creator {
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
-          if (!Mic1Starter.this.micPath.trim().equals("") || !Mic1Starter.this.macPath.trim().equals("")) {
-            create(Mic1Starter.this.micPath, Mic1Starter.this.macPath);
+          if (!Mic1Starter.this.initialMicroPath.trim().equals("")
+              || !Mic1Starter.this.initialMacroPath.trim().equals("")) {
+            create(Mic1Starter.this.initialMicroPath, Mic1Starter.this.initialMacroPath);
           } else {
             final JFrame frame = new StartFrame(Mic1Starter.this);
             showFrame(frame);
@@ -153,9 +154,9 @@ public final class Mic1Starter implements IMic1Creator {
    */
   public void setMicroFilePath(final String micFile) {
     if (micFile == null) {
-      this.micPath = "";
+      this.initialMicroPath = "";
     } else {
-      this.micPath = micFile;
+      this.initialMicroPath = micFile;
     }
   }
 
@@ -168,9 +169,31 @@ public final class Mic1Starter implements IMic1Creator {
    */
   public void setMacroFilePath(final String macFile) {
     if (macFile == null) {
-      this.macPath = "";
+      this.initialMacroPath = "";
     } else {
-      this.macPath = macFile;
+      this.initialMacroPath = macFile;
     }
+  }
+
+  /**
+   * Returns the initial file path of the micro code file.
+   * 
+   * @since Date: Sep 8, 2012
+   * @return the file path of the micro code
+   */
+  @NotNull
+  public String getMicroFilePath() {
+    return this.initialMicroPath;
+  }
+
+  /**
+   * Returns the initial file path of the macro code file.
+   * 
+   * @since Date: Sep 8, 2012
+   * @return the file path of the macro code
+   */
+  @NotNull
+  public String getMacroFilePath() {
+    return this.initialMacroPath;
   }
 }

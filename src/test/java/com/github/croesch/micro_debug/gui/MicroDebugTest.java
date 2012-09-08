@@ -27,6 +27,7 @@ import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 
+import com.github.croesch.micro_debug.gui.components.MainFrame;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.i18n.Text;
@@ -45,8 +46,7 @@ public class MicroDebugTest extends DefaultGUITestCase {
   @Test
   public void testVersion() {
     printlnMethodName();
-    final String versionInformation = Text.VERSION
-      .text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
+    final String versionInformation = Text.VERSION.text(com.github.croesch.micro_debug.settings.InternalSettings.VERSION)
                                       + getLineSeparator()
                                       + GuiText.VERSION.text(InternalSettings.NAME, InternalSettings.VERSION)
                                       + getLineSeparator();
@@ -81,6 +81,32 @@ public class MicroDebugTest extends DefaultGUITestCase {
 
     MicroDebug.main(new String[] {});
     frame = WindowFinder.findFrame("start-frame").using(robot());
+    frame.requireVisible();
+    frame.close();
+  }
+
+  @Test
+  public void testStartWithFiles() {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+
+    MicroDebug.main(new String[] { "-f", micFile, macFile });
+    final FrameFixture frame = WindowFinder.findFrame(MainFrame.class).using(robot());
+    frame.requireVisible();
+    frame.close();
+  }
+
+  @Test
+  public void testStartWithWrongFiles() {
+    printlnMethodName();
+
+    final String micFile = getClass().getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = getClass().getClassLoader().getResource("mic1/add.ijvm").getPath();
+
+    MicroDebug.main(new String[] { "--files", macFile, micFile });
+    final FrameFixture frame = WindowFinder.findFrame("start-frame").using(robot());
     frame.requireVisible();
     frame.close();
   }
