@@ -1,14 +1,17 @@
 NAME
-	MicroDebug - debug micro-assembler and assembler files
+	MicroDebugGui - debug micro-assembler and assembler files via a GUI
 
 SYNOPSIS
-	MicroDebug
-	MicroDebug -h|--help|-v|--version
+	MicroDebugGui [-f MIC1 IJVM]
+	MicroDebugGui -h|--help|-v|--version
 
 DESCRIPTION
-	Debug micro-assembler-file MIC1 and assembler-file IJVM.
-
 	Mandatory arguments to long options are mandatory for short options too.
+
+	-f, --files MIC1 IJVM
+		Debug micro-assembler-file MIC1 and assembler-file IJVM. If both files
+		are valid, the debugger won't ask the user for entering file paths to
+		these two files.
 
 	-h, --help
 		display this help and exit.
@@ -20,7 +23,7 @@ AUTHOR
 	Written by Christian Rösch.
 
 REPORTING BUGS
-	Report MicroDebug bugs to <https://github.com/croesch/micro-debug-gui/issues>
+	Report MicroDebugGUI bugs to <https://github.com/croesch/micro-debug-gui/issues>
 
 COPYRIGHT
 	Copyright © 2011 Christian Rösch;
