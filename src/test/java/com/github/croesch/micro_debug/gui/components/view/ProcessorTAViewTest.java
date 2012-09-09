@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.basic.InputTextFieldTest;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.io.Input;
 import com.github.croesch.micro_debug.mic1.io.Output;
 
@@ -68,6 +69,8 @@ public class ProcessorTAViewTest extends DefaultGUITestCase {
     panel.scrollPane("output-scrollpane");
     panel.textBox("output-ta").requireEmpty();
     panel.textBox("input-tf").requireEmpty();
+    panel.button("input-tf-button").requireEnabled();
+    panel.button("input-tf-button").requireText(GuiText.GUI_ACTIONS_INPUT_OKAY.text());
 
     panel.textBox("input-tf").background().requireEqualTo(Color.white);
     InputTextFieldTest.getThreadTyping(robot(), "a", 200, panel.textBox("input-tf"), true, getThrownInOtherThreads())
@@ -92,8 +95,8 @@ public class ProcessorTAViewTest extends DefaultGUITestCase {
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\n");
     panel.textBox("input-tf").background().requireEqualTo(Color.white);
-    InputTextFieldTest.getThreadTyping(robot(), "d", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
-                      .start();
+    InputTextFieldTest.getThreadTyping(robot(), "d", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads(),
+                                       panel.button("input-tf-button")).start();
 
     Output.print(Input.read());
     Output.print(Input.read());
@@ -113,8 +116,8 @@ public class ProcessorTAViewTest extends DefaultGUITestCase {
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\n");
     panel.textBox("input-tf").background().requireEqualTo(Color.white);
-    InputTextFieldTest.getThreadTyping(robot(), "g", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
-                      .start();
+    InputTextFieldTest.getThreadTyping(robot(), "g", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads(),
+                                       panel.button("input-tf-button")).start();
 
     Output.print(Input.read());
     Output.print(Input.read());
@@ -134,8 +137,8 @@ public class ProcessorTAViewTest extends DefaultGUITestCase {
     Output.print(Input.read());
     panel.textBox("output-ta").requireText("a\nb\nc\nd\ne\nf\ng\nh\ni\n");
     panel.textBox("input-tf").background().requireEqualTo(Color.white);
-    InputTextFieldTest.getThreadTyping(robot(), "j", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads())
-                      .start();
+    InputTextFieldTest.getThreadTyping(robot(), "j", 50, panel.textBox("input-tf"), true, getThrownInOtherThreads(),
+                                       panel.button("input-tf-button")).start();
 
     Output.print(Input.read());
     Output.print(Input.read());

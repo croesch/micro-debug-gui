@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components.view;
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.gui.components.basic.InputTextField;
+import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.OutputTextArea;
@@ -53,8 +54,9 @@ final class ProcessorTAView extends MDPanel {
     final InputTextField tf = new InputTextField("input-tf");
     tf.activate();
 
-    setLayout(new MigLayout("fill, wrap 1", "[grow,fill]", "[grow,fill][]"));
-    add(new MDScrollPane("output-scrollpane", ta));
+    setLayout(new MigLayout("fill, wrap 2", "[grow,fill][]", "[grow,fill][]"));
+    add(new MDScrollPane("output-scrollpane", ta), "span 2");
     add(tf);
+    add(new MDButton("input-tf-button", tf.getAction()));
   }
 }

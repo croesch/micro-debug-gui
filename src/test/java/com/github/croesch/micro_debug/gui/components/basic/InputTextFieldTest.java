@@ -33,6 +33,7 @@ import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
 import org.junit.After;
 import org.junit.Assert;
@@ -133,6 +134,16 @@ public class InputTextFieldTest extends DefaultGUITestCase {
                                        final JTextComponentFixture tfFixture,
                                        final boolean colored,
                                        final List<Throwable> throwables) {
+    return getThreadTyping(robot, text, timeOut, tfFixture, colored, throwables, null);
+  }
+
+  public static Thread getThreadTyping(final Robot robot,
+                                       final String text,
+                                       final long timeOut,
+                                       final JTextComponentFixture tfFixture,
+                                       final boolean colored,
+                                       final List<Throwable> throwables,
+                                       final JButtonFixture button) {
     final Thread thread = new Thread() {
       @Override
       public void run() {
@@ -151,7 +162,11 @@ public class InputTextFieldTest extends DefaultGUITestCase {
           throwables.add(e);
         }
         tfFixture.enterText(text);
-        robot.pressAndReleaseKeys(KeyEvent.VK_ENTER);
+        if (button != null) {
+          button.click();
+        } else {
+          robot.pressAndReleaseKeys(KeyEvent.VK_ENTER);
+        }
       };
     };
     thread.setDaemon(true);

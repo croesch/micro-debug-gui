@@ -93,6 +93,8 @@
 	<entry key="gui-actions-help">Help</entry>
 	<!-- the text for the interrupt action -->
 	<entry key="gui-actions-interrupt">Interrupt</entry>
+	<!-- the text for the input sending action -->
+	<entry key="gui-actions-input-okay">OK</entry>
 
 	<!-- the text for the help menu -->
 	<entry key="gui-menu-help">Help</entry>

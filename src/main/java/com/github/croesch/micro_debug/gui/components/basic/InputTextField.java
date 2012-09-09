@@ -20,17 +20,18 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.io.Input;
 
 /**
@@ -77,7 +78,7 @@ public class InputTextField extends MDTextField {
    */
   public InputTextField(final String name) {
     super(name);
-    addActionListener(new TextFieldActionListener());
+    setAction(new TextFieldAction());
 
     this.resetRequestInput = new Runnable() {
       public void run() {
@@ -102,12 +103,24 @@ public class InputTextField extends MDTextField {
   }
 
   /**
-   * Listener that stores the text of the text field, when the user hits enter.
+   * Action that stores the text of the text field, when the user hits enter.
    * 
    * @author croesch
    * @since Date: Mar 17, 2012
    */
-  private class TextFieldActionListener implements ActionListener {
+  private class TextFieldAction extends AbstractAction {
+
+    /** generated serial version UID */
+    private static final long serialVersionUID = 7421339690645719571L;
+
+    /**
+     * Creates the action with the text of {@link GuiText#GUI_ACTIONS_INPUT_OKAY}.
+     * 
+     * @since Date: Sep 9, 2012
+     */
+    public TextFieldAction() {
+      super(GuiText.GUI_ACTIONS_INPUT_OKAY.text());
+    }
 
     /**
      * Invoked when an action occurs. Transfers the text of the text field into the storage where the
