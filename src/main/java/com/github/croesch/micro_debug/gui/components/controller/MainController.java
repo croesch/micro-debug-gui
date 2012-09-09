@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
+import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.components.view.MainView;
 import com.github.croesch.micro_debug.mic1.Mic1;
 import com.github.croesch.micro_debug.mic1.api.IProcessorInterpreter;
@@ -186,5 +187,25 @@ public final class MainController implements IProcessorInterpreter {
    */
   public void setMicroStepAction(final AbstractAction action) {
     this.view.setMicroStepAction(action);
+  }
+
+  /**
+   * Returns the textfield to enter the number of macro steps to execute
+   * 
+   * @since Date: Sep 9, 2012
+   * @return the textfield to enter the number of macro steps to execute
+   */
+  public MDTextField getMacroStepField() {
+    return this.view.getMacroStepField();
+  }
+
+  /**
+   * Returns the textfield to enter the number of micro steps to execute
+   * 
+   * @since Date: Sep 9, 2012
+   * @return the textfield to enter the number of micro steps to execute
+   */
+  public MDTextField getMicroStepField() {
+    return this.view.getMicroStepField();
   }
 }

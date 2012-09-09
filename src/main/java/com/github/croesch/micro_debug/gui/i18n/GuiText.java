@@ -101,7 +101,10 @@ public enum GuiText {
   /** the content of the issue tracking system description */
   GUI_HELP_ISSUE_DESCR,
   /** the content of the development description */
-  GUI_HELP_DEV_DESCR;
+  GUI_HELP_DEV_DESCR,
+
+  /** tooltip text for the step count text field */
+  GUI_TIP_STEP_COUNT;
 
   /** the value of this instance */
   @NotNull

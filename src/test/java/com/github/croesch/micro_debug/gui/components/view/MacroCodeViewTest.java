@@ -38,6 +38,7 @@ import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
 import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -105,14 +106,19 @@ public class MacroCodeViewTest extends ACodeViewTest {
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
     panel.button("stepButton").requireEnabled();
-    assertThat(panel.textBox().component().getSelectionStart()).isZero();
-    assertThat(panel.textBox().component().getSelectionEnd()).isZero();
-    assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/add.ijvm.disp", false).toString());
+    assertThat(panel.textBox("macro-code-ta").component().getSelectionStart()).isZero();
+    assertThat(panel.textBox("macro-code-ta").component().getSelectionEnd()).isZero();
+    assertThat(panel.textBox("macro-code-ta").component().getText()).isEqualTo(readFile("mic1/add.ijvm.disp", false).toString());
+
+    panel.textBox("stepField").requireText("1");
+    panel.textBox("stepField").requireToolTip(GuiText.GUI_TIP_STEP_COUNT.text());
+    assertThat(p.getStepField()).isSameAs(panel.textBox("stepField").component());
 
     highlight(p, 18);
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), p.getLineNumberMapper().getNumberForLine(18));
-    LineNumberLabelTest.assertLabelHas(panel.label("macro-code-ta-line-numbers"),
-                                       panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(), 18,
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("macro-code-ta"), p.getLineNumberMapper().getNumberForLine(18));
+    LineNumberLabelTest.assertLabelHas(panel.label("macro-code-ta-line-numbers"), panel.textBox("macro-code-ta")
+                                                                                       .targetCastedTo(ACodeArea.class)
+                                                                                       .getLineCount(), 18,
                                        p.getLineNumberMapper());
   }
 }

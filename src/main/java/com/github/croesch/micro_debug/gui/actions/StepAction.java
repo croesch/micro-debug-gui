@@ -45,6 +45,7 @@ public final class StepAction extends AbstractStepAction {
   public StepAction(final MainController cont, final WorkerThread thread, final ActionProvider provider) {
     super(GuiText.GUI_ACTIONS_STEP, cont, thread, provider);
     cont.setMacroStepAction(this);
+    setTextComponent(cont.getMacroStepField());
   }
 
   @Override

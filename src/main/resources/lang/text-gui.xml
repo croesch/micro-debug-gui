@@ -154,4 +154,7 @@
 		https://github.com/croesch/micro-debug-gui/&lt;/a&gt;
 		I would be pleased if you let me know if you start working on the project.
     </entry>
+    
+    <!-- tooltip text for the step count text field -->
+    <entry key="gui-tip-step-count">Enter the number of steps to execute at once</entry>
 </properties>

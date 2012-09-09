@@ -27,10 +27,12 @@ import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
 import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
+import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabel;
 import com.github.croesch.micro_debug.gui.components.code.Ruler;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -61,6 +63,10 @@ public abstract class ACodeView extends MDPanel {
   @NotNull
   private final MDButton stepButton = new MDButton("stepButton", "step");
 
+  /** the textfield to enter the number of steps to execute */
+  @NotNull
+  private final MDTextField stepTextField = new MDTextField("stepField", 1);
+
   /**
    * Creates an abstract code view containing the text area to visualise the code, a ruler for adding breakpoints and a
    * line number view.
@@ -82,6 +88,9 @@ public abstract class ACodeView extends MDPanel {
     addCode();
 
     final MDPanel header = new MDPanel(name + "-code-header", new MigLayout("fill"));
+    this.stepTextField.setColumns(3);
+    this.stepTextField.setToolTipText(GuiText.GUI_TIP_STEP_COUNT.text());
+    header.add(this.stepTextField);
     header.add(this.stepButton);
     add(header);
 
@@ -172,5 +181,15 @@ public abstract class ACodeView extends MDPanel {
    */
   public final void setStepAction(final AbstractAction action) {
     this.stepButton.setAction(action);
+  }
+
+  /**
+   * Returns the textfield to enter the number of steps to execute
+   * 
+   * @since Date: Sep 9, 2012
+   * @return the textfield to enter the number of steps to execute
+   */
+  public final MDTextField getStepField() {
+    return this.stepTextField;
   }
 }

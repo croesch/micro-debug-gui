@@ -90,7 +90,7 @@ public class MainControllerTest extends DefaultGUITestCase {
     printlnMethodName();
 
     final JPanel r = this.frame.panel("microCode-ruler").component();
-    final ACodeArea ta = (ACodeArea) this.frame.panel("microCode").textBox().component();
+    final ACodeArea ta = (ACodeArea) this.frame.panel("microCode").textBox("microCode-code-ta").component();
     robot().click(r, new Point(0, RulerTest.getYOfLine(ta, 2)), MouseButton.LEFT_BUTTON, 2);
     assertThat(this.controller.getBpm().isMicroBreakpoint(2)).isTrue();
 
@@ -104,7 +104,7 @@ public class MainControllerTest extends DefaultGUITestCase {
 
     final JPanel r = this.frame.panel("macroCode-ruler").component();
     final ACodeView view = (ACodeView) this.frame.panel("macroCode").component();
-    final ACodeArea ta = (ACodeArea) this.frame.panel("macroCode").textBox().component();
+    final ACodeArea ta = (ACodeArea) this.frame.panel("macroCode").textBox("macroCode-code-ta").component();
     robot().click(r, new Point(0, RulerTest.getYOfLine(ta, 2)), MouseButton.LEFT_BUTTON, 2);
     assertThat(this.controller.getBpm().isMacroBreakpoint(view.getLineNumberMapper().getLineForNumber(2))).isTrue();
 

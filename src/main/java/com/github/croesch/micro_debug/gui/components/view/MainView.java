@@ -28,6 +28,7 @@ import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.basic.MDSplitPane;
+import com.github.croesch.micro_debug.gui.components.basic.MDTextField;
 import com.github.croesch.micro_debug.gui.settings.BooleanSettings;
 import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.gui.settings.KeyStrokes;
@@ -200,5 +201,25 @@ public final class MainView {
    */
   public void setMicroStepAction(final AbstractAction action) {
     this.microCodeView.setStepAction(action);
+  }
+
+  /**
+   * Returns the textfield to enter the number of macro steps to execute
+   * 
+   * @since Date: Sep 9, 2012
+   * @return the textfield to enter the number of macro steps to execute
+   */
+  public MDTextField getMacroStepField() {
+    return this.macroCodeView.getStepField();
+  }
+
+  /**
+   * Returns the textfield to enter the number of micro steps to execute
+   * 
+   * @since Date: Sep 9, 2012
+   * @return the textfield to enter the number of micro steps to execute
+   */
+  public MDTextField getMicroStepField() {
+    return this.microCodeView.getStepField();
   }
 }

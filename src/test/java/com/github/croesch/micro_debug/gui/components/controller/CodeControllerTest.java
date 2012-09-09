@@ -140,20 +140,21 @@ public class CodeControllerTest extends DefaultGUITestCase {
   }
 
   private void assertMacroNoHighlight(final CodeController controller, final JPanelFixture panel) {
-    ACodeAreaTest.assertNoLineHighlighted(panel.textBox());
+    ACodeAreaTest.assertNoLineHighlighted(panel.textBox("macro-code-ta"));
     LineNumberLabelTest.assertLabelHasNoHighlight(panel.label("macro-code-ta-line-numbers"),
-                                                  panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(),
-                                                  controller.getView().getLineNumberMapper());
+                                                  panel.textBox("macro-code-ta")
+                                                       .targetCastedTo(ACodeArea.class)
+                                                       .getLineCount(), controller.getView().getLineNumberMapper());
   }
 
   private void assertMicroHighlight(final CodeController controller,
                                     final JPanelFixture panel,
                                     final int oldH,
                                     final int newH) {
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), oldH);
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("micro-code-ta"), oldH);
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, oldH, MICRO_MAPPER);
     update(controller);
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), newH);
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("micro-code-ta"), newH);
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, newH, MICRO_MAPPER);
   }
 
@@ -167,10 +168,12 @@ public class CodeControllerTest extends DefaultGUITestCase {
   }
 
   private void assertMacroHighlight(final CodeController controller, final JPanelFixture panel, final int oldH) {
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(),
-                                        controller.getView().getLineNumberMapper().getNumberForLine(oldH));
-    LineNumberLabelTest.assertLabelHas(panel.label("macro-code-ta-line-numbers"),
-                                       panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(), oldH,
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("macro-code-ta"), controller.getView()
+                                                                                  .getLineNumberMapper()
+                                                                                  .getNumberForLine(oldH));
+    LineNumberLabelTest.assertLabelHas(panel.label("macro-code-ta-line-numbers"), panel.textBox("macro-code-ta")
+                                                                                       .targetCastedTo(ACodeArea.class)
+                                                                                       .getLineCount(), oldH,
                                        controller.getView().getLineNumberMapper());
   }
 

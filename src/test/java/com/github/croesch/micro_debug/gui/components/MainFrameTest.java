@@ -170,10 +170,13 @@ public class MainFrameTest extends DefaultGUITestCase {
 
     frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 2);
-    frame.menuItem("micro-step").click();
-    assertMicroHighlight(frame.panel("microCode"), 0);
+    final JPanelFixture right = new JPanelFixture(robot(), (MicroCodeView) frame.splitPane("code")
+                                                                                .component()
+                                                                                .getRightComponent());
+    right.textBox("stepField").deleteText().enterText("2");
     frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 2);
+    right.textBox("stepField").deleteText().enterText("1");
     frame.menuItem("micro-step").click();
     assertMicroHighlight(frame.panel("microCode"), 16);
     frame.menuItem("micro-step").click();
@@ -216,8 +219,10 @@ public class MainFrameTest extends DefaultGUITestCase {
     proc.microStep(2);
     mainFrame.getController().updateView();
     assertMacroHighlight(frame.panel("macroCode"), 2);
-    frame.menuItem("step").click();
-    assertMacroHighlight(frame.panel("macroCode"), 3);
+    final JPanelFixture left = new JPanelFixture(robot(), (MacroCodeView) frame.splitPane("code")
+                                                                               .component()
+                                                                               .getLeftComponent());
+    left.textBox("stepField").deleteText().enterText("2");
     frame.menuItem("step").click();
     assertMacroHighlight(frame.panel("macroCode"), 5);
 
@@ -235,24 +240,28 @@ public class MainFrameTest extends DefaultGUITestCase {
   }
 
   private void assertMacroNoHighlight(final JPanelFixture panel) {
-    ACodeAreaTest.assertNoLineHighlighted(panel.textBox());
+    ACodeAreaTest.assertNoLineHighlighted(panel.textBox("macroCode-code-ta"));
     LineNumberLabelTest.assertLabelHasNoHighlight(panel.label("macroCode-code-ta-line-numbers"),
-                                                  panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(),
-                                                  panel.targetCastedTo(MacroCodeView.class).getLineNumberMapper());
+                                                  panel.textBox("macroCode-code-ta")
+                                                       .targetCastedTo(ACodeArea.class)
+                                                       .getLineCount(), panel.targetCastedTo(MacroCodeView.class)
+                                                                             .getLineNumberMapper());
   }
 
   private void assertMicroHighlight(final JPanelFixture panel, final int high) {
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), high);
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("microCode-code-ta"), high);
     LineNumberLabelTest.assertLabelHas(panel.label("microCode-code-ta-line-numbers"), 512, high,
                                        CodeControllerTest.MICRO_MAPPER);
   }
 
   private void assertMacroHighlight(final JPanelFixture panel, final int high) {
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), panel.targetCastedTo(MacroCodeView.class)
-                                                              .getLineNumberMapper()
-                                                              .getNumberForLine(high));
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("macroCode-code-ta"), panel.targetCastedTo(MacroCodeView.class)
+                                                                                 .getLineNumberMapper()
+                                                                                 .getNumberForLine(high));
     LineNumberLabelTest.assertLabelHas(panel.label("macroCode-code-ta-line-numbers"),
-                                       panel.textBox().targetCastedTo(ACodeArea.class).getLineCount(), high,
-                                       panel.targetCastedTo(MacroCodeView.class).getLineNumberMapper());
+                                       panel.textBox("macroCode-code-ta")
+                                            .targetCastedTo(ACodeArea.class)
+                                            .getLineCount(), high, panel.targetCastedTo(MacroCodeView.class)
+                                                                        .getLineNumberMapper());
   }
 }

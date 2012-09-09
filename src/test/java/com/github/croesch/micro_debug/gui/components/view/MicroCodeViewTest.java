@@ -38,6 +38,7 @@ import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
+import com.github.croesch.micro_debug.gui.i18n.GuiText;
 import com.github.croesch.micro_debug.mic1.Mic1;
 
 /**
@@ -105,12 +106,17 @@ public class MicroCodeViewTest extends ACodeViewTest {
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
     panel.button("stepButton").requireEnabled();
-    assertThat(panel.textBox().component().getSelectionStart()).isZero();
-    assertThat(panel.textBox().component().getSelectionEnd()).isZero();
-    assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/mic1ijvm.mic1.disp", false).toString());
+    assertThat(panel.textBox("micro-code-ta").component().getSelectionStart()).isZero();
+    assertThat(panel.textBox("micro-code-ta").component().getSelectionEnd()).isZero();
+    assertThat(panel.textBox("micro-code-ta").component().getText()).isEqualTo(readFile("mic1/mic1ijvm.mic1.disp",
+                                                                                        false).toString());
+
+    panel.textBox("stepField").requireText("1");
+    panel.textBox("stepField").requireToolTip(GuiText.GUI_TIP_STEP_COUNT.text());
+    assertThat(p.getStepField()).isSameAs(panel.textBox("stepField").component());
 
     highlight(p, 17);
-    ACodeAreaTest.assertLineHighlighted(panel.textBox(), 17);
+    ACodeAreaTest.assertLineHighlighted(panel.textBox("micro-code-ta"), 17);
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, 17, new LineNumberMapper());
   }
 }
