@@ -18,10 +18,13 @@
  */
 package com.github.croesch.micro_debug.gui.components.view;
 
+import javax.swing.AbstractAction;
+
 import net.miginfocom.swing.MigLayout;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.gui.components.api.ILineBreakPointManager;
+import com.github.croesch.micro_debug.gui.components.basic.MDButton;
 import com.github.croesch.micro_debug.gui.components.basic.MDPanel;
 import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
@@ -54,6 +57,10 @@ public abstract class ACodeView extends MDPanel {
   @NotNull
   private final Mic1 processor;
 
+  /** the button to make single steps */
+  @NotNull
+  private final MDButton stepButton = new MDButton("stepButton", "step");
+
   /**
    * Creates an abstract code view containing the text area to visualise the code, a ruler for adding breakpoints and a
    * line number view.
@@ -65,7 +72,7 @@ public abstract class ACodeView extends MDPanel {
    * @param bph the handler for the breakpoints
    */
   public ACodeView(final String name, final Mic1 proc, final ACodeArea ta, final ILineBreakPointManager bph) {
-    super(name, new MigLayout("fill"));
+    super(name, new MigLayout("fill,wrap 1", "[]", "[][grow]"));
     if (proc == null) {
       throw new IllegalArgumentException();
     }
@@ -73,6 +80,10 @@ public abstract class ACodeView extends MDPanel {
 
     this.codeArea = ta;
     addCode();
+
+    final MDPanel header = new MDPanel(name + "-code-header", new MigLayout("fill"));
+    header.add(this.stepButton);
+    add(header);
 
     final MDScrollPane pane = new MDScrollPane(name + "-code-scrollpane", this.codeArea);
 
@@ -152,4 +163,14 @@ public abstract class ACodeView extends MDPanel {
    * @since Date: May 11, 2012
    */
   public abstract void update();
+
+  /**
+   * Sets the step action for this code part.
+   * 
+   * @since Date: Sep 9, 2012
+   * @param action the step action
+   */
+  public final void setStepAction(final AbstractAction action) {
+    this.stepButton.setAction(action);
+  }
 }

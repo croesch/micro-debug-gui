@@ -18,6 +18,7 @@
  */
 package com.github.croesch.micro_debug.gui.components.view;
 
+import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -84,10 +85,8 @@ public final class MainView {
 
     final JSplitPane codePane = new MDSplitPane("code",
                                                 JSplitPane.HORIZONTAL_SPLIT,
-                                                new MDScrollPane(this.macroCodeView.getName() + "-scroller",
-                                                                 this.macroCodeView),
-                                                new MDScrollPane(this.microCodeView.getName() + "-scroller",
-                                                                 this.microCodeView));
+                                                this.macroCodeView,
+                                                this.microCodeView);
     codePane.setDividerLocation(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final JScrollPane procPane = new MDScrollPane("processorTAs", new ProcessorTAView("processorTAs"));
@@ -181,5 +180,25 @@ public final class MainView {
   @NotNull
   public MacroCodeView getMacroCodeView() {
     return this.macroCodeView;
+  }
+
+  /**
+   * Sets the step action for the macro code part.
+   * 
+   * @since Date: Sep 9, 2012
+   * @param action the macro step action
+   */
+  public void setMacroStepAction(final AbstractAction action) {
+    this.macroCodeView.setStepAction(action);
+  }
+
+  /**
+   * Sets the step action for the micro code part.
+   * 
+   * @since Date: Sep 9, 2012
+   * @param action the micro step action
+   */
+  public void setMicroStepAction(final AbstractAction action) {
+    this.microCodeView.setStepAction(action);
   }
 }

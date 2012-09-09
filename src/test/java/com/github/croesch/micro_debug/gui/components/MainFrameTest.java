@@ -20,6 +20,7 @@ package com.github.croesch.micro_debug.gui.components;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.Component;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,7 +38,6 @@ import org.junit.Test;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
 import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
-import com.github.croesch.micro_debug.gui.components.basic.MDScrollPane;
 import com.github.croesch.micro_debug.gui.components.code.ACodeArea;
 import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
@@ -108,14 +108,18 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.splitPane("code-tas").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_CODE_TEXTAREAS.getValue());
 
     assertThat(frame.splitPane("code").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
-    final MDScrollPane leftComponent = (MDScrollPane) frame.splitPane("code").component().getLeftComponent();
-    assertThat(leftComponent.getName()).isEqualTo("macroCode-scroller");
-    assertThat(leftComponent.getViewport().getView()).isInstanceOf(MacroCodeView.class);
-    assertThat(leftComponent.getViewport().getView().getName()).isEqualTo("macroCode");
-    final MDScrollPane rightComponent = (MDScrollPane) frame.splitPane("code").component().getRightComponent();
-    assertThat(rightComponent.getName()).isEqualTo("microCode-scroller");
-    assertThat(rightComponent.getViewport().getView()).isInstanceOf(MicroCodeView.class);
-    assertThat(rightComponent.getViewport().getView().getName()).isEqualTo("microCode");
+    final Component leftComponent = frame.splitPane("code").component().getLeftComponent();
+    assertThat(leftComponent).isInstanceOf(MacroCodeView.class);
+    assertThat(leftComponent.getName()).isEqualTo("macroCode");
+    final JPanelFixture left = new JPanelFixture(robot(), (MacroCodeView) leftComponent);
+    left.button("stepButton").requireText(GuiText.GUI_ACTIONS_STEP.text());
+
+    final Component rightComponent = frame.splitPane("code").component().getRightComponent();
+    assertThat(rightComponent).isInstanceOf(MicroCodeView.class);
+    assertThat(rightComponent.getName()).isEqualTo("microCode");
+    final JPanelFixture right = new JPanelFixture(robot(), (MicroCodeView) rightComponent);
+    right.button("stepButton").requireText(GuiText.GUI_ACTIONS_MICRO_STEP.text());
+
     assertThat(frame.splitPane("code").component().getDividerLocation()).isEqualTo(IntegerSettings.MAIN_FRAME_SLIDER_MACRO_MICRO.getValue());
 
     final String pane = "processorTas-debuggerTa";

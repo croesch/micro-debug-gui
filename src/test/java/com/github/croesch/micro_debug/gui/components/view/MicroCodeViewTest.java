@@ -20,20 +20,21 @@ package com.github.croesch.micro_debug.gui.components.view;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.AbstractAction;
+
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.JPanelFixture;
 import org.junit.Test;
 
 import com.github.croesch.micro_debug.debug.BreakpointManager;
 import com.github.croesch.micro_debug.error.MacroFileFormatException;
 import com.github.croesch.micro_debug.error.MicroFileFormatException;
-import com.github.croesch.micro_debug.gui.DefaultGUITestCase;
 import com.github.croesch.micro_debug.gui.components.code.ACodeAreaTest;
 import com.github.croesch.micro_debug.gui.components.code.LineNumberLabelTest;
 import com.github.croesch.micro_debug.gui.debug.LineNumberMapper;
@@ -45,7 +46,7 @@ import com.github.croesch.micro_debug.mic1.Mic1;
  * @author croesch
  * @since Date: Apr 18, 2012
  */
-public class MicroCodeViewTest extends DefaultGUITestCase {
+public class MicroCodeViewTest extends ACodeViewTest {
 
   public static MicroCodeView getPanel(final String name, final Mic1 proc, final BreakpointManager bpm) {
     return GuiActionRunner.execute(new GuiQuery<MicroCodeView>() {
@@ -70,6 +71,31 @@ public class MicroCodeViewTest extends DefaultGUITestCase {
   }
 
   @Test
+  public void testSetStepAction() throws IOException {
+    final String micFile = MicroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
+    final String macFile = MicroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
+    final Mic1 proc = new Mic1(new FileInputStream(micFile), new FileInputStream(macFile));
+
+    final MicroCodeView p = getPanel("micro", proc, new BreakpointManager());
+    showInFrame(p);
+    final JPanelFixture panel = new JPanelFixture(robot(), p);
+
+    final AbstractAction action = new AbstractAction("ACTION_TXT") {
+      private static final long serialVersionUID = 1L;
+
+      public void actionPerformed(final ActionEvent e) {}
+    };
+
+    setAction(p, action);
+    panel.button("stepButton").requireEnabled();
+    panel.button("stepButton").requireText("ACTION_TXT");
+
+    setActionEnabled(action, false);
+    panel.button("stepButton").requireDisabled();
+    panel.button("stepButton").requireText("ACTION_TXT");
+  }
+
+  @Test
   public void testPanel() throws IOException {
     final String micFile = MicroCodeView.class.getClassLoader().getResource("mic1/mic1ijvm.mic1").getPath();
     final String macFile = MicroCodeView.class.getClassLoader().getResource("mic1/add.ijvm").getPath();
@@ -78,6 +104,7 @@ public class MicroCodeViewTest extends DefaultGUITestCase {
     final MicroCodeView p = getPanel("micro", proc, new BreakpointManager());
     showInFrame(p);
     final JPanelFixture panel = new JPanelFixture(robot(), p);
+    panel.button("stepButton").requireEnabled();
     assertThat(panel.textBox().component().getSelectionStart()).isZero();
     assertThat(panel.textBox().component().getSelectionEnd()).isZero();
     assertThat(panel.textBox().component().getText()).isEqualTo(readFile("mic1/mic1ijvm.mic1.disp", false).toString());
@@ -85,14 +112,5 @@ public class MicroCodeViewTest extends DefaultGUITestCase {
     highlight(p, 17);
     ACodeAreaTest.assertLineHighlighted(panel.textBox(), 17);
     LineNumberLabelTest.assertLabelHas(panel.label("micro-code-ta-line-numbers"), 512, 17, new LineNumberMapper());
-  }
-
-  private void highlight(final MicroCodeView p, final int line) {
-    GuiActionRunner.execute(new GuiTask() {
-      @Override
-      protected void executeInEDT() throws Throwable {
-        p.highlight(line);
-      }
-    });
   }
 }

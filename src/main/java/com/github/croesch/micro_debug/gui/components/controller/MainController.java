@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
 import com.github.croesch.micro_debug.annotation.NotNull;
@@ -59,17 +60,21 @@ public final class MainController implements IProcessorInterpreter {
   /** whether the running processor should be interrupted / has been interrupted */
   private boolean interrupted = false;
 
+  /** the view this controller controls and interacts with */
+  @NotNull
+  private final MainView view;
+
   /**
    * Constructs the main controller for the given main view.
    * 
    * @since Date: Apr 11, 2012
-   * @param proc the processor to interprete
-   * @param view the view this controller controlls and interacts with
+   * @param proc the processor to interpret
+   * @param v the view this controller controls and interacts with
    * @param bpm the model for breakpoints of this debugger
    * @param updateAfterTick whether the view should be updated after each single tick of the processor
    */
-  public MainController(final Mic1 proc, final MainView view, final BreakpointManager bpm, final boolean updateAfterTick) {
-    if (proc == null || bpm == null || view == null) {
+  public MainController(final Mic1 proc, final MainView v, final BreakpointManager bpm, final boolean updateAfterTick) {
+    if (proc == null || bpm == null || v == null) {
       throw new IllegalArgumentException();
     }
     this.updateAfterEachTick = updateAfterTick;
@@ -77,10 +82,12 @@ public final class MainController implements IProcessorInterpreter {
     this.processor = proc;
     this.processor.setProcessorInterpreter(this);
 
-    this.controllers.add(new RegisterController(view.getRegisterView(), this.breakpointManager));
-    this.controllers.add(new MemoryController(view.getMemoryView()));
-    this.controllers.add(new CodeController(view.getMicroCodeView()));
-    this.controllers.add(new CodeController(view.getMacroCodeView()));
+    this.view = v;
+
+    this.controllers.add(new RegisterController(v.getRegisterView(), this.breakpointManager));
+    this.controllers.add(new MemoryController(v.getMemoryView()));
+    this.controllers.add(new CodeController(v.getMicroCodeView()));
+    this.controllers.add(new CodeController(v.getMacroCodeView()));
   }
 
   /**
@@ -159,5 +166,25 @@ public final class MainController implements IProcessorInterpreter {
    */
   public void setInterrupted(final boolean interrupt) {
     this.interrupted = interrupt;
+  }
+
+  /**
+   * Sets the step action for the macro code part.
+   * 
+   * @since Date: Sep 9, 2012
+   * @param action the macro step action
+   */
+  public void setMacroStepAction(final AbstractAction action) {
+    this.view.setMacroStepAction(action);
+  }
+
+  /**
+   * Sets the step action for the micro code part.
+   * 
+   * @since Date: Sep 9, 2012
+   * @param action the micro step action
+   */
+  public void setMicroStepAction(final AbstractAction action) {
+    this.view.setMicroStepAction(action);
   }
 }

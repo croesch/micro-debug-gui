@@ -44,6 +44,7 @@ public final class MicroStepAction extends AbstractStepAction {
    */
   public MicroStepAction(final MainController cont, final WorkerThread thread, final ActionProvider provider) {
     super(GuiText.GUI_ACTIONS_MICRO_STEP, cont, thread, provider);
+    cont.setMicroStepAction(this);
   }
 
   @Override
