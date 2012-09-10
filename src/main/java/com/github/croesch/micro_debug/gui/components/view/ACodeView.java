@@ -18,6 +18,8 @@
  */
 package com.github.croesch.micro_debug.gui.components.view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.AbstractAction;
 
 import net.miginfocom.swing.MigLayout;
@@ -94,7 +96,10 @@ public abstract class ACodeView extends MDPanel {
     header.add(this.stepButton);
     add(header);
 
-    final MDScrollPane pane = new MDScrollPane(name + "-code-scrollpane", this.codeArea);
+    // #58 insert the code area into a extra panel to avoid wrapping of the code
+    final MDPanel noWrapView = new MDPanel("no-wrap-panel", new BorderLayout());
+    noWrapView.add(this.codeArea);
+    final MDScrollPane pane = new MDScrollPane(name + "-code-scrollpane", noWrapView);
 
     final MDPanel rowHeader = new MDPanel(name + "-code-rowheader");
     rowHeader.setLayout(new MigLayout("fill", "0![]0![]0!", "0![grow,fill]0!"));
