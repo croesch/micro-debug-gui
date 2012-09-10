@@ -33,7 +33,10 @@ public enum BooleanSettings {
   UPDATE_AFTER_EACH_TICK (false),
 
   /** option to override the keystroke entries of the laf */
-  OVERRIDE_LAF_KEYSTROKES (true);
+  OVERRIDE_LAF_KEYSTROKES (true),
+
+  /** if the main frame should be created maximized */
+  MAIN_FRAME_MAXIMIZED (true);
 
   /** the value */
   private final boolean value;

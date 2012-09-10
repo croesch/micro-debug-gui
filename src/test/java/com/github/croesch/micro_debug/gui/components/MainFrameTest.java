@@ -21,6 +21,7 @@ package com.github.croesch.micro_debug.gui.components;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +46,7 @@ import com.github.croesch.micro_debug.gui.components.controller.CodeControllerTe
 import com.github.croesch.micro_debug.gui.components.view.MacroCodeView;
 import com.github.croesch.micro_debug.gui.components.view.MicroCodeView;
 import com.github.croesch.micro_debug.gui.i18n.GuiText;
+import com.github.croesch.micro_debug.gui.settings.BooleanSettings;
 import com.github.croesch.micro_debug.gui.settings.IntegerSettings;
 import com.github.croesch.micro_debug.gui.settings.InternalSettings;
 import com.github.croesch.micro_debug.mic1.Mic1;
@@ -83,8 +85,12 @@ public class MainFrameTest extends DefaultGUITestCase {
     assertThat(frame.component().getTitle()).isEqualTo(GuiText.GUI_MAIN_TITLE.text(InternalSettings.NAME,
                                                                                    InternalSettings.VERSION));
 
-    assertThat(frame.component().getHeight()).isEqualTo(IntegerSettings.MAIN_FRAME_HEIGHT.getValue());
-    assertThat(frame.component().getWidth()).isEqualTo(IntegerSettings.MAIN_FRAME_WIDTH.getValue());
+    if (BooleanSettings.MAIN_FRAME_MAXIMIZED.value()) {
+      assertThat(frame.component().getExtendedState()).isEqualTo(Frame.MAXIMIZED_BOTH);
+    } else {
+      assertThat(frame.component().getHeight()).isEqualTo(IntegerSettings.MAIN_FRAME_HEIGHT.getValue());
+      assertThat(frame.component().getWidth()).isEqualTo(IntegerSettings.MAIN_FRAME_WIDTH.getValue());
+    }
 
     assertThat(frame.splitPane("main-view").component().getOrientation()).isEqualTo(JSplitPane.HORIZONTAL_SPLIT);
     assertThat(frame.splitPane("main-view").component().getLeftComponent()).isInstanceOf(JSplitPane.class);

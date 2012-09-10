@@ -61,5 +61,8 @@ public abstract class SizedFrame extends JFrame {
     setMinimumSize(size);
 
     setResizable(false);
+
+    // #56 start each sized frame centered
+    setLocationRelativeTo(null);
   }
 }

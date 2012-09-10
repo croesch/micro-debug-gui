@@ -83,6 +83,12 @@ public final class MainFrame extends SizedFrame {
     setJMenuBar(new MainMenuBar(actionProvider));
 
     addWindowListener(new WindowClosingListener(actionProvider));
+
+    // #56 start the main frame maximized
+    if (BooleanSettings.MAIN_FRAME_MAXIMIZED.value()) {
+      pack();
+      setExtendedState(MAXIMIZED_BOTH);
+    }
   }
 
   /**
