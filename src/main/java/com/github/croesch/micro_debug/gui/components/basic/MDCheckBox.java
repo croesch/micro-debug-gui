@@ -18,34 +18,21 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import java.awt.Color;
-
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JCheckBox;
-import javax.swing.UIManager;
 
-import com.github.croesch.micro_debug.annotation.NotNull;
-import com.github.croesch.micro_debug.gui.components.api.IInvertable;
+import com.github.croesch.components.CCheckBox;
 
 /**
- * An extension of {@link JCheckBox} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CCheckBox} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Apr 9, 2012
  */
-public class MDCheckBox extends JCheckBox implements IInvertable {
+public class MDCheckBox extends CCheckBox {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -4966283337378730078L;
-
-  /**
-   * Initially the background color for inverted check boxes, when inverted once this contains the background color,
-   * currently not visible. For instance, if the check box is currently inverted this contains the normal background
-   * color.
-   */
-  @NotNull
-  private Color otherColor = UIManager.getColor("CheckBox.background").darker();
 
   /**
    * Creates an unselected {@link MDCheckBox} button with the given name, no text and no icon.
@@ -54,8 +41,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * @param name the name of this {@link MDCheckBox}
    */
   public MDCheckBox(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -66,8 +52,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * @param icon the image to display
    */
   public MDCheckBox(final String name, final Icon icon) {
-    super(icon);
-    setName(name);
+    super(name, icon);
   }
 
   /**
@@ -78,8 +63,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * @param text the text of this {@link MDCheckBox}
    */
   public MDCheckBox(final String name, final String text) {
-    super(text);
-    setName(name);
+    super(name, text);
   }
 
   /**
@@ -91,8 +75,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * @param a the {@link Action} to fetch some properties from
    */
   public MDCheckBox(final String name, final Action a) {
-    super(a);
-    setName(name);
+    super(name, a);
   }
 
   /**
@@ -105,8 +88,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    *        or <code>false</code> otherwise
    */
   public MDCheckBox(final String name, final Icon icon, final boolean selected) {
-    super(icon, selected);
-    setName(name);
+    super(name, icon, selected);
   }
 
   /**
@@ -119,8 +101,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    *        or <code>false</code> otherwise
    */
   public MDCheckBox(final String name, final String text, final boolean selected) {
-    super(text, selected);
-    setName(name);
+    super(name, text, selected);
   }
 
   /**
@@ -132,8 +113,7 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    * @param icon the image to display
    */
   public MDCheckBox(final String name, final String text, final Icon icon) {
-    super(text, icon);
-    setName(name);
+    super(name, text, icon);
   }
 
   /**
@@ -147,16 +127,6 @@ public class MDCheckBox extends JCheckBox implements IInvertable {
    *        or <code>false</code> otherwise
    */
   public MDCheckBox(final String name, final String text, final Icon icon, final boolean selected) {
-    super(text, icon, selected);
-    setName(name);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public final void invert() {
-    final Color newColor = this.otherColor;
-    this.otherColor = getBackground();
-    setBackground(newColor);
+    super(name, text, icon, selected);
   }
 }
