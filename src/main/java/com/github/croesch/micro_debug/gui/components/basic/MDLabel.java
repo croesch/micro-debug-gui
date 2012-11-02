@@ -18,33 +18,21 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import java.awt.Color;
-
 import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
 
-import com.github.croesch.micro_debug.annotation.NotNull;
+import com.github.croesch.components.CLabel;
 import com.github.croesch.micro_debug.commons.Utils;
-import com.github.croesch.micro_debug.gui.components.api.IInvertable;
 
 /**
- * An extension of {@link JLabel} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CLabel} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Mar 3, 2012
  */
-public class MDLabel extends JLabel implements IInvertable {
+public class MDLabel extends CLabel {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -3518553239851224436L;
-
-  /**
-   * Initially the background color for inverted labels, when inverted once this contains the background color,
-   * currently not visible. For instance, if the label is currently inverted this contains the normal background color.
-   */
-  @NotNull
-  private Color otherColor = UIManager.getColor("Label.background").darker();
 
   /**
    * Constructs a {@link MDLabel} with the given name and the given text.
@@ -55,8 +43,7 @@ public class MDLabel extends JLabel implements IInvertable {
    * @see #setName(String)
    */
   public MDLabel(final String name, final Object text) {
-    super(Utils.toString(text));
-    setName(name);
+    super(name, Utils.toString(text));
   }
 
   /**
@@ -71,8 +58,7 @@ public class MDLabel extends JLabel implements IInvertable {
    *        {@link javax.swing.SwingConstants#TRAILING}
    */
   public MDLabel(final String name, final Icon image, final int horizontalAlignment) {
-    super(image, horizontalAlignment);
-    setName(name);
+    super(name, image, horizontalAlignment);
   }
 
   /**
@@ -83,8 +69,7 @@ public class MDLabel extends JLabel implements IInvertable {
    * @param image the image to be displayed by the label
    */
   public MDLabel(final String name, final Icon image) {
-    super(image);
-    setName(name);
+    super(name, image);
   }
 
   /**
@@ -101,8 +86,7 @@ public class MDLabel extends JLabel implements IInvertable {
    *        {@link javax.swing.SwingConstants#TRAILING}
    */
   public MDLabel(final String name, final Object text, final Icon image, final int horizontalAlignment) {
-    super(Utils.toString(text), image, horizontalAlignment);
-    setName(name);
+    super(name, Utils.toString(text), image, horizontalAlignment);
   }
 
   /**
@@ -117,8 +101,7 @@ public class MDLabel extends JLabel implements IInvertable {
    *        {@link javax.swing.SwingConstants#TRAILING}
    */
   public MDLabel(final String name, final Object text, final int horizontalAlignment) {
-    super(Utils.toString(text), horizontalAlignment);
-    setName(name);
+    super(name, Utils.toString(text), horizontalAlignment);
   }
 
   /**
@@ -128,16 +111,6 @@ public class MDLabel extends JLabel implements IInvertable {
    * @param name the name of this {@link MDLabel}.
    */
   public MDLabel(final String name) {
-    super();
-    setName(name);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public final void invert() {
-    final Color newColor = this.otherColor;
-    this.otherColor = getBackground();
-    setBackground(newColor);
+    super(name);
   }
 }
