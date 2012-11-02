@@ -19,17 +19,17 @@
 package com.github.croesch.micro_debug.gui.components.basic;
 
 import javax.swing.Action;
-import javax.swing.JButton;
 
+import com.github.croesch.components.CButton;
 import com.github.croesch.micro_debug.commons.Utils;
 
 /**
- * An extension of {@link JButton} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CButton} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Mar 9, 2012
  */
-public class MDButton extends JButton {
+public class MDButton extends CButton {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 2994653478336226271L;
@@ -43,8 +43,7 @@ public class MDButton extends JButton {
    * @see #setName(String)
    */
   public MDButton(final String name, final Object text) {
-    super(Utils.toString(text));
-    setName(name);
+    super(name, Utils.toString(text));
   }
 
   /**
@@ -56,7 +55,6 @@ public class MDButton extends JButton {
    * @see #setName(String)
    */
   public MDButton(final String name, final Action action) {
-    super(action);
-    setName(name);
+    super(name, action);
   }
 }
