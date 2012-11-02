@@ -20,15 +20,16 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JMenuItem;
+
+import com.github.croesch.components.CMenuItem;
 
 /**
- * An extension of {@link JMenuItem} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CMenuItem} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: May 14, 2012
  */
-public class MDMenuItem extends JMenuItem {
+public class MDMenuItem extends CMenuItem {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -6056965227011873471L;
@@ -40,8 +41,7 @@ public class MDMenuItem extends JMenuItem {
    * @param name the name of this {@link MDMenu}.
    */
   public MDMenuItem(final String name) {
-    super();
-    setName(name);
+    super(name, (String) null);
   }
 
   /**
@@ -52,8 +52,7 @@ public class MDMenuItem extends JMenuItem {
    * @param icon the icon for this menu item
    */
   public MDMenuItem(final String name, final Icon icon) {
-    super(icon);
-    setName(name);
+    super(name, null, icon);
   }
 
   /**
@@ -64,8 +63,7 @@ public class MDMenuItem extends JMenuItem {
    * @param text the text of the menu item
    */
   public MDMenuItem(final String name, final String text) {
-    super(text);
-    setName(name);
+    super(name, text);
   }
 
   /**
@@ -76,8 +74,7 @@ public class MDMenuItem extends JMenuItem {
    * @param a the {@link Action} to fetch properties from
    */
   public MDMenuItem(final String name, final Action a) {
-    super(a);
-    setName(name);
+    super(name, a);
   }
 
   /**
@@ -89,8 +86,7 @@ public class MDMenuItem extends JMenuItem {
    * @param icon the icon for this menu item
    */
   public MDMenuItem(final String name, final String text, final Icon icon) {
-    super(text, icon);
-    setName(name);
+    super(name, text, icon);
   }
 
   /**
@@ -102,7 +98,6 @@ public class MDMenuItem extends JMenuItem {
    * @param mnemonic the mnemonic for this menu item
    */
   public MDMenuItem(final String name, final String text, final int mnemonic) {
-    super(text, mnemonic);
-    setName(name);
+    super(name, text, mnemonic);
   }
 }
