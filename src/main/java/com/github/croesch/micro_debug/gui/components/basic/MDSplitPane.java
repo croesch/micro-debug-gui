@@ -20,15 +20,15 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import java.awt.Component;
 
-import javax.swing.JSplitPane;
+import com.github.croesch.components.CSplitPane;
 
 /**
- * An extension of {@link JSplitPane} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CSplitPane} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Apr 8, 2012
  */
-public class MDSplitPane extends JSplitPane {
+public class MDSplitPane extends CSplitPane {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -3599522291129844359L;
@@ -40,8 +40,7 @@ public class MDSplitPane extends JSplitPane {
    * @param name the name of this {@link MDSplitPane}
    */
   public MDSplitPane(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -61,8 +60,7 @@ public class MDSplitPane extends JSplitPane {
                      final boolean newContinuousLayout,
                      final Component newLeftComponent,
                      final Component newRightComponent) {
-    super(newOrientation, newContinuousLayout, newLeftComponent, newRightComponent);
-    setName(name);
+    super(name, newOrientation, newContinuousLayout, newLeftComponent, newRightComponent);
   }
 
   /**
@@ -76,8 +74,7 @@ public class MDSplitPane extends JSplitPane {
    *        or <code>false</code> to redraw only when devider position has stopped changing.
    */
   public MDSplitPane(final String name, final int newOrientation, final boolean newContinuousLayout) {
-    super(newOrientation, newContinuousLayout);
-    setName(name);
+    super(name, newOrientation, newContinuousLayout);
   }
 
   /**
@@ -93,8 +90,7 @@ public class MDSplitPane extends JSplitPane {
                      final int newOrientation,
                      final Component newLeftComponent,
                      final Component newRightComponent) {
-    super(newOrientation, newLeftComponent, newRightComponent);
-    setName(name);
+    super(name, newOrientation, newLeftComponent, newRightComponent);
   }
 
   /**
@@ -105,7 +101,6 @@ public class MDSplitPane extends JSplitPane {
    * @param newOrientation if horizontally or vertically orientated
    */
   public MDSplitPane(final String name, final int newOrientation) {
-    super(newOrientation);
-    setName(name);
+    super(name, newOrientation);
   }
 }

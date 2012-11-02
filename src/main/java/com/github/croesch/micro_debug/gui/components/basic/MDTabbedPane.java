@@ -18,30 +18,28 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import javax.swing.JTabbedPane;
+import com.github.croesch.components.CTabbedPane;
 
 /**
- * An extension of {@link JTabbedPane} that contains some default behavior that not each
- * client should have to implement.
+ * An extension of {@link CTabbedPane} that contains some default behavior that not each client should have to
+ * implement.
  * 
  * @author croesch
  * @since Date: May 10, 2012
  */
-public class MDTabbedPane extends JTabbedPane {
+public class MDTabbedPane extends CTabbedPane {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -4308900315432849168L;
 
   /**
-   * Creates an empty <code>MDTabbedPane</code> with tab placement
-   * <code>JTabbedPane.TOP</code>.
+   * Creates an empty <code>MDTabbedPane</code> with tab placement <code>JTabbedPane.TOP</code>.
    * 
    * @since Date: May 10, 2012
    * @param name the name of this {@link MDTabbedPane}
    */
   public MDTabbedPane(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -52,22 +50,18 @@ public class MDTabbedPane extends JTabbedPane {
    * @param tabPlacement the placement for the tabs relative to the content
    */
   public MDTabbedPane(final String name, final int tabPlacement) {
-    super(tabPlacement);
-    setName(name);
+    super(name, tabPlacement);
   }
 
   /**
-   * Creates an empty <code>TabbedPane</code> with the specified tab placement and tab
-   * layout policy.
+   * Creates an empty <code>TabbedPane</code> with the specified tab placement and tab layout policy.
    * 
    * @since Date: May 10, 2012
    * @param name the name of this {@link MDTabbedPane}
    * @param tabPlacement the placement for the tabs relative to the content
-   * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on
-   *        one run
+   * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on one run
    */
   public MDTabbedPane(final String name, final int tabPlacement, final int tabLayoutPolicy) {
-    super(tabPlacement, tabLayoutPolicy);
-    setName(name);
+    super(name, tabPlacement, tabLayoutPolicy);
   }
 }

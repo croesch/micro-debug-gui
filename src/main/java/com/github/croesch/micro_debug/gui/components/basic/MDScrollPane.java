@@ -20,16 +20,16 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import java.awt.Component;
 
-import javax.swing.JScrollPane;
+import com.github.croesch.components.CScrollPane;
 
 /**
- * An extension of {@link JScrollPane} that contains some default behavior that not each client should have to
+ * An extension of {@link CScrollPane} that contains some default behavior that not each client should have to
  * implement.
  * 
  * @author croesch
  * @since Date: Apr 7, 2012
  */
-public class MDScrollPane extends JScrollPane {
+public class MDScrollPane extends CScrollPane {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 484402533151913534L;
@@ -42,8 +42,7 @@ public class MDScrollPane extends JScrollPane {
    * @param name the name of this {@link MDScrollPane}
    */
   public MDScrollPane(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -57,8 +56,7 @@ public class MDScrollPane extends JScrollPane {
    * @param hsbPolicy the horizontal scrollbar policy - when to show horizontal scrollbar
    */
   public MDScrollPane(final String name, final Component view, final int vsbPolicy, final int hsbPolicy) {
-    super(view, vsbPolicy, hsbPolicy);
-    setName(name);
+    super(name, view, vsbPolicy, hsbPolicy);
   }
 
   /**
@@ -69,8 +67,7 @@ public class MDScrollPane extends JScrollPane {
    * @param view the {@link Component} to display in this scroll pane
    */
   public MDScrollPane(final String name, final Component view) {
-    super(view);
-    setName(name);
+    super(name, view);
   }
 
   /**
@@ -82,7 +79,6 @@ public class MDScrollPane extends JScrollPane {
    * @param hsbPolicy the horizontal scrollbar policy - when to show horizontal scrollbar
    */
   public MDScrollPane(final String name, final int vsbPolicy, final int hsbPolicy) {
-    super(vsbPolicy, hsbPolicy);
-    setName(name);
+    super(name, vsbPolicy, hsbPolicy);
   }
 }

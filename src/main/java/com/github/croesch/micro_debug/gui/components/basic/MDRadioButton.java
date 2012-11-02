@@ -20,16 +20,17 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JRadioButton;
+
+import com.github.croesch.components.CRadioButton;
 
 /**
- * An extension of {@link JRadioButton} that contains some default behavior that not each client should have to
+ * An extension of {@link CRadioButton} that contains some default behavior that not each client should have to
  * implement.
  * 
  * @author croesch
  * @since Date: May 27, 2012
  */
-public class MDRadioButton extends JRadioButton {
+public class MDRadioButton extends CRadioButton {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -6820607738475514802L;
@@ -41,8 +42,7 @@ public class MDRadioButton extends JRadioButton {
    * @param name the name of this {@link MDRadioButton}
    */
   public MDRadioButton(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -53,8 +53,7 @@ public class MDRadioButton extends JRadioButton {
    * @param icon the image to display
    */
   public MDRadioButton(final String name, final Icon icon) {
-    super(icon);
-    setName(name);
+    super(name, icon);
   }
 
   /**
@@ -65,8 +64,7 @@ public class MDRadioButton extends JRadioButton {
    * @param text the text of this {@link MDRadioButton}
    */
   public MDRadioButton(final String name, final String text) {
-    super(text);
-    setName(name);
+    super(name, text);
   }
 
   /**
@@ -78,8 +76,7 @@ public class MDRadioButton extends JRadioButton {
    * @param a the {@link Action} to fetch some properties from
    */
   public MDRadioButton(final String name, final Action a) {
-    super(a);
-    setName(name);
+    super(name, a);
   }
 
   /**
@@ -92,8 +89,7 @@ public class MDRadioButton extends JRadioButton {
    *        or <code>false</code> otherwise
    */
   public MDRadioButton(final String name, final Icon icon, final boolean selected) {
-    super(icon, selected);
-    setName(name);
+    super(name, icon, selected);
   }
 
   /**
@@ -106,8 +102,7 @@ public class MDRadioButton extends JRadioButton {
    *        or <code>false</code> otherwise
    */
   public MDRadioButton(final String name, final String text, final boolean selected) {
-    super(text, selected);
-    setName(name);
+    super(name, text, selected);
   }
 
   /**
@@ -119,8 +114,7 @@ public class MDRadioButton extends JRadioButton {
    * @param icon the image to display
    */
   public MDRadioButton(final String name, final String text, final Icon icon) {
-    super(text, icon);
-    setName(name);
+    super(name, text, icon);
   }
 
   /**
@@ -134,7 +128,6 @@ public class MDRadioButton extends JRadioButton {
    *        or <code>false</code> otherwise
    */
   public MDRadioButton(final String name, final String text, final Icon icon, final boolean selected) {
-    super(text, icon, selected);
-    setName(name);
+    super(name, text, icon, selected);
   }
 }

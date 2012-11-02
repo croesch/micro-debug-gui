@@ -18,17 +18,16 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import javax.swing.JTextField;
-
+import com.github.croesch.components.CTextField;
 import com.github.croesch.micro_debug.commons.Utils;
 
 /**
- * An extension of {@link JTextField} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CTextField} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Mar 9, 2012
  */
-public class MDTextField extends JTextField {
+public class MDTextField extends CTextField {
 
   /** generated serial version UID */
   private static final long serialVersionUID = -8364112596649793289L;
@@ -42,8 +41,7 @@ public class MDTextField extends JTextField {
    * @see #setName(String)
    */
   public MDTextField(final String name, final Object text) {
-    super(Utils.toString(text));
-    setName(name);
+    super(name, Utils.toString(text));
   }
 
   /**
@@ -54,6 +52,6 @@ public class MDTextField extends JTextField {
    * @see #setName(String)
    */
   public MDTextField(final String name) {
-    this(name, null);
+    super(name);
   }
 }

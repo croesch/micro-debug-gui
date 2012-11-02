@@ -18,17 +18,16 @@
  */
 package com.github.croesch.micro_debug.gui.components.basic;
 
-import javax.swing.JTextArea;
-
+import com.github.croesch.components.CTextArea;
 import com.github.croesch.micro_debug.commons.Utils;
 
 /**
- * An extension of {@link JTextArea} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CTextArea} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Mar 14, 2012
  */
-public class MDTextArea extends JTextArea {
+public class MDTextArea extends CTextArea {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 1088518150231835733L;
@@ -42,8 +41,7 @@ public class MDTextArea extends JTextArea {
    * @see #setName(String)
    */
   public MDTextArea(final String name, final Object text) {
-    super(Utils.toString(text));
-    setName(name);
+    super(name, Utils.toString(text));
   }
 
   /**
@@ -54,6 +52,6 @@ public class MDTextArea extends JTextArea {
    * @see #setName(String)
    */
   public MDTextArea(final String name) {
-    this(name, null);
+    super(name);
   }
 }
