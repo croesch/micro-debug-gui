@@ -19,15 +19,16 @@
 package com.github.croesch.micro_debug.gui.components.basic;
 
 import javax.swing.Action;
-import javax.swing.JMenu;
+
+import com.github.croesch.components.CMenu;
 
 /**
- * An extension of {@link JMenu} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CMenu} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: May 14, 2012
  */
-public class MDMenu extends JMenu {
+public class MDMenu extends CMenu {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 2725555176853511507L;
@@ -39,8 +40,7 @@ public class MDMenu extends JMenu {
    * @param name the name of this {@link MDMenu}.
    */
   public MDMenu(final String name) {
-    super();
-    setName(name);
+    super(name, (String) null);
   }
 
   /**
@@ -51,8 +51,7 @@ public class MDMenu extends JMenu {
    * @param text the text for the menu label
    */
   public MDMenu(final String name, final String text) {
-    super(text);
-    setName(name);
+    super(name, text);
   }
 
   /**
@@ -63,8 +62,7 @@ public class MDMenu extends JMenu {
    * @param a the {@link Action} that provides some properties for this menu.
    */
   public MDMenu(final String name, final Action a) {
-    super(a);
-    setName(name);
+    super(name, a);
   }
 
   /**
@@ -76,7 +74,6 @@ public class MDMenu extends JMenu {
    * @param b <code>true</code>, if the menu can be torn off
    */
   public MDMenu(final String name, final String text, final boolean b) {
-    super(text, b);
-    setName(name);
+    super(name, text, b);
   }
 }
