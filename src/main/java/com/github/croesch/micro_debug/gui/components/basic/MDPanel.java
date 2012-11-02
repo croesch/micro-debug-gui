@@ -20,15 +20,15 @@ package com.github.croesch.micro_debug.gui.components.basic;
 
 import java.awt.LayoutManager;
 
-import javax.swing.JPanel;
+import com.github.croesch.components.CPanel;
 
 /**
- * An extension of {@link JPanel} that contains some default behavior that not each client should have to implement.
+ * An extension of {@link CPanel} that contains some default behavior that not each client should have to implement.
  * 
  * @author croesch
  * @since Date: Apr 8, 2012
  */
-public class MDPanel extends JPanel {
+public class MDPanel extends CPanel {
 
   /** generated serial version UID */
   private static final long serialVersionUID = 4720214109287024970L;
@@ -40,8 +40,7 @@ public class MDPanel extends JPanel {
    * @param name the name of this {@link MDPanel}
    */
   public MDPanel(final String name) {
-    super();
-    setName(name);
+    super(name);
   }
 
   /**
@@ -53,8 +52,7 @@ public class MDPanel extends JPanel {
    *        or <code>false</code> otherwise
    */
   public MDPanel(final String name, final boolean isDoubleBuffered) {
-    super(isDoubleBuffered);
-    setName(name);
+    super(name, isDoubleBuffered);
   }
 
   /**
@@ -67,8 +65,7 @@ public class MDPanel extends JPanel {
    *        or <code>false</code> otherwise
    */
   public MDPanel(final String name, final LayoutManager layout, final boolean isDoubleBuffered) {
-    super(layout, isDoubleBuffered);
-    setName(name);
+    super(name, layout, isDoubleBuffered);
   }
 
   /**
@@ -79,7 +76,6 @@ public class MDPanel extends JPanel {
    * @param layout the {@link LayoutManager} for the panel
    */
   public MDPanel(final String name, final LayoutManager layout) {
-    super(layout);
-    setName(name);
+    super(name, layout);
   }
 }
