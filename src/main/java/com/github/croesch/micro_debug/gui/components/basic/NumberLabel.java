@@ -21,7 +21,7 @@ package com.github.croesch.micro_debug.gui.components.basic;
 import com.github.croesch.micro_debug.annotation.NotNull;
 import com.github.croesch.micro_debug.commons.Utils;
 import com.github.croesch.micro_debug.parser.IntegerParser;
-import com.github.croesch.micro_debug.properties.APropertiesProvider;
+import com.github.croesch.properties.APropertiesProvider;
 
 /**
  * This label is a special label to visualise numerical values.

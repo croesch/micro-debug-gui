@@ -130,7 +130,7 @@
 		<dependency>
 			<groupId>com.github.croesch</groupId>
 			<artifactId>micro-debug</artifactId>
-			<version>0.4</version>
+			<version>0.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

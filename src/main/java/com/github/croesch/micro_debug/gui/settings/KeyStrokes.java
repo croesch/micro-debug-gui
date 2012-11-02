@@ -21,7 +21,7 @@ package com.github.croesch.micro_debug.gui.settings;
 import javax.swing.KeyStroke;
 
 import com.github.croesch.micro_debug.annotation.Nullable;
-import com.github.croesch.micro_debug.properties.PropertiesProvider;
+import com.github.croesch.properties.PropertiesProvider;
 
 /**
  * Provides some keystrokes, that may be modified by the user.

@@ -19,7 +19,7 @@
 package com.github.croesch.micro_debug.gui.settings;
 
 import com.github.croesch.micro_debug.annotation.Nullable;
-import com.github.croesch.micro_debug.properties.PropertiesProvider;
+import com.github.croesch.properties.PropertiesProvider;
 
 /**
  * Provides some boolean settings, that may be modified by the user.
